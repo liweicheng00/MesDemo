@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>BOM表維護</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">BOM表維護</span>
+			</legend>
+		</fieldset>
+		<div>
+			<form class="layui-form" action="" lay-filter='all'>
+				<div class="layui-form-item">
+					<label class="layui-form-label">產品名稱</label>
+					<div class="layui-input-inline">
+						<select name="product" id="product" lay-verify="required" lay-filter='select_product'>
+							<option value="">請選擇</option>
+							// js 新增選項
+						</select>
+					</div>
+					<button id="show_bom" type="button" class="layui-btn layui-btn-radius">顯示</button>
+					<button id="hide_bom" type="button" class="layui-btn layui-btn-radius">隱藏</button>
+				</div>
+		</div>
+
+		<div class="" style="padding: 0px 30px;">
+			<table class="layui-hide" id="demo" lay-filter="test"></table>
+		</div>
+
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+
+		<script>
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+			var product_name
+			$.ajax({
+				url: '{{url_for('schedule.ajax_product_list')}}',
+				type: "GET",
+				dataType: 'json',
+				success: function(res) {
+					console.log('獲取產品列表')
+					console.log(res)
+					var html = '';
+					for (var key in res) {
+						html = html + '<optgroup label="' + key + '">'
+						for (var i = 0; i < res[key].length; i++) {
+							html = html + '<option value="' + res[key][i] + '">' + res[key][i] + '</option>'
+						}
+						html = html + '</optgroup>'
+					}
+					$('#product').append(html)
+					form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+				}
+			})
+			// 監聽產品名稱選單
+			form.on('select(select_product)', function(data) {
+				console.log(data.elem); //得到select原始DOM对象
+				console.log(data.value); //得到被选中的值
+				console.log(data.othis); //得到美化后的DOM对象
+				// $("#product_name").html(data.value)
+				// 發出ajax取得產品Bom
+				product_name = data.value
+				get_bom(data.value) 
+			});
+			
+			var get_bom = function(data){
+				$.ajax({
+					url: '{{url_for('schedule.ajax_revise_get_bom')}}',
+					type: "POST",
+					data: JSON.stringify({
+						'product_name': data
+					}),
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取BOM列表')
+						console.log(res)
+						part_nuber = res
+				
+						table.render({
+							elem: '#demo',
+							// height: 420,
+							title: '用户表',
+							data: res,
+							limit: 80,
+							// page: true, //开启分页
+							// toolbar: 'default', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+							// defaultToolbar: [''],
+							cols: [
+								[{
+										type: 'checkbox',
+										fixed: 'left'
+									},
+									{
+										field: 'inj_product_name',
+										title: '成型品名稱',
+										// event: 'inj_product_name'
+									},
+									{
+										field: 'part_number',
+										title: '料號',
+										// event: 'part_number'
+									},
+									{
+										field: 'product_name_en',
+										title: '成型品英文名稱',
+										// event: 'product_name_en'
+									},
+									{
+										field: 'std_cycle_time',
+										title: '標準週期',
+										// event: 'std_cycle_time'
+									},
+									{
+										field: 'std_produce',
+										title: '標準產能*',
+										event: 'std_produce'
+									},
+									{
+										field: 'piece',
+										title: '用量(pics)',
+									},
+									{
+										field: 'available',
+										title: '系統顯示',
+									}
+								]
+							]
+						});
+						table.on('tool(test)', function(obj) {
+							console.log(obj)
+							var data = obj.data
+							var original = data
+							var revised = $.extend(true, {}, data)
+				
+							layer.prompt({
+								formType: 2,
+								title: '修改資料',
+								value: data[obj.event]
+							}, function(value, index) {
+				
+								var upload_data = {
+									original,
+									revised
+								}
+								upload_data['revised'][obj.event] = value
+								console.log(upload_data)
+								$.ajax({
+									url: '{{url_for('schedule.ajax_revise_bom')}}',
+									type: "POST",
+									data: JSON.stringify(upload_data),
+									dataType: 'json',
+									success: function(res) {
+										console.log(res)
+										layer.msg('更新成功')
+										var temp = {}
+										temp[obj.event] = value
+										obj.update(temp); //这里一般是发送修改的Ajax请求
+									},
+								})
+								layer.close(index);
+							});
+				
+				
+						})
+						
+					}
+				})
+			}
+			$("#hide_bom").click(function(){
+				var check = table.checkStatus('demo')
+				console.log(check)
+				$.ajax({
+					url: '{{url_for('schedule.ajax_hide_bom')}}',
+					type: "POST",
+					data: JSON.stringify(check),
+					dataType: 'json',
+					success: function(res) {
+						console.log('隱藏Bom')
+						console.log(res)
+						get_bom(product_name)
+					}
+				})
+			})
+			$("#show_bom").click(function(){
+				var check = table.checkStatus('demo')
+				console.log(check)
+				$.ajax({
+					url: '{{url_for('schedule.ajax_show_bom')}}',
+					type: "POST",
+					data: JSON.stringify(check),
+					dataType: 'json',
+					success: function(res) {
+						console.log('顯示Bom')
+						console.log(res)
+						get_bom(product_name)
+					}
+				})
+			})
+		</script>
+	</body>
+
+
+</html>

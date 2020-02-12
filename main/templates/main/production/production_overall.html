@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>現場總覽</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+		<script src="static/js/vue.js"></script>
+		<script src="static/js/echarts.min.js"></script>
+		<style type="text/css">
+			.building {
+				padding: 10px;
+				/* background-color: rgb(255, 208, 34); */
+				/* height: 500px; */
+				border: 3px solid #777;
+				border-radius: 6px;
+			}
+
+			.area {
+				padding: 3px;
+				/* text-align: center; */
+				/* background: white; */
+				/* border: 2px solid #0071ff; */
+			}
+
+			.machine {
+				/* border: 3px solid white;
+				border-radius: 10px; */
+				padding: 3px;
+
+				/* background: rgb(255, 208, 34) */
+			}
+
+			.machine_state {
+				border-top: 2px solid white;
+				border-left: 2px solid white;
+				border-right: 2px solid white;
+				border-radius: 3px 3px 0px 0px;
+				padding: 2px;
+				font-size: 1px;
+				/* height: inherit; */
+				text-align: center;
+				vertical-align: middle;
+			}
+
+			.machine .offline {
+				background: lightgrey;
+			}
+
+			.machine .standby {
+				background: orange;
+			}
+
+			.machine .online {
+				background: greenyellow;
+			}
+
+			.machine .alarm {
+				background: red;
+			}
+
+			.machine_produce {
+				border-left: 2px solid white;
+				border-right: 2px solid white;
+				border-bottom: 2px solid white;
+				border-radius: 0px 0px 3px 3px;
+				padding: 2px;
+				font-size: 1px;
+				background: papayawhip;
+				/* height: inherit; */
+				text-align: center;
+				vertical-align: bottom;
+			}
+
+			.modal-mask {
+				position: fixed;
+				z-index: 9998;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, .5);
+				display: table;
+				transition: opacity .3s ease;
+			}
+
+			.modal-wrapper {
+				display: table-cell;
+				vertical-align: middle;
+			}
+
+			.modal-container {
+				width: 300px;
+				margin: 0px auto;
+				padding: 20px 30px;
+				background-color: #fff;
+				border-radius: 2px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+				transition: all .3s ease;
+				font-family: Helvetica, Arial, sans-serif;
+			}
+
+			.modal-header h3 {
+				margin-top: 0;
+				color: #42b983;
+			}
+
+			.modal-body {
+				margin: 20px 0;
+			}
+
+			.modal-default-button {
+				float: right;
+			}
+
+			/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+			.modal-enter {
+				opacity: 0;
+			}
+
+			.modal-leave-active {
+				opacity: 0;
+			}
+
+			.modal-enter .modal-container,
+			.modal-leave-active .modal-container {
+				-webkit-transform: scale(1.1);
+				transform: scale(1.1);
+			}
+		</style>
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">今日現場總覽</span>
+			</legend>
+		</fieldset>
+
+		<div id="A18" style="padding: 0px 30px;">
+			<div class="layui-row">
+				<div class="layui-col-md12" style="text-align: center;">
+					<h1>A18</h1>
+				</div>
+			</div>
+			<vue-building>
+				<div class="layui_row" style="text-align: center;">
+					<span style="color: greenyellow; font-size: 1.5rem;">■</span><span>生產</span>
+					<span style="color: orange; font-size: 1.5rem;">■</span><span>待機</span>
+					<span style="color: red; font-size: 1.5rem;">■</span><span>警報</span>
+					<span style="color: lightgrey; font-size: 1.5rem;">■</span><span>離線</span>
+					<span style="color: papayawhip; font-size: 1.5rem;">■</span><span>產能</span>
+					<span style="font-size: 0.6rem;">
+						<span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;北</span>
+						<img src="static/img/direction.png" style="transform: rotate(270deg);">
+					</span>
+				</div>
+				<div class="">
+					<div class="layui-row">
+						<vue-area class="layui-col-md5">
+							<vue-machine v-for="info in infos.A1" :info="info"></vue-machine>
+						</vue-area>
+						<vue-area class="layui-col-md7">
+							<vue-machine v-for="info in infos.A2" :info="info"></vue-machine>
+						</vue-area>
+					</div>
+					<div class="layui-row">
+						<vue-area class="layui-col-md5">
+							<vue-machine v-for="info in infos.B1" :info="info"></vue-machine>
+						</vue-area>
+						<vue-area>
+							<vue-machine v-for="info in infos.B2" :info="info"></vue-machine>
+						</vue-area class="layui-col-md7">
+					</div>
+					<div class="layui-row">
+						<vue-area class="layui-col-md5">
+							<vue-machine v-for="info in infos.C1" :info="info"></vue-machine>
+						</vue-area>
+						<vue-area>
+							<vue-machine v-for="info in infos.C2" :info="info"></vue-machine>
+						</vue-area class="layui-col-md7">
+					</div>
+					<div class="layui-row">
+						<vue-area class="layui-col-md5">
+							<vue-machine v-for="info in infos.D1" :info="info"></vue-machine>
+						</vue-area>
+						<vue-area class="layui-col-md7">
+							<vue-machine v-for="info in infos.D2" :info="info"></vue-machine>
+						</vue-area>
+					</div>
+				</div>
+
+				<div class="layui-row">
+
+
+
+
+				</div>
+			</vue-building>
+
+		</div>
+
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+		<script src="static/js/moment.js" charset="utf-8"></script>
+		<script type="text/javascript">
+			Vue.component('vue-building', {
+				template: '<div class=" building" >\
+					<slot></slot>\
+				</div>',
+				props: ['info'],
+				delimiters: ['{[', ']}'],
+			})
+			Vue.component('vue-area', {
+				template: '<div style="display: inline-block;" class="area">\
+						<slot></slot>\
+				</div>',
+				props: ['info'],
+				delimiters: ['{[', ']}'],
+			})
+			Vue.component('vue-machine', {
+				template: '<div style="display: inline-block; width: 40px;" class=" machine">\
+					<div class="layui-row" style="" v-on:click="detail">\
+						<div class="layui-col-md12 machine_state" v-bind:class="state">\
+							<p>{[info.machine_name]} </p>\
+						</div>\
+						<div class="layui-col-md12 machine_produce">\
+							<p>{[info.QcTolCnt == 0 ? "-" : info.QcTolCnt]}</p>\
+						</div>\
+					</div>\
+				<vue-detail v-if="test" v-on:close="detail" :post_data="info"></vue-detail></div>',
+				props: ['info'],
+				delimiters: ['{[', ']}'],
+				data: function() {
+					return {
+						test: 0
+					}
+				},
+				methods: {
+					detail: function() {
+						if (this.test) {
+							this.test = 0
+						} else {
+							this.test = 1
+						}
+					},
+
+				},
+				computed: {
+					state: function() {
+						switch (this.info.machine_state) {
+							case 0:
+								return {
+									offline: true
+								}
+							case 1:
+								return {
+									standby: true
+								}
+							case 2:
+								return {
+									online: true
+								}
+							case 3:
+								return {
+									alarm: true
+								}
+						}
+					}
+				}
+			})
+			Vue.component('vue-detail', {
+				template: ' <div class="modal-mask" v-on:click="$emit(\'close\')">\
+					<div class="modal-wrapper">\
+						<div class="modal-container">\
+							<div class="modal-body">\
+								<h1>{[post_data.machine_name]}</h1>\
+								<ul style="list-style-type: circle;">\
+									<li>機台狀態: {[post_data.machine_state]}</li>\
+									<li>產能: {[post_data.QcTolCnt == 0 ? "-" : post_data.QcTolCnt]}</li>\
+									<li>今日排產: {[detail.amount]}</li>\
+									<li>達成率: -</li>\
+								</ul>\
+							</div>\
+							<div class="modal-body">\
+								<h2>模具訊息</h2>\
+								<ul>\
+									<li>模號: {[detail.mold]}</li>\
+									<li>模穴數: {[detail.cave]}</li>\
+									<li>使用模次:</li>\
+									<li>料號:</li>\
+								</ul>\
+							</div>\
+							<div class="modal-body">\
+								<h2>機台訊息</h2>\
+								<ul>\
+									<li>噸數: {[detail.tonnage]}</li>\
+									<li>廠商: {[detail.brand]}</li>\
+									<li>型號: {[detail.type]}</li>\
+								</ul>\
+							</div>\
+						</div>\
+					</div>\
+				</div>',
+				props: ['post_data'],
+				data: function() {
+					return {
+						detail: {}
+					}
+				},
+				delimiters: ['{[', ']}'],
+				mounted: function() {
+					var vm = this
+
+					this.$nextTick(function() {
+						$.ajax({
+							url: '{{url_for('production.ajax_get_machine_detail')}}',
+							type: "POST",
+							data: JSON.stringify(this.post_data),
+							dataType: 'json',
+							success: function(res) {
+								vm.detail = res
+							},
+						})
+					})
+				},
+				updated: function() {
+					this.$nextTick(function() {
+						var vm = this
+						$.ajax({
+							url: '{{url_for('production.ajax_get_machine_detail')}}',
+							type: "POST",
+							data: JSON.stringify(this.post_data),
+							dataType: 'json',
+							success: function(res) {
+								vm.detail = res
+							},
+						})
+					})
+				},
+			})
+
+			var A18 = new Vue({
+				delimiters: ['{[', ']}'],
+				el: '#A18',
+				data: {
+					infos: {
+						A1: [],
+						B1: [],
+						C1: [],
+						D1: [],
+						A2: [],
+						B2: [],
+						C2: [],
+						D2: [],
+					},
+
+				},
+			})
+			var get_query = function(query_post) {
+
+				$.ajax({
+					url: '{{url_for('production.ajax_get_machine_state')}}',
+					type: 'GET',
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取不良統計')
+						console.log(res)
+						A18.infos = res
+						var arrange_machine = function(element, index, array) {
+							for (var i = 0; i < res.length; i++) {
+								if (res[i]['machine_name'] == element) {
+									return res[i]
+								}
+							}
+							return {
+								machine_name: element,
+								machine_state: 0,
+								QcTolCnt: 0,
+								building: 'A18'
+							}
+						}
+						var A1_list = ['A28', 'A27', 'A26', 'A25', 'A24', 'A23', 'A22', 'A21', 'A20', 'A19']
+						var A2_list = ['A18', 'A17', 'A16', 'A15', 'A14', 'A13', 'A12', 'A11', 'A10', 'A09', 'A08', 'A07', 'A06',
+							'A05', 'A04', 'A03', 'A02', 'A01'
+						]
+						var B1_list = ['B19', 'B18', 'B17', 'B16', 'B15', 'B14', 'B13', 'B12']
+						var B2_list = ['B11', 'B10', 'B09', 'B08', 'B07', 'B06', 'B05', 'B04']
+						var C1_list = ['C22', 'C21', 'C20', 'C19', 'C18', 'C17', 'C16', 'C15', 'C14', 'C13']
+						var C2_list = ['C12', 'C11', 'C10', 'C09', 'C08', 'C07', 'C06', 'C05', 'C04', 'C03', 'C02', 'C01']
+						var D1_list = ['D27', 'D26', 'D25', 'D24', 'D23', 'D22', 'D21', 'D20', 'D19', 'D18', 'D17']
+						var D2_list = ['D16', 'D15', 'D14', 'D13', 'D12', 'D11', 'D10', 'D09', 'D08', 'D07', 'D06', 'D05', 'D04',
+							'D03', 'D02'
+						]
+						var A1 = A1_list.map(arrange_machine)
+						var A2 = A2_list.map(arrange_machine)
+						var B1 = B1_list.map(arrange_machine)
+						var B2 = B2_list.map(arrange_machine)
+						var C1 = C1_list.map(arrange_machine)
+						var C2 = C2_list.map(arrange_machine)
+						var D1 = D1_list.map(arrange_machine)
+						var D2 = D2_list.map(arrange_machine)
+						A18.infos.A1 = A1
+						A18.infos.A2 = A2
+						A18.infos.B1 = B1
+						A18.infos.B2 = B2
+						A18.infos.C1 = C1
+						A18.infos.C2 = C2
+						A18.infos.D1 = D1
+						A18.infos.D2 = D2
+					}
+				})
+			}
+			get_query()
+			setInterval(get_query, 40000)
+		</script>
+	</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>生產報表</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+		<style>
+			.simple {
+				padding: 0px 30px;
+				width: 90%;
+				border-collapse: collapse;
+				text-align: center;
+				/* font-weight: bold; */
+				font-size: 14px ;
+			}
+			.simple th{
+				font-weight:bold;
+				padding: 3px 0px;
+			}
+			.simple tr{
+				/* border-top: 1.5px solid dimgrey; */
+				border-bottom: 1.5px solid dimgray;
+			}
+			.simple td:nth-child(1){
+				width: 20%;
+				padding: 3px 0px;
+			}
+			.simple td:nth-child(2){
+				width: 10%;
+				padding: 3px 0px;
+			}
+			.simple td:nth-child(3){
+				width: 70%;
+				padding: 3px 0px;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<fieldset class="layui-elem-field layui-field-title">
+				<legend style="font-weight:bold">
+					<span style="font-size: 1.5rem;">生產報表</span>
+				</legend>
+			</fieldset>
+			<div class="layui-row">
+				<form class="layui-form" action="" lay-filter='all'>
+					<div class="layui-form-item">
+						<label class="layui-form-label">日期</label>
+						<div class="layui-input-inline">
+							<!-- session預設值 -->
+							<input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">名稱</label>
+						<div class="layui-input-inline">
+							<select name="product" id="product" lay-verify="required" lay-filter='select_product'>
+								<!-- session預設值 -->
+								{% if session['building'] %}
+									<option value="{{session['product_name']}}">{{session['product_name']}}</option>
+								{% else %}
+									<option value="">請選擇</option>
+								{% endif %}
+							</select>
+						</div>
+						<label class="layui-form-label">品名</label>
+						<div class="layui-input-inline">
+							<select name="inj_product_name" id="inj_product_name" lay-filter='select_inj_name' lay-verify="required">
+								<!-- session預設值 -->
+								{% if session['building'] %}
+									<option value="{{session['inj_product_name']}}">{{session['inj_product_name']}}</option>
+								{% else %}
+									<option value="">請選擇</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">棟別</label>
+						<div class="layui-input-inline">
+							<select name="building" id="building" lay-filter='select_building' lay-verify="required">
+								<!-- session預設值 -->
+								{% if session['building'] %}
+									<option value="{{session['building']}}">{{session['building']}}</option>
+								{% else %}
+									<option value="A18">A18</option>
+								{% endif %}
+								<option value="">A17</option>
+								<option value="">A16</option>
+							</select>
+						</div>
+						<label class="layui-form-label">線別</label>
+						<div class="layui-input-inline">
+							<select name="machine" id="machine" lay-filter='select_machine' lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					</div>
+					<!-- <div class="layui-form-item">
+						
+						<div class="layui-input-inline">
+							<button type="button" lay-submit lay-filter="form_submit" class="layui-btn layui-btn-radius">
+								<i class="layui-icon">查詢</i>
+							</button>
+						</div>
+					</div> -->
+				</form>
+			</div>
+			
+
+
+			<div id="statistic_div" style="padding: 0px 30px;">
+				<hr class=" layui-bg-green">
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend style="font-weight:bold">
+						<span style="font-size: 1.5rem;">報表</span>
+					</legend>
+				</fieldset>
+				<div class="layui-field-box">
+					<div class="layui-form-item layui-form" lay-filter="all">
+						<div id="bad_name" class="">
+							<!-- ajax check block -->
+							<input type="checkbox" name="" title="日期" value="date" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="棟別" value="building" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="機台" value="machine" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="產品" value="product_name" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="品名" value="inj_product_name" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="料號" value="part_number" lay-filter="*">
+							<input type="checkbox" name="" title="模具" value="mold" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="工令" value="produce_order" lay-filter="*">
+							<input type="checkbox" name="" title="損失工時" value="lost_time" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="排產數量" value="amount" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="生產實際" value="produce_amount" lay-filter="*" checked="">
+							<input type="checkbox" name="" title="不良數量" value="bad_amount" lay-filter="*" checked="">
+							<!-- <input type="checkbox" name="" title="入庫數量" value="k" lay-filter="*"> -->
+							<!-- <input type="checkbox" name="" title="在制" value="e" lay-filter="*"> -->
+						</div>
+					</div>
+				</div>
+				<div class="layui-row">
+					<div class="layui-col-md12">
+						<table id="daily_report" lay-filter="daily_report" style="margin-left: auto; margin-right: auto"></table>
+					</div>
+				</div>
+
+			</div>
+			<!-- </div> -->
+		</div>
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+		<script src="static/js/moment.js" charset="utf-8"></script>
+		<script>
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+			var server_post = {}
+			
+			
+
+			var item_display = []
+			form.on('checkbox(*)', function(data) {
+				console.log(data.elem.title); //得到checkbox原始DOM对象
+				// console.log(data.elem.checked); //是否被选中，true或者false
+				console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+				// console.log(data.othis); //得到美化后的DOM对象
+				if (data.elem.checked) {
+					$("[data-field='" + data.value + "']").css('display', '');
+					item_display.splice(item_display.indexOf(data.value),1)
+					console.log(item_display)
+				} else {
+					$("[data-field='" + data.value + "']").css('display', 'none');
+					item_display.push(data.value)
+					console.log(item_display)
+				}
+
+			})
+
+
+
+			laydate.render({
+				elem: '#date',
+				type: 'date',
+				// range: true,
+				done: function(value, date, endDate) {
+					console.log(value); //得到日期生成的值，如：2017-08-18
+					console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+					console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+					server_post['date'] = value
+					daily_report(server_post)
+				}
+			});
+			// 產品列表 
+			$.ajax({
+				url: '{{url_for('schedule.ajax_product_list')}}',
+				type: "GET",
+				dataType: 'json',
+				success: function(res) {
+					console.log('獲取產品列表')
+					var html = '';
+					for (var key in res) {
+						html = html + '<optgroup label="' + key + '">'
+						for (var i = 0; i < res[key].length; i++) {
+							html = html + '<option value="' + res[key][i] + '">' + res[key][i] + '</option>'
+						}
+						html = html + '</optgroup>'
+					}
+					$('#product').append(html)
+					form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+				}
+			})
+			// 監聽產品選單
+			form.on('select(select_product)', function(data) {
+				console.log(data.elem); //得到select原始DOM对象
+				console.log(data.value); //得到被选中的值
+				console.log(data.othis); //得到美化后的DOM对象
+				server_post['product_name'] = data.value
+				//獲取日報表
+				daily_report(server_post)
+				// 發出ajax取得產品Bom
+				$.ajax({
+					url: '{{url_for('schedule.ajax_bom_list')}}',
+					type: "POST",
+					data: JSON.stringify({
+						'product_name': data.value
+					}),
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取BOM列表')
+						console.log(res)
+						part_nuber = res
+						// 更新成型品名稱選單
+						var html = '';
+						for (var key in res) {
+							html = html + '<option value="' + key + '">' + key + '</option>'
+						}
+						$("#inj_product_name").html('<option value=""></option>')
+						$("#inj_product_name").append(html)
+						form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+					}
+				})
+			});
+			// 監聽成型品名稱選單
+			form.on('select(select_inj_name)', function(data) {
+				console.log(data.elem); //得到select原始DOM对象
+				console.log(data.value); //得到被选中的值
+				console.log(data.othis); //得到美化后的DOM对象
+				server_post['inj_product_name'] = data.value
+				// ajax獲取日報表
+				daily_report(server_post)
+			})
+			// 監聽棟別
+			form.on('select(select_building)', function(data) {
+				console.log(data.elem); //得到select原始DOM对象
+				console.log(data.value); //得到被选中的值
+				console.log(data.othis); //得到美化后的DOM对象
+				server_post['building'] = data.value
+				// 獲取日報表
+				daily_report(server_post)
+				// 獲取線別
+			})
+
+			// 取得以上傳數據
+			// bo = 1
+			var daily_report = function(server_post) {
+				console.log(server_post)
+				$.ajax({
+					url: '{{url_for('schedule.ajax_daily_report_query')}}',
+					type: "POST",
+					data: JSON.stringify(server_post),
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取日報表')
+						console.log(res)
+						table.render({
+							elem: '#daily_report', //指定原始表格元素选择器（推荐id选择器）
+							data: res,
+							height: 600, //容器高度
+							page: true,
+							limit: 20,
+							toolbar: 'default', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+							defaultToolbar: [''],
+							cols: [
+								[{
+										type: 'checkbox',
+										fixed: 'left'
+									},
+									{
+										field: 'daily_report_id',
+										title: 'id',
+										minWidth: 60,
+									},
+									{
+										field: 'date',
+										title: '日期',
+										minWidth: 130,
+									},
+									{
+										field: 'building',
+										title: '棟別',
+										minWidth: 60,
+									},
+									{
+										field: 'machine',
+										title: '機台',
+										minWidth: 60
+									},
+									{
+										field: 'product_name',
+										title: '產品',
+										minWidth: 130
+									},
+									{
+										field: 'inj_product_name',
+										title: '品名',
+										minWidth: 130
+									},
+									{
+										field: 'part_number',
+										title: '料號',
+										minWidth: 130
+									},
+									{
+										field: 'mold',
+										title: '模具',
+										minWidth: 70
+									},
+									{
+										field: 'produce_order',
+										title: '工令',
+										minWidth: 70
+									},
+									{
+										field: 'amount',
+										title: '排產數量',
+										minWidth: 100
+									},
+									{
+										field: 'produce_amount',
+										title: '生產實際',
+										minWidth: 100
+									},
+									{
+										field: 'bad_amount',
+										title: '不良數量',
+										minWidth: 100
+									},
+									{
+										field: 'k',
+										title: '入庫數量',
+										minWidth: 100
+									},
+									{
+										field: 'e',
+										title: '在制',
+										minWidth: 100
+									},
+									{
+										field: 'lost_time',
+										title: '損失工時(min)',
+										minWidth: 120
+									},
+									{
+										field: 'AC1',
+										title: '成型類(min)',
+										minWidth: 120
+									},
+									{
+										field: 'AC2',
+										title: '模具類(min)',
+										minWidth: 120
+									},
+									{
+										field: 'AC3',
+										title: '設備類(min)',
+										minWidth: 120
+									},
+									{
+										field: 'AC4',
+										title: '自動化類(min)',
+										minWidth: 120
+									},
+									{
+										field: 'AC5',
+										title: '系統類(min)',
+										minWidth: 120
+									}
+								]
+							]
+						});
+						$("[data-field='daily_report_id']").css('display', 'none');
+						$("[data-field='part_number']").css('display', 'none');
+						$("[data-field='produce_order']").css('display', 'none');
+						$("[data-field='k']").css('display', 'none');
+						$("[data-field='e']").css('display', 'none');
+						$("[data-field='AC1']").css('display', 'none');
+						$("[data-field='AC2']").css('display', 'none');
+						$("[data-field='AC3']").css('display', 'none');
+						$("[data-field='AC4']").css('display', 'none');
+						$("[data-field='AC5']").css('display', 'none');
+						for (var i=0; i<item_display.length; i++){
+							$("[data-field='"+item_display[i]+"']").css('display', 'none');
+						}
+					}
+				})
+				table.on('toolbar(daily_report)', function(obj) {
+					var checkStatus = table.checkStatus(obj.config.id),
+					data = checkStatus.data; //获取选中的数据
+
+					switch (obj.event) {
+						case 'delete':
+							if (data.length === 0) {
+								layer.msg('請選擇資料');
+							} else {
+								console.log(data)
+								layer.open({
+									title: '確認刪除',
+									content: '此操作會刪除該機台當日所有紀錄(不良、損失工時、產能)',
+									btn: ['刪除', '取消'],
+									btn1: function(index, layero) {
+										$.ajax({
+											url: '{{url_for('schedule.ajax_delete_daily_report')}}',
+											type: "POST",
+											data: JSON.stringify({data: data}),
+											dataType: 'json',
+											success: function(res) {
+												console.log(res)
+												layer.msg(res.error)
+												daily_report(server_post)
+											},
+										})
+									},
+									btn2: function(index, layero) {
+
+									},
+									cancel: function() {
+										//右上角关闭回调
+									}
+								})
+
+							}
+							break;
+					};
+				});
+			}
+			$.ajax({
+				url: '{{url_for('production.ajax_get_time')}}',
+				type: "GET",
+				dataType: 'json',
+				success: function(res) {
+					server_post['date'] = res.time.substring(0,10)
+					$("#date").val(server_post['date'])
+					daily_report(server_post)
+				},
+			})
+			
+			table.on('rowDouble(daily_report)', function(obj) {
+				console.log(obj.data)
+				layer.open({
+					type: 1,
+					title: '詳細訊息',
+					area: ['800px', '400px'],
+					content: '',
+					success: function(layero, index) {
+						console.log(layero, index)
+						$.ajax({
+							url: '{{url_for('schedule.ajax_anomaly_detail')}}',
+							type: "POST",
+							data: JSON.stringify({
+								'daily_report_id': obj.data.daily_report_id
+							}),
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								tr = ''
+								for (var i = 0; i < res.length; i++) {
+									tr = tr + '<tr><td>' + res[i].lost_time + '</td>' + '<td>' + res[i].anomaly_name + '</td>' + '<td>' + res[i].improve +
+										'</td></tr>'
+								}
+								html = '<table class="simple"><tr><th>損失時間</th><th>原因</th><th>改善</th></tr>' + tr + '</table>'
+								layero[0].children[1].innerHTML = html
+						
+							}
+						})
+						
+					}
+				
+				})
+				
+			})
+		</script>
+	</body>
+</html>

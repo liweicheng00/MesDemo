@@ -1,0 +1,147 @@
+<body>
+<div style="padding: 0px 30px 80px;">
+    <button id="sign_button" class="layui-btn layui-btn-radius">簽核</button>
+
+    <hr>
+    <div id="input_div" style="display: none;">
+        <fieldset class="layui-elem-field" style="width: 100%; ">
+            <legend>簽核</legend>
+            <div class="layui-field-box">
+                <form class="layui-form" action="" lay-filter='sign'>
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <select name="table" id="table" lay-filter='select_table' lay-verify="required">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <label class="layui-form-label" style="width: 78px;">簽核名稱</label>
+                        <div class="layui-input-inline">
+                            <select name="process_name_id" id="process_name_id" lay-filter='select_process_name'
+                                    lay-verify="required">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <button type="button" lay-submit lay-filter="sign_submit"
+                                    class="layui-btn layui-btn-radius">
+                                <i class="layui-icon">確認簽核</i>
+                            </button>
+                        </div>
+                        <div class="layui-input-inline">
+                            <button type="button"
+                                    class="layui-btn layui-btn-radius">
+                                <i class="layui-icon">新增流程</i>
+                                <!-- todo -->
+                            </button>
+                        </div>
+                        <div class="layui-row">
+                            <table id="process_table"></table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/javascript">
+		$("#sign_button").click(function() {
+			$("#input_div").show()
+			if (typeof(form_no) == 'undefined'){
+				layer.msg('找不到form_no')
+			}else{
+				layer.msg('表單號' + form_no) // *********修改處
+			}
+			$("#table").html('<option value='+table_name+'>'+table_chi_name+'</option>')
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+
+			$.ajax({
+				url: '{{url_for('signing.ajax_get_sign_process')}}',
+				type: "POST",
+				data: JSON.stringify({
+					sign_table_list: table_name
+				}),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res.process)
+					res = res.process[table_name]
+					var html = '';
+					// key: process_id
+					for (var key in res) {
+						html = html + '<option value="' + key + '">' + res[key]['process_list_name'] + '</option>'
+					}
+					$('#process_name_id').html(html)
+					form.render(null, 'sign');
+
+					form.on('select(select_process_name)', function(data) {
+						console.log(data.value); //得到被选中的值
+						console.log(res[data.value])
+						// 顯示簽核流程
+						s = ''
+						for (var i = 0; i < res[data.value]['process'].length; i++) {
+							s = s + res[data.value]['process'][i]['order'] + res[data.value]['process'][i]['name'] + '>>'
+						}
+						table_data = [{
+							'table_name': table_name,
+							'process_name': res[data.value]['process_list_name'],
+							'process': s
+						}]
+						table.render({
+							elem: '#process_table',
+							title: '用户表',
+							data: table_data,
+							limit: 80,
+							cols: [
+								[{
+										field: 'table_name',
+										title: '表單名稱',
+										event: 'table_name'
+									},
+									{
+										field: 'process_name',
+										title: '簽核名稱',
+										event: 'process_name'
+									},
+									{
+										field: 'process',
+										title: '簽核流程',
+										event: 'process'
+									}
+								]
+							]
+						});
+					})
+					form.on('submit(sign_submit)', function(data) {
+						console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+						console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+						console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+						var server_post = data.field
+
+						if (form_no){
+							server_post['form_index'] = form_no
+							$.ajax({
+							url: '{{url_for('signing.ajax_create_sign_event')}}',
+							type: "POST",
+							data: JSON.stringify(server_post),
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								layer.msg('簽核啟動')
+							},
+						})
+						}else{
+							layer.msg('請選擇表單')
+						}
+
+					})
+				},
+			})
+		})
+
+
+
+
+</script>
+</body>
+

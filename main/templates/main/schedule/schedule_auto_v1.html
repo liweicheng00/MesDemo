@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+		<title>Schedule Auto</title>
+		<link href='static/js/fullcalendar/core/main.css' rel='stylesheet' />
+		<link href='static/js/fullcalendar/timeline/main.css' rel='stylesheet' />
+		<link href='static/js/fullcalendar/resource-timeline/main.css' rel='stylesheet' />
+
+		<link rel="stylesheet" href="static/js/layui/css/layui.css">
+
+		<script src='static/js/fullcalendar/core/main.js'></script>
+		<script src='static/js/fullcalendar/interaction/main.js'></script>
+		<script src='static/js/fullcalendar/timeline/main.js'></script>
+		<script src='static/js/fullcalendar/moment/main.js'></script>
+		<script src='static/js/fullcalendar/resource-common/main.js'></script>
+		<script src='static/js/fullcalendar/resource-timeline/main.js'></script>
+		<script src='static/js/moment.js'></script>
+		<script src='static/js/vue.js'></script>
+		<style type="text/css">
+			#popup {
+				display: none;
+			}
+
+			.fc-widget-header {
+				background: auto;
+			}
+
+			.modal-mask {
+				position: fixed;
+				z-index: 9998;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, .5);
+				display: table;
+				transition: opacity .3s ease;
+			}
+
+			.modal-wrapper {
+				display: table-cell;
+				vertical-align: middle;
+			}
+
+			.modal-container {
+				width: 400px;
+				margin: 0px auto;
+				padding: 20px 30px;
+				background-color: #fff;
+				border-radius: 2px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+				transition: all .3s ease;
+				font-family: Helvetica, Arial, sans-serif;
+			}
+
+			.modal-header h3 {
+				margin-top: 0;
+				color: #42b983;
+			}
+
+			.modal-body {
+				margin: 20px 0;
+			}
+
+			.modal-default-button {
+				float: right;
+			}
+
+			/*			 * The following styles are auto-applied to elements with			 * transition="modal" when their visibility is toggled			 * by Vue.js.			 *			 * You can easily play with the modal transition by editing			 * these styles.			*/
+			.modal-enter {
+				opacity: 0;
+			}
+
+			.modal-leave-active {
+				opacity: 0;
+			}
+
+			.modal-enter .modal-container,
+			.modal-leave-active .modal-container {
+				-webkit-transform: scale(1.1);
+				transform: scale(1.1);
+			}
+		</style>
+
+		<style>
+
+			#manual{
+				background: lightgray;
+				position: fixed;
+				top: 58.75px;
+				bottom: 20px;
+			}
+			.manual_event{
+				margin: 5px !important;
+				background-color: #d8004a !important;
+				border: 1px solid #d8004a !important;
+			}
+		</style>
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend>
+				<span style="font-size: 1.5rem">自動排產修改、確認</span>
+			</legend>
+		</fieldset>
+		<div class="layui-row">
+			<div class="layui-col-md10" style="padding: 0px 15px; display: inline-block;">
+				<div id='calendar-container'>
+					<div id='calendar'></div>
+				</div>
+			</div>
+			<div id="manual" class="layui-col-md2" style="display: inline-block">
+				<div class="external" style="padding: 10px 0px 10px 10px; ">
+                    <h2>
+                        <strong>手動排產</strong>
+                    </h2>
+					<div id='external-events' style="padding: 10px 0px; overflow-y: scroll !important; height: 90%;">
+
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="static/js/layui/layui.all.js" charset="UTF-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+		<script src="static/js/popper.min.js"></script>
+		<script src="static/js/tippy-bundle.iife.min.js"></script>
+
+		<script>
+			var layer = layui.layer;
+
+
+		</script>
+		<script>
+			document.oncontextmenu = new Function("return false"); //鎖右鍵
+			document.addEventListener('DOMContentLoaded', function() {
+				var calendarEl = document.getElementById('calendar');
+				var Draggable = FullCalendarInteraction.Draggable;
+
+				var containerEl = document.getElementById('external-events');
+				var calendarEl = document.getElementById('calendar');
+				var checkbox = document.getElementById('drop-remove');
+
+				new Draggable(containerEl, {
+					itemSelector: '.fc-event',
+				});
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					plugins: ['interaction', 'resourceTimeline'],
+					// timeZone: 'UTC',
+					aspectRatio: 2, // 長寬比
+					header: {
+						left: 'resourceTimelineDay,Week,resourceTimelineMonth',
+						// center: 'title',
+						right: 'calendarConfirm, calendarAdd, calendarEdit, prev,next'
+					},
+					// defaultDate: '2019-09-27', //初始日期
+					// defaultDate: moment().subtract(2, 'days').format(), //初始日期
+					// dateIncrement: {day:1}, // 點擊下一頁往後幾天
+					// validRange: {
+					// 	start: '2017-05-01',
+					// 	end: '2017-06-01'
+					// },
+					customButtons: {
+						calendarConfirm: {
+							text: '確認',
+							click: function(info) {
+								console.log(info)
+
+								var events = []
+								var i = 0
+								while (1) {
+									var id = i
+									if (calendar.getEventById(i)) {
+										events.push(calendar.getEventById(i))
+										if (calendar.getEventById(i + 'r')) {
+											events.push(calendar.getEventById(i + 'r'))
+										}
+										if (calendar.getEventById(i + 'm')) {
+											events.push(calendar.getEventById(i + 'm'))
+										}
+									} else if (calendar.getEventById(i + 'r')) {
+										events.push(calendar.getEventById(i + 'r'))
+										if (calendar.getEventById(i + 'm')) {
+											events.push(calendar.getEventById(i + 'm'))
+										}
+									} else if (calendar.getEventById(i + 'm')) {
+										events.push(calendar.getEventById(i + 'm'))
+									} else {
+										break;
+									}
+									i++
+								}
+								console.log(events)
+								events_len = events.length
+								times = 0
+								for (var i = 0; i < events.length; i++) {
+									$.ajax({
+									    times: i,
+										url: '{{url_for('schedule.ajax_upload_schedule_test')}}',
+										type: "POST",
+										data: JSON.stringify(events[i].extendedProps),
+										dataType: 'json',
+										success: function(res) {
+											times++
+											console.log('上傳成功')
+											console.log(res)
+											layer.msg('上傳 ' + events.length + ' 筆計畫')
+											if (res.error) {
+												alert(res.error[0])
+											}else{
+												events[this.times].setProp('backgroundColor', '#3788d8')
+												events[this.times].setProp('borderColor', '#3788d8')
+
+												events[this.times].remove()
+											}
+
+											if (times === events_len){
+												calendar.refetchEvents()
+											}
+										}
+									})
+								}
+							}
+						}
+					},
+					defaultView: 'Week',
+					views: {
+						resourceTimelineDay: {
+							slotLabelFormat: [
+								// { month: 'long', year: 'numeric' ,weekday: 'short'}, // top level of text
+								{
+									month: '2-digit',
+									day: '2-digit'
+								},
+								{
+									hour: 'numeric'
+								} // lower level of text
+							]
+						},
+						Week: {
+							titleFormat: {
+								year: 'numeric',
+								month: '2-digit',
+								day: '2-digit'
+							},
+							titleRangeSeparator: '～', // 09/20/2019～9/26/2019
+
+							type: 'resourceTimeline',
+							duration: {
+								days: 7
+							},
+							slotDuration: {
+								day: 1
+							},
+							// slotLabelInterval: {hours: 12},
+							slotLabelFormat: [
+								// { month: 'long', year: 'numeric' ,weekday: 'short'}, // top level of text
+								{
+									month: '2-digit',
+									day: '2-digit'
+								},
+								// { hour: '2-digit' } // lower level of text
+							]
+						},
+						resourceTimelineMonth: {
+							slotLabelFormat: [
+								// { month: 'long', year: 'numeric' ,weekday: 'short'}, // top level of text
+								{
+									month: '2-digit',
+									day: '2-digit'
+								},
+								// { hour: '2-digit' } // lower level of text
+							]
+						}
+					},
+
+					selectable: 1, // Allows a user to highlight multiple days or timeslots by clicking and dragging.
+					// selectMinDistance: 3,
+					dateClick: function(info) {},
+
+					resourceAreaWidth: "10%",
+					resourceLabelText: 'A18',
+					resourceColumns: [{
+						labelText: '機台',
+						field: 'machine_name'
+					}],
+					resourceGroupField: 'machine_tonnage',
+					resources: '{{url_for('schedule.ajax_machine_resource')}}',
+					// editable: 1,
+					eventStartEditable: 0, // 可以移動事件
+					eventDurationEditable: 1, // 向後延長事件時間
+					eventResizableFromStart: 1, // 向前延長事件時間
+					eventResourceEditable: 1, // 資源間移動
+					eventSources: [{
+						url: '{{url_for('schedule.ajax_schedule_resource')}}',
+						id: 'original',
+						editable: 0,
+						eventStartEditable: 0, // 可以移動事件
+						eventDurationEditable: 0, // 向後延長事件時間
+						eventResizableFromStart: 0, // 向前延長事件時間
+						eventResourceEditable: 0, // 資源間移動
+					}],
+
+					eventRender: function(info) {
+						// console.log('event render')
+						// console.log(event.el.onmousedown)
+						// tooltip
+						var props = info.event.extendedProps
+						var content = '品名： ' + props.inj_product_name + '<br>' +
+							'模具： ' + props.mold + '<br>' +
+							'產能： ' + props.amount + '<br>' +
+							'工令： ' + props.produce_order
+						tippy(info.el, {
+							content: content,
+						});
+						// 監聽滑鼠右鍵點擊
+						info.el.onmousedown = function() {
+
+							// console.log(event)
+							console.log(info.event)
+
+
+							if (event.which == 3) {
+								if (info.event.source.id == 'original') {
+									console.log('Original event can not delete here!')
+									layer.msg('Original event can not delete here!')
+									return
+								}
+								console.log('click right button')
+								console.log("event right click .....")
+								var del_confirm = confirm('刪除計畫？')
+								if (del_confirm == true) {
+
+									var del_event = calendar.getEventById(info.event.id)
+									console.log(del_event._def)
+									del_event.remove()
+
+								} else {
+									alert("取消！")
+								}
+							}
+						}
+					},
+					eventResize: function(info) {
+						console.log('event resize')
+						console.log(info)
+
+						var getEvent = calendar.getEventById(info.event.id)
+						getEvent.remove()
+						//calendar.addEvent(info.prevEvent);
+						info = info.event
+
+						// 連續日期
+						console.log(moment(info.end).diff(moment(info.start), 'days'))
+						var days = moment(info.end).diff(moment(info.start), 'days')
+						for (var day = 0; day < days; day++) {
+
+							var date = moment(info.start).add(day, 'days')
+							var id = (parseInt(info.id)) + 'r'
+							while (1) {
+								if (calendar.getEventById(id)) {
+									id = (parseInt(id) + 1) + 'r'
+								} else {
+									break
+								}
+							}
+							var new_event = {
+								title: info.extendedProps.inj_product_name + '-' + info.extendedProps.mold + '-' + String(info.extendedProps
+									.amount),
+								start: date.format('YYYY-MM-DD'),
+								allDay: true,
+								resourceId: info.extendedProps.resourceId,
+								id: id,
+								backgroundColor: 'green',
+								extendedProps: {
+									inj_product_name: info.extendedProps.inj_product_name,
+									part_number: info.extendedProps.part_number, ///!!!!!!!
+									mold_number: info.extendedProps.mold_number,
+									mold: info.extendedProps.mold,
+									produce_order: info.extendedProps.produce_order,
+									date: date.format('YYYY-MM-DD'),
+									id: id,
+									amount: info.extendedProps.amount,
+									resourceId: info.extendedProps.resourceId,
+								}
+							}
+							console.log(new_event)
+							calendar.addEvent(new_event);
+
+						}
+					},
+					eventDrop: function(info) {
+						console.log('event drop')
+						console.log(info)
+						var getEvent = calendar.getEventById(info.event.id)
+						getEvent.setExtendedProp('resourceId', info.newResource.id)
+					},
+					eventClick: function(info) {
+						console.log('event click:', info.event.id)
+
+						if (info.event.source) {
+							if (info.event.source.id == 'original') {
+								return
+							}
+						}
+
+						var mold = info.event.extendedProps.mold
+						var amount = info.event.extendedProps.amount
+						var inj_product_name = info.event.extendedProps.inj_product_name
+						var mold_modified = prompt('修改模具')
+						var amount_modified = prompt('修改產能')
+						var getEvent = calendar.getEventById(info.event.id)
+						console.log(getEvent._def.extendedProps)
+
+						if (mold_modified || amount_modified) {
+							mold = mold_modified ? mold_modified : mold
+							amount = amount_modified ? amount_modified : amount
+							console.log(mold)
+							console.log(amount)
+
+							getEvent.setProp('title', inj_product_name + '-' + mold + '-' + amount)
+							getEvent.setExtendedProp('mold', mold)
+							getEvent.setExtendedProp('mold_number', '')
+							getEvent.setExtendedProp('amount', amount)
+
+
+						} else {
+							getEvent.setProp('title', inj_product_name + '-' + mold + '-' + amount)
+							getEvent.setExtendedProp('mold', mold)
+							getEvent.setExtendedProp('amount', amount)
+						}
+					},
+
+					droppable: 0, // this allows things to be dropped onto the calendar from other calendar
+					drop: function(info) {
+						console.log('drop')
+						console.log(info)
+
+					},
+					eventReceive: function(info){
+						console.log('event_receive')
+						console.log(info)
+						var start = info.event.start
+						var day = info.event.extendedProps.start
+						start = moment(start).format('YYYY-MM-DD')
+						day = moment(day).format('YYYY-MM-DD')
+						if (start!=day){
+							layer.msg('日期錯誤:'+day)
+							var getEvent = calendar.getEventById(info.event.id)
+							getEvent.remove()
+						}else{
+							info.draggedEl.parentNode.removeChild(info.draggedEl) //刪除右側事件
+							var getEvent = calendar.getEventById(info.event.id)
+							var mold = prompt('修改模具')
+							var amount = info.event.extendedProps.amount
+							var inj_product_name = info.event.extendedProps.inj_product_name
+							// todo: 判斷mold是否使用了
+							getEvent.setProp('title', inj_product_name + '-' + mold + '-' + amount)
+							getEvent.setExtendedProp('mold', mold)
+							getEvent.setExtendedProp('mold_number', '')
+							getEvent.setExtendedProp('resourceId', info.event._def.resourceIds[0])
+
+						}
+
+
+					}
+				});
+
+
+				calendar.render();
+				$.ajax({
+					url: '{{url_for('schedule.ajax_get_result')}}',
+					type: "GET",
+					dataType: 'json',
+					success: function(res) {
+						console.log('result')
+						console.log(res)
+						calendar.addEventSource({
+							events: res.schedule,
+							color: 'green',
+							// editable: 1,
+							eventStartEditable: 0, // 可以移動事件
+							eventDurationEditable: 1, // 向後延長事件時間
+							eventResizableFromStart: 1, // 向前延長事件時間
+							eventResourceEditable: 1, // 資源間移動(無效)
+						})
+						try {
+						    calendar.gotoDate(res.schedule[0].start||res.manual[0].start)
+						}
+						catch (e){
+                            console.log('gotoDate() failed.')
+						}
+
+						console.log(res.manual)
+						var manual = res.manual
+						var day_set = new Set()
+						for (var i=0; i<manual.length; i++){
+
+						    if (!day_set.has(manual[i].start)){
+						        var html_day = '<div id="' + manual[i].start + '" class="day"><h4>'+manual[i].start+'</h4></div>'
+                                day_set.add(manual[i].start)
+                                $('#external-events').append(html_day)
+						    }
+							var html = '<div class="fc-event manual_event" data-event=\''+ JSON.stringify(manual[i]) + '\'>' + manual[i]['title']  + '</div>'
+
+							$('#' + manual[i].start).append(html)
+
+						}
+						$('.external').css('height', $('#manual').css('height'))
+					}
+				})
+
+			});
+		</script>
+
+	</body>
+</html>

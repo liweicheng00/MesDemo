@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>現場管理</title>
+		<!-- <link rel="stylesheet" href="/static/js/layui/css/layui.css">	 -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+		<style>
+			.hide_btn {
+				background-color: #009688;
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				z-index: 2000;
+				width: 25px;
+				height: 50px;
+			}
+			.layui-header {
+				height: 50px;
+			}
+
+			/* 			.layui-nav *{
+				font-size: auto;
+			} */
+			.layui-nav .layui-nav-item {
+				line-height: 50px;
+			}
+			.layui-nav-child {
+				top: 50px;
+			}
+
+			.layui-layout-admin .layui-logo {
+				line-height: 50px;
+			}
+
+			.layui-layout-admin .layui-side {
+				top: 50px;
+				width: 200px;
+			}
+
+			.layui-body {
+				left: 200px
+			}
+
+			.layui-layout-admin .layui-body {
+				top: 50px;
+				bottom: 0px; // for footer
+			}
+
+			iframe {
+				border-width: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="#">
+			    <img id="hide_btn" src="static/img/menu.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+			    成型MES管理系统
+			</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#">現場管理<span class="sr-only">(current)</span></a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="{{url_for('frame.index2')}}">生產管理</a>
+		      </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="{{url_for('frame.index3')}}">數據管理</a>
+			  </li>
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		          其它功能
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		          <a class="dropdown-item" href="{{url_for('signing.sign_process_manager')}}">簽核管理</a>
+		          <a class="dropdown-item" href="{{url_for('frame.protected')}}">權限登入測試</a>
+		          <div class="dropdown-divider"></div>
+		          <a class="dropdown-item" href="{{url_for('frame.screen_size')}}">裝置螢幕大小測試</a>
+		        </div>
+		      </li>
+		    </ul>
+		    <div class="form-inline my-2 my-lg-0">
+				<ul class="nav">
+					<li class="nav-item dropdown">
+					  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    {{user}} {{name}}
+					    	<span class="layui-badge badge" style="position: static;">0</span>
+					    
+					  </a>
+					  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					    <a class="dropdown-item" href="{{url_for('signing.work_item')}}">工作任務</a>
+					    <a class="dropdown-item" href="{{url_for('signing.launch_item')}}">發起任務</a>
+					    <div class="dropdown-divider"></div>
+					    <a class="dropdown-item" href="{{url_for('auth.user_auth')}}">權限設置</a>
+					    <a class="dropdown-item" href="{{url_for('auth.change_password')}}">修改密碼</a>
+					  </div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('auth.logout')}}">登出</a>
+					</li>
+				</ul>
+			</div>
+		  </div>
+		</nav>
+		
+			<div class="layui-side layui-bg-black hide">
+				<div class="layui-side-scroll">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree">
+						<li class="layui-nav-item layui-nav-itemed">
+<!--							<a class="" href="javascript:;">現場總覽</a>-->
+							<a class="" href="{{url_for('production.production_overall')}}" target="mainShowPage">現場總覽</a>
+						</li>
+						<li class="layui-nav-item layui-nav-itemed">
+							<a href="javascript:;">現場表單</a>
+								<dl class="layui-nav-child">
+									<dd>
+										<a href="{{url_for('production.daily_bad_report')}}" target="mainShowPage">成型不良日報表</a>
+									</dd>
+									<dd>
+										<a href="{{url_for('production.material_check')}}" target="mainShowPage">原料物品盤點表</a>
+									</dd>
+								</dl>
+						</li>
+
+						<li class="layui-nav-item layui-nav-itemed">
+							<a href="javascript:;">查詢紀錄</a>
+								<dl class="layui-nav-child">
+									<dd>
+										<a href="{{url_for('production.bad_report_query')}}" target="mainShowPage">不良統計查詢</a>
+									</dd>
+									<dd>
+										<a href="{{url_for('production.bad_report_progress_query')}}" target="mainShowPage">不良推移查詢</a>
+									</dd>
+									<dd>
+										<a href="{{url_for('production.bad_cause_query')}}" target="mainShowPage">不良對策查詢</a>
+									</dd>
+									<dd>
+										<a href="{{url_for('production.daily_bad_report_query')}}" target="mainShowPage">機台日報查詢</a>
+									</dd>
+								</dl>
+						</li>
+						<li class="layui-nav-item layui-nav-item">
+							<a href="javascript:;">初件紀錄(△)</a>
+								<dl class="layui-nav-child">
+									<dd>
+										<a href="{{url_for('production.first_part_init')}}" target="mainShowPage">初件發起</a>
+									</dd>
+									<dd>
+										<a href="{{url_for('production.first_part_list')}}" target="mainShowPage">初件案件</a>
+									</dd>
+								</dl>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="layui-body" style="float:left">
+				<!-- 内容主体区域 -->
+				<iframe src="{{url_for('production.production_overall')}}" id="frame1" name="mainShowPage" style="width: 100%; height: 100%;">
+				</iframe>
+
+			</div>
+
+		</div>
+		<script src="/static/js/layui/layui.all.js"></script>
+		<script src="/static/js/jquery-3.3.1.min.js"></script>
+		<script>
+			var hide_flag = 0;
+			$('#hide_btn').click(
+				function() {
+					if (hide_flag === 0) {
+						hide_flag = 1;
+						$('.hide').toggle("fast");
+						$('.layui-body').css({
+							'position': 'absolute',
+							'left': '0',
+							'right': '0',
+							'top': '0',
+							'bottom': '0'
+						})
+					} else {
+						hide_flag = 0;
+						$('.hide').toggle("fast", function() {
+							$('.layui-body').css({
+								'position': 'absolute',
+								'left': '200px',
+								'right': '0',
+								'top': '60px',
+								'bottom': '0'
+							})
+						});
+					}
+				},
+			)
+		</script>
+		<script>
+			// todo:工作項目提醒
+			$(function(){
+				badge_update()
+				setInterval(badge_update, 30000)
+			});
+
+			var badge_update = function() {
+				$.ajax({
+					url: '{{url_for('signing.ajax_get_badge_update')}}',
+					type: "GET",
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						$(".badge").html(res.badge)
+<!--						$(".launch").html(res.launch)-->
+
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

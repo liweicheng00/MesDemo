@@ -1,0 +1,17 @@
+{
+  "BfInjTime_HldTime": "總射出時間",
+  "TimeDchr": "冷卻時間",
+  "BfCstTime": "週期時間",
+  "EjtPos3": "頂桿前進位置",
+  "EjtSpd3": "頂桿前進速度",
+  "EjtPrs3": "頂桿前進壓力",
+  "EjtPos0": "頂桿退回位置",
+  "EjtSpd0": "頂桿退回速度",
+  "EjtPrs0": "頂桿退回壓力",
+  "MopPos3": "開模位置",
+  "MopPrs3": "開模壓力",
+  "MclPos5": "鎖模位置",
+  "MclPos4": "金型保護位置",
+  "MclPrs4": "金型保護壓力",
+  "TimeLpr": "金型保護時間"
+}

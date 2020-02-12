@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>不良推移報表</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+		<script src="static/js/vue.js"></script>
+		<script src="static/js/echarts.min.js"></script>
+		<style type="text/css">
+			#bad_cause {
+				/* background: lightsteelblue; */
+				border: 1px solid lightgrey;
+			}
+
+			.head,
+			.body {
+				text-align: center;
+				border: 1px solid lightgrey;
+				font-size: 1rem;
+			}
+			.body div {
+				padding: 2px;
+			}
+			.head {
+				background: #dbf1ff;
+			}
+
+			.last_week:hover, .this_week:hover {
+				background: #dbf1ff;
+			}
+
+			.body .bad_name {
+				vertical-align: middle;
+				align-items: center;
+			}
+			.last_week {
+
+			}
+		</style>
+	</head>
+	<body>
+		<div style="margin: 0 0 80px 0;">
+			<fieldset class="layui-elem-field layui-field-title">
+				<legend style="font-weight:bold">
+					<span style="font-size: 1.5rem;">不良推移報表</span>
+				</legend>
+			</fieldset>
+			<div class="layui-row" style="padding: 0px 30px;">
+
+				<form class="layui-form" action="" lay-filter='all'>
+					<div class="layui-form-item">
+						<label class="layui-form-label" style="width: 78px;">
+							產品
+						</label>
+
+						<div class="layui-input-inline">
+							<select name="product" id="product" lay-verify="required" lay-filter='select_product'>
+								<option value="">請選擇</option>
+								// js 新增選項
+							</select>
+						</div>
+						<label class="layui-form-label" style="width: 78px;">品名</label>
+						<div class="layui-input-inline">
+							<select name="inj_product_name" id="inj_product_name" lay-filter='select_inj_name' lay-verify="required">
+								<option value=""></option>
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+
+
+
+			<!-- <div class="hide"> -->
+			<div id="statistic_div" style="padding: 0px 30px;">
+				<hr class=" layui-bg-green">
+
+				<div id="vm">
+					<vue-chart v-for="a in data" :data="a" :table="{key:1}"></vue-chart>
+					<div class="bad_cause">
+
+						<form v-on:submit.prevent="save">
+							<vue-top-3 :record="records" :inj_part_number="inj_part_number"></vue-top-3>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+		<script src="static/js/moment.js" charset="utf-8"></script>
+		<script type="text/javascript">
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+			var query_post = {}
+
+			// 監聽勾選項目,傳送是否依機台或模具統計
+			var query_bool = {
+				machine_bool: 0,
+				mold_bool: 0
+			}
+			query_post['query_bool'] = query_bool
+
+			// 獲取產品列表
+			$.ajax({
+				url: '{{url_for('schedule.ajax_product_list')}}',
+				type: "GET",
+				dataType: 'json',
+				success: function(res) {
+					console.log('獲取產品列表')
+					var html = '';
+					for (var key in res) {
+						html = html + '<optgroup label="' + key + '">'
+						for (var i = 0; i < res[key].length; i++) {
+							html = html + '<option value="' + res[key][i] + '">' + res[key][i] + '</option>'
+						}
+						html = html + '</optgroup>'
+					}
+					$('#product').append(html)
+					form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+				}
+			})
+			// 監聽產品選單
+			var part_number
+			form.on('select(select_product)', function(data) {
+				console.log(data.value); //得到被选中的值
+				query_post['product_name'] = data.value
+				// get_query(query_post)
+				// 發出ajax取得產品Bom
+				$.ajax({
+					url: '{{url_for('schedule.ajax_bom_list')}}',
+					type: "POST",
+					data: JSON.stringify({
+						'product_name': data.value
+					}),
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取BOM列表')
+						console.log(res)
+						console.log(JSON.stringify(res) != '{}')
+						if (JSON.stringify(res) != '{}') {
+							part_number = res
+							// 更新成型品名稱選單
+							var html = '';
+							for (var key in res) {
+								html = html + '<option value="' + res[key] + '">' + key + '</option>'
+							}
+							$("#inj_product_name").html('<option value=""></option>')
+							$("#inj_product_name").append(html)
+							form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+						} else {
+							layer.msg('no bom.')
+						}
+					}
+				})
+			});
+
+			// 監聽成型品名稱選單
+			form.on('select(select_inj_name)', function(data) {
+				console.log(data)
+				console.log(data.value); //得到被选中的值
+				query_post['inj_product_name'] = data.elem.innerText
+				query_post['inj_part_number'] = data.value
+				get_query(query_post)
+
+
+			})
+
+			var get_query = function(query_post) {
+				var index = layer.load(0, {
+					shade: [0.9, 'white']
+				})
+				$.ajax({
+					url: '{{url_for('production.ajax_get_bad_progress')}}',
+					type: 'POST',
+					data: JSON.stringify(query_post),
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取不良推移')
+						console.log(res)
+						vm.data = res
+						vm.inj_part_number = query_post['inj_part_number']
+						layer.close(index)
+					}
+				})
+				$.ajax({
+					url: '{{url_for('production.ajax_get_improvement')}}',
+					type: 'POST',
+					data: JSON.stringify(query_post),
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取不良對策')
+						console.log(res)
+						vm.records = res['record']
+					}
+				})
+			}
+			Vue.component('vue-chart', {
+				template: '<div class="layui-row">\
+							<div class="layui-col-md12">\
+								<div class="layui-row">\
+									<div :id="id1" class="layui-col-md12" style="height:600px;">\
+									</div>\
+								</div>\
+							</div>\
+						</div>',
+				props: ['table', 'data'],
+				computed: {
+					id1: function() {
+						return 'chart1_' + this.table.key
+					},
+					myChart1: function(){
+						return echarts.init(document.getElementById(this.id1))
+					},
+					option1: function() {
+						return {
+							legend: {
+								left: 'left',
+								orient: 'vertical',
+								selected: this.data.legend
+							},
+							tooltip: {
+								trigger: 'axis',
+								// formatter: "{a} <br/>{b} : {c} ({d}%)"
+								// formatter: function(params) {
+								// 	console.log(params)
+								// 	return 'here'
+								// }
+							},
+							dataset: [{
+									source: this.data.ppm_data
+								},
+								{
+									source: this.data.bad_count
+								},
+							],
+							xAxis: {
+								type: 'category',
+								axisLable: {
+									interval: 0
+								},
+							},
+							// yAxis: {gridIndex: 0},
+							yAxis: [{
+									name: '不良(ppm)',
+									type: 'value',
+									max: 6000
+								},
+								{
+									name: '產能(pics)',
+									type: 'value',
+									min: -700000,
+									splitLine: false
+								}
+							],
+							grid: {
+								top: '50%',
+								left: '20%'
+							},
+							series: [
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'bar', stack: 'bad', seriesLayoutBy: 'row'},
+								{type: 'line', seriesLayoutBy: 'row', yAxisIndex: 0, label: {show: 1, color: 'black'}, itemStyle: {color: 'black'}},
+								{type: 'line', seriesLayoutBy: 'row', yAxisIndex: 1, label: {show: 1, color: 'black'}, itemStyle: {color: 'red'}},
+								{
+									name: '不良項目',
+									type: 'pie',
+									id: 'pie',
+									center: ['50%', '25%'],
+									radius: ['20%', '30%'],
+									hoverOffset: 2,
+									avoidLabelOverlap: true,
+									datasetIndex: 1,
+									label: {
+										formatter: '{b}: {@' + this.data.bad_count[0][this.data.bad_count[0].length - 1] + '}pics ({d})%'
+										// formatter: '{b}: {@11月}pics ({d})%'
+									},
+									itemStyle: {
+										emphasis: {
+											shadowBlur: 10,
+											shadowOffsetX: 0,
+											shadowColor: 'rgba(0, 0, 0, 0.5)'
+										}
+									},
+									encode: {
+										itemName: 'bad',
+										value: this.data.bad_count[0][this.data.bad_count[0].length - 1],
+										tooltip: this.data.bad_count[0][this.data.bad_count[0].length - 1]
+									}
+								}
+							]
+						}
+					},
+				},
+				delimiters: ['{[', ']}'],
+				mounted: function() {
+					console.log('mount')
+					this.$nextTick(function() {
+						// var myChart1 = echarts.init(document.getElementById(this.id1));
+						var myChart1 = this.myChart1
+						myChart1.setOption(this.option1);
+						$(window).resize(function() {
+							myChart1.resize()
+						})
+						myChart1.dispatchAction({
+							type: 'showTip'
+						})
+						myChart1.on('updateAxisPointer', function(event) {
+							var xAxisInfo = event.axesInfo[0]
+							if (xAxisInfo) {
+								var dimension = xAxisInfo.value + 1
+								myChart1.setOption({
+									series: {
+										id: 'pie',
+										label: {
+											formatter: '{b}: {@[' + dimension + ']}pics ({d})%'
+										},
+										encode: {
+											value: dimension,
+											tooltip: dimension
+										}
+									}
+								})
+							}
+						})
+					})
+				},
+				updated: function() {
+					this.$nextTick(function() {
+						// var myChart1 = echarts.init(document.getElementById(this.id1));
+						var myChart1 = this.myChart1
+						myChart1.setOption(this.option1);
+						// $(window).resize(function() {
+						// 	myChart1.resize()
+						// })
+						// myChart1.on('updateAxisPointer', function(event) {
+						// 	var xAxisInfo = event.axesInfo[0];
+						// 	if (xAxisInfo) {
+						// 		var dimension = xAxisInfo.value + 1;
+						// 		myChart1.setOption({
+						// 			series: {
+						// 				id: 'pie',
+						// 				label: {
+						// 					formatter: '{b}: {@[' + dimension + ']}pics ({d})%'
+						// 				},
+						// 				encode: {
+						// 					value: dimension,
+						// 					tooltip: dimension
+						// 				}
+						// 			}
+						// 		})
+						// 	}
+						// })
+					})
+				}
+			})
+			Vue.component('vue-bad-cause', {
+				template: '\<div class="body layui-row">\
+								<div class="bad_name layui-col-md1 layui-col-xs1">\
+									{[data.this_week.bad_name]}\
+								</div>\
+								<div class="layui-col-md11">\
+									<div class="layui-row this_week">\
+										<div class="layui-col-md2 layui-col-xs2">\
+											<div class="layui-row">\
+												<div class="layui-col-md6 layui-col-xs6">\
+													{[data.this_week.week]}\
+												</div>\
+												<div class="layui-col-md6 layui-col-xs6">\
+													<p>{[data.this_week.ppm]}ppm</p>\
+													<p>({[data.this_week.pics]}pics)</p>\
+												</div>\
+											</div>\
+										</div>\
+										<div v-if="data.this_week.cause && !revise" class="layui-col-md4 layui-col-xs4" >\
+											{[data.this_week.cause]}\
+										</div>\
+										<div v-else class="layui-col-md4 layui-col-xs4" style="padding: 5px">\
+											<div>\
+												<textarea :value="data.this_week.cause" v-on:input="$emit(\'input\', data.this_week.bad_name, data.this_week.week, \'cause\', $event.target.value, data.this_week.ppm, data.this_week.pics)" placeholder="請輸入內容" class="layui-textarea"></textarea>\
+											</div>\
+										</div>\
+										<div v-if="data.this_week.improvement && !revise" class="layui-col-md4 layui-col-xs4">\
+											{[data.this_week.improvement]}\
+										</div>\
+										<div v-else class="layui-col-md4 layui-col-xs4" style="padding: 5px">\
+											<div>\
+												<textarea :value="data.this_week.improvement" v-on:input="$emit(\'input\', data.this_week.bad_name, data.this_week.week, \'improvement\', $event.target.value, data.this_week.ppm, data.this_week.pics)" placeholder="請輸入內容" class="layui-textarea"></textarea>\
+											</div>\
+										</div>\
+										<div v-if="data.this_week.finish_date && !revise" class="layui-col-md1 layui-col-xs1">\
+											{[data.this_week.finish_date]}\
+										</div>\
+										<div v-else class="layui-col-md1 layui-col-xs1" style="padding: 5px">\
+											<div>\
+												<input :value="data.this_week.finish_date" v-on:input="$emit(\'input\', data.this_week.bad_name, data.this_week.week, \'finish_date\', $event.target.value, data.this_week.ppm, data.this_week.pics)" class="layui-input"></input>\
+											</div>\
+										</div>\
+										<div v-if="data.this_week.response && !revise" class="layui-col-md1 layui-col-xs1">\
+											{[data.this_week.response]}\
+										</div>\
+										<div v-else class="layui-col-md1 layui-col-xs1" style="padding: 5px">\
+											<div>\
+												<input :value="data.this_week.response" v-on:input="$emit(\'input\', data.this_week.bad_name, data.this_week.week, \'response\', $event.target.value, data.this_week.ppm, data.this_week.pics)" class="layui-input"></input>\
+											</div>\
+										</div>\
+									</div>\
+								</div>\
+							</div>',
+				delimiters: ['{[', ']}'],
+				props: ['data', 'revise'],
+				mounted: function() {}
+
+			})
+			Vue.component('vue-top-3', {
+				delimiters: ['{[', ']}'],
+				template: '<div v-if="causes">\
+							<h3>{[causes[0].this_week.week]}</h3>\
+							<form v-on:submit.prevent="save">\
+								<button @click="f_revise" v-if="!revise" type="button">修改</button>\
+								<button @click="f_revise" v-if="revise" type="button">取消</button>\
+								<button type="submit" >保存</button>\
+								<span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;顯示前</span>\
+								<input type="number" v-model="top" style="width: 40px;"></input>\
+								<span>大不良</span>\
+								<div class="head layui-row">\
+									<div class="layui-col-md1 layui-col-xs1">\
+										不良\
+									</div>\
+									<div class="layui-col-md11">\
+										<div class="layui-col-md2 layui-col-xs2">\
+											週\
+										</div>\
+										<div class="layui-col-md4 layui-col-xs4">\
+											原因分析\
+										</div>\
+										<div class="layui-col-md4 layui-col-xs4">\
+											對策\
+										</div>\
+										<div class="layui-col-md1 layui-col-xs1">\
+											完成日期\
+										</div>\
+										<div class="layui-col-md1 layui-col-xs1">\
+											責任人\
+										</div>\
+									</div>\
+								</div>\
+									<vue-bad-cause v-for="cause in causes" :data="cause" :revise="revise" v-on:input="input"></vue-bad-cause>\
+							</form>\
+						</div>',
+				props: ['record', 'inj_part_number'],
+				data: function() {
+					return {
+						revise: 0,
+						save_data: {},
+						top: 3
+					}
+				},
+				computed: {
+					causes: function() {
+						if (this.record) {
+							var result = []
+							for (var i = 0; i < this.top; i++) {
+								result.push({
+									this_week: this.record[i]
+								})
+							}
+							return result
+						}
+					},
+					init_week: function() {
+						return this.record[0]['week']
+					}
+				},
+				mounted: function() {
+					console.log('vue-top3 mounted')
+					console.log(this.record)
+				},
+				updated: function() {
+					console.log('vue-top3 update')
+					console.log(this.record)
+				},
+				methods: {
+					get_data: function() {
+						query_post.week = ''
+						$.ajax({
+							url: '{{url_for('production.ajax_get_improvement')}}',
+							type: 'POST',
+							data: JSON.stringify(query_post),
+							dataType: 'json',
+							success: function(res) {
+								console.log('獲取不良對策')
+								console.log(res)
+								vm.records = res['record']
+							}
+						})
+					},
+					save: function() {
+						console.log(this.save_data)
+						var v = this
+						$.ajax({
+							url: '{{url_for('production.ajax_save_improvement')}}',
+							type: 'POST',
+							data: JSON.stringify(this.save_data),
+							dataType: 'json',
+							error: function(XMLHttpRequest, textStatus, errorThrown) {
+								layer.msg(XMLHttpRequest.responseText)
+							},
+							success: function(res) {
+								console.log(res)
+								layer.msg(res['error'])
+								$.ajax({
+									url: '{{url_for('production.ajax_get_improvement')}}',
+									type: 'POST',
+									data: JSON.stringify(query_post),
+									dataType: 'json',
+									success: function(res) {
+										console.log('獲取不良對策')
+										console.log(res)
+										vm.records = res['record']
+										vm.top_3 = res['top_3']
+										v.f_revise()
+									}
+								})
+							},
+						})
+					},
+					input: function(bad_name, week, item, value, ppm, pics) {
+						var vm = this
+						if (!vm.save_data['bad']) {
+							vm.save_data['bad'] = {}
+						}
+						if (!vm.save_data['bad'][bad_name]) {
+							vm.save_data['bad'][bad_name] = {}
+						}
+						vm.save_data['bad'][bad_name]['week'] = week
+						vm.save_data['bad'][bad_name]['bad_name'] = bad_name
+						vm.save_data['bad'][bad_name]['ppm'] = ppm
+						vm.save_data['bad'][bad_name]['pics'] = pics
+						vm.save_data['bad'][bad_name][item] = value
+						vm.save_data['inj_part_number'] = this.inj_part_number
+						console.log(vm.save_data)
+					},
+					f_revise: function() {
+						this.revise = this.revise ? 0 : 1,
+						console.log(this.revise)
+					}
+				}
+			})
+			var vm = new Vue({
+				delimiters: ['{[', ']}'],
+				el: '#vm',
+				data: {
+					data: '',
+					records: null,
+					inj_part_number: '',
+				},
+				computed: {
+
+				},
+				methods: {
+
+
+				}
+			})
+		</script>
+	</body>
+</html>

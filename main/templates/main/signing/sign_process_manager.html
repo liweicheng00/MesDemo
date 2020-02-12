@@ -1,0 +1,373 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>簽核管理</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+		<script src="static/js/vue.js"></script>
+		<style type="text/css">
+			.modal-mask {
+				position: fixed;
+				z-index: 9998;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, .5);
+				display: table;
+				transition: opacity .3s ease;
+			}
+
+			.modal-wrapper {
+				display: table-cell;
+				vertical-align: middle;
+			}
+
+			.modal-container {
+				width: 600px;
+				margin: 0px auto;
+				padding: 20px 30px;
+				background-color: #fff;
+				border-radius: 2px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+				transition: all .3s ease;
+				font-family: Helvetica, Arial, sans-serif;
+			}
+
+			.modal-header h3 {
+				margin-top: 0;
+				color: #42b983;
+			}
+
+			.modal-body {
+				margin: 20px 0;
+			}
+
+			.modal-default-button {
+				float: right;
+			}
+
+			/*
+			 * The following styles are auto-applied to elements with
+			 * transition="modal" when their visibility is toggled
+			 * by Vue.js.
+			 *
+			 * You can easily play with the modal transition by editing
+			 * these styles.
+			*/
+
+			.modal-enter {
+				opacity: 0;
+			}
+
+			.modal-leave-active {
+				opacity: 0;
+			}
+
+			.modal-enter .modal-container,
+			.modal-leave-active .modal-container {
+				-webkit-transform: scale(1.1);
+				transform: scale(1.1);
+			}
+
+			.fade-enter-active,
+			.fade-leave-active {
+				transition: opacity .5s;
+			}
+
+			.fade-enter,
+			.fade-leave-to {
+				opacity: 0;
+			}
+		</style>
+	</head>
+	<body>
+
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">簽核流程管理</span>
+			</legend>
+		</fieldset>
+		<div class="" style="padding: 0px 30px;">
+
+			<div id="vm2">
+				<!-- <select v-model="selected_multi" multiple="" name="table" id="table" lay-filter='select_table'>
+					<option value="All">All</option>
+					<option value="日報表">日報表</option>
+					// js 新增選項
+				</select>
+				{[selected_multi]} -->
+				<button v-on:click="toggle" id="add" class="layui-btn layui-btn-radius">新增</button>
+				<!-- <button id="revise" class="layui-btn layui-btn-radius">修改</button> -->
+
+				<div id="show_add" v-if="show" style="padding: 30px 0px;">
+					<fieldset class="layui-elem-field">
+						<legend style="font-weight:bold">
+							<span style="font-size: 1.5rem;">新增簽核流程</span>
+						</legend>
+						<div class="layui-field-box">
+							<form v-on:submit.prevent="upload_process">
+								<div class="layui-form-item">
+									<label class="layui-form-label">流程名稱</label>
+									<div class="layui-input-inline">
+										<select v-model="selected" name="table1" id="table1" class="layui-input">
+											<!-- js新增選項 -->
+											<option v-for="option in options" :value="option.value">{[option.text]}</option>
+										</select>
+									</div>
+									<label class="layui-form-label">流程名稱</label>
+									<div class="layui-input-inline">
+										<input v-model="process_name" class="layui-input">
+									</div>
+									<button v-on:click="add_person" type="button" class="layui-btn layui-btn-radius">增加欄位</button>
+									<button v-on:click="remove_person" type="button" class="layui-btn layui-btn-radius">減少欄位</button>
+								</div>
+								<vue_sign_persosn v-for="key in keys" :ids="key" v-on:input="input1"></vue_sign_persosn>
+								<div class="layui-form-item">
+									<div class="layui-input-inline">
+										<button class="layui-btn layui-btn-radius">submit</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</fieldset>
+				</div>
+				<div style="padding: 30px 0px;">
+					<table class="layui-table">
+						<tr>
+							<th>表單名稱</th>
+							<th>簽核名稱</th>
+							<th>簽核人員</th>
+						</tr>
+						<tr is="vue-tr" v-for="pro in process" :info="pro"></tr>
+					</table>
+				</div>
+			</div>
+
+		</div>
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+		<script src="static/js/moment.js" charset="utf-8"></script>
+		<script type="text/javascript">
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+
+			// 從sign_table_list表取得需要要簽核的列表
+			$.ajax({
+				url: '{{url_for('signing.ajax_get_sign_table_list')}}',
+				type: "GET",
+				dataType: 'json',
+				success: function(res) {
+					console.log(res)
+					vm2.options = res
+				}
+			})
+			var get_sign_process = function() {
+				// ajax
+				$.ajax({
+					url: '{{url_for('signing.ajax_get_sign_process')}}',
+					type: "GET",
+					data: JSON.stringify({}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						vm2.process = res.array_process
+					},
+				})
+
+			}
+			get_sign_process()
+			var vm2 = new Vue({
+				delimiters: ['{[', ']}'],
+				el: '#vm2',
+				data: {
+					options: [],
+					show: 0,
+					selected_multi: [],
+					selected: [],
+					form_data: {},
+					process_name: '',
+					process: [],
+					keys: [
+						{key: 0},
+						{key: 1},
+						{key: 2}]
+				},
+				methods: {
+					toggle: function() {
+						if (this.show) {
+							this.show = 0
+						} else {
+							this.show = 1
+						}
+					},
+					add_person: function() {
+						this.keys.push({
+							key: this.keys.length
+						})
+					},
+					remove_person: function() {
+						this.keys.splice(this.keys.length - 1, 1)
+						if (typeof(this.form_data['order_id'+this.keys.length])!='undefined'){
+
+							delete this.form_data['order_id'+this.keys.length]
+						}
+
+					},
+					upload_process: function() {
+						console.log('here')
+						// ajax
+						console.log(this.form_data)
+						console.log(this.selected)
+						$.ajax({
+							url: '{{url_for('signing.ajax_upload_sign_process')}}',
+							type: "POST",
+							data: JSON.stringify({
+								'table': this.selected,
+								'order': this.form_data,
+								'process_name': this.process_name
+							}),
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								layer.msg(res.error)
+								get_sign_process()
+							},
+						})
+					},
+					input1: function(id, field, value, user_id) {
+						console.log('haha')
+						console.log(id, value)
+						if (this.form_data['order_id' + id]) {
+							this.form_data['order_id' + id][field] = value
+							this.form_data['order_id' + id]['user_id'] = user_id
+						} else {
+							this.form_data['order_id' + id] = {}
+							this.form_data['order_id' + id][field] = value
+							this.form_data['order_id' + id]['user_id'] = user_id
+						}
+						console.log(this.form_data)
+					},
+				}
+			})
+			Vue.component('vue_sign_persosn', {
+				template: '<div class="layui-form-item">\
+						<label class="layui-form-label">簽核順序</label>\
+						<div class="layui-input-inline">\
+							<input v-model="order" :name="order_f" id="order"placeholder="順序" class="layui-input">\
+						</div>\
+						<label class="layui-form-label">工號</label>\
+						<div class="layui-input-inline">\
+							<input v-model="work_number" :name="work_number_f" id="work_number" lay-verify="required" placeholder="工號" autocomplete="off" class="layui-input">\
+						</div>\
+						<label class="layui-form-label">姓名</label>\
+						<div class="layui-input-inline">\
+							<input v-model="work_name" :name="work_name_f" id="work_name" lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">\
+						</div>\
+					</div>',
+				props: ['ids'],
+				delimiters: ['{[', ']}'],
+				data: function() {
+					return {
+						work_number: '',
+						work_name: '',
+						order: '',
+						user_id: ''
+					}
+				},
+				computed: {
+					order_f: function() {
+						return 'order' + this.order
+					},
+					work_number_f: function() {
+						return 'work_number' + this.order
+					},
+					work_name_f: function() {
+						return 'work_name' + this.order
+					},
+
+				},
+				watch: {
+					order: function(val) {
+						this.$emit('input', this.ids.key, 'order', val)
+					},
+					work_number: function(val) {
+						this.get_work_name(val)
+						this.$emit('input', this.ids.key, 'work_number', val, this.user_id)
+					},
+					work_name: function(val) {
+						this.get_work_number(val)
+						this.$emit('input', this.ids.key, 'work_name', val, this.user_id)
+					},
+				},
+				methods: {
+					get_work_name: function(val) {
+						var vm = this
+						$.post('{{url_for('signing.ajax_get_user')}}', JSON.stringify({
+								work_number: val
+							}), "json")
+							.done(function(res) {
+								console.log(res)
+								if (res.state == 1) {
+									vm.work_name = res.work_name
+									vm.user_id = res.user_id
+								}
+							})
+					},
+					get_work_number: function(val) {
+						// ajax
+						var vm = this
+						$.post('{{url_for('signing.ajax_get_user')}}', JSON.stringify({
+								work_name: val
+							}), "json")
+							.done(function(res) {
+								console.log(res)
+								if (res.state == 1) {
+									vm.work_number = res.work_number
+									vm.user_id = res.user_id
+								}
+							})
+					},
+				}
+			})
+			Vue.component('vue-tr', {
+				template: '<tr :click="show_revise">\
+						<td>{[info.table]}</td>\
+						<td>{[info.process_list_name]}</td>\
+						<td><span v-for="a in info.process">{[a.order + a.name]}>></span>\
+							<div class="modal-mask" v-if="0" v-on:click="$emit(\'close\')">\
+								<div class="modal-wrapper">\
+									<div class="modal-container">\
+										<div class="modal-body">\
+											<h1>dsdfsf</h1>\
+										</div>\
+									</div>\
+								</div>\
+							</div>\
+						</td>\
+					</tr>',
+				props: ['info'],
+				delimiters: ['{[', ']}'],
+				mounted: function() {
+				},
+				methods: {
+					show_revise: function() {
+						if (this.show) {
+							this.show = 0
+						} else {
+							this.show = 1
+						}
+					},
+				},
+				data: function() {
+					return {
+						show: false
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

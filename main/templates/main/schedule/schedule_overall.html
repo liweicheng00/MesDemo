@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+
+		<link href='static/js/fullcalendar/core/main.css' rel='stylesheet' />
+		<link href='static/js/fullcalendar/timeline/main.css' rel='stylesheet' />
+		<link href='static/js/fullcalendar/resource-timeline/main.css' rel='stylesheet' />
+
+		<link rel="stylesheet" href="static/js/layui/css/layui.css">
+		<script type="text/javascript" src="static/js/layui/layui.js"></script>
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+
+		<script src='static/js/fullcalendar/core/main.js'></script>
+		<script src='static/js/fullcalendar/interaction/main.js'></script>
+		<script src='static/js/fullcalendar/timeline/main.js'></script>
+		<script src='static/js/fullcalendar/resource-common/main.js'></script>
+		<script src='static/js/fullcalendar/resource-timeline/main.js'></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() { 
+				var calendarEl = document.getElementById('calendar');
+				var Draggable = FullCalendarInteraction.Draggable;
+
+				var containerEl = document.getElementById('external-events');
+				var calendarEl = document.getElementById('calendar');
+				var checkbox = document.getElementById('drop-remove');
+
+				new Draggable(containerEl, {
+					itemSelector: '.fc-event',
+					eventData: function(eventEl) {
+						return {
+							title: eventEl.innerText
+						};
+					}
+				});
+
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					plugins: ['interaction', 'resourceTimeline'],
+					timeZone: 'UTC',
+					// defaultView: 'resourceTimelineDay',
+					
+					defaultView: 'Week',
+					views: {
+						Week: {
+							// title: "dkjsdl"
+							titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' },
+							// titleRangeSeparator: '-', // 09/20/2019-9/26/2019
+							
+							type: 'resourceTimeline',
+							duration: { days: 7 },
+							slotDuration:{day: 1},
+							// slotLabelInterval: {hours: 12},
+							slotLabelFormat: [
+								  // { month: 'long', year: 'numeric' ,weekday: 'short'}, // top level of text
+								  { month: '2-digit', day: '2-digit'},
+								  // { hour: '2-digit' } // lower level of text
+							]	
+						},
+					},
+					
+					selectable: 1,
+					dateClick: function(info) {
+						alert('clicked ' + info.dateStr);
+					},
+					select: function(info) {
+						alert('selected ' + info.startStr + ' to ' + info.endStr);
+					},
+					
+					// defaultDate: '2019-09-25', //初始日期
+					// dateIncrement: {day:1}, // 點擊下一頁往後幾天
+// 					validRange: {
+// 						start: '2017-05-01',
+// 						end: '2017-06-01'
+// 					},
+					aspectRatio: 1.5,
+					header: {
+						left: 'prev,next',
+						center: 'title',
+						right: 'resourceTimelineDay,Week,resourceTimelineMonth'
+					},
+					
+					editable: true,
+					resourceAreaWidth: "10%",
+					resourceLabelText: 'A18',
+					resourceColumns: [{
+						labelText: '機台',
+						field: 'machine_name'
+						},
+// 						{
+// 						labelText: '品名',
+// 						field: 'inj_production_name'
+// 						}
+					],
+					resourceGroupField: 'machine_tonnage',
+					resources: '{{url_for('schedule.ajax_machine_resource')}}',
+					events: '{{url_for('schedule.ajax_schedule_resource')}}',
+// 					[{
+// 						title  : '產量：2000',
+// 						allDay : true,
+// 						start  : '2019-09-27',
+// 						resourceId : 'A18CXJA01',
+// 						resourceIds : ['A18CXJA02','A18CXJA03','A18CXJA04']
+// 					}]
+				});
+				console.log(calendar.getEventSources())
+
+				calendar.render();
+				$("#show").click(function () {
+					console.log('here')
+					$("#test").show()
+				})
+			});
+			
+		</script>
+		<style>
+			.fc-event{
+				margin: 1px;
+			}
+		</style>
+	</head>
+	<body>
+		<fieldset id="show" class="layui-elem-field layui-field-title">
+			<legend>
+				<span  style="font-size: 1.5rem">排產計畫</span>
+			</legend>
+		</fieldset>
+		<div class="layui-row" style="padding: 0px 15px;">
+			<div id="test" class="layui-col-md2" style="padding: 0px 15px; display: none;">
+				<div id='external-events'>
+					<p>
+						<strong>Draggable Events</strong>
+					</p>
+					<div class='fc-event'>My Event 1</div>
+					<div class='fc-event'>My Event 2</div>
+					<div class='fc-event'>My Event 3</div>
+					<div class='fc-event'>My Event 4</div>
+					<div class='fc-event'>My Event 5</div>
+					<p>
+						<input type='checkbox' id='drop-remove' />
+						<label for='drop-remove'>remove after drop</label>
+					</p>
+				</div>
+			</div>
+			<div class="layui-col-md10" style="padding: 0px 15px;">
+				<div id='calendar-container'>
+					<div id='calendar'></div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,135 @@
+<body>
+	<hr>
+	<div id="input_div" style="padding: 0px 30px;">
+		<fieldset class="layui-elem-field" style="width: 100%; ">
+			<legend>簽核</legend>
+			<div class="layui-field-box">
+				<form class="layui-form" action="" lay-filter='all'>
+					<div class="layui-form-item">
+						<div class="layui-input-inline">
+							<select name="table" id="table" lay-verify="required" lay-filter='select_table'>
+								<option value=""></option>
+							</select>
+						</div>
+						{% if category == 'work_item' %}
+							<button type="button" id="confirm_button" class="layui-btn layui-btn-radius">
+								<i class="layui-icon">確認簽核</i>
+							</button>
+							<button type="button" id="retreat_button" class="layui-btn layui-btn-radius">
+								<i class="layui-icon">退回</i>
+							</button>
+						{% endif %}
+					</div>
+				</form>
+				<div class="layui-row">
+					<table id="process_table"></table>
+				</div>
+				<button type="button" id="close" style="display: none;" class="layui-btn layui-btn-radius">
+					<i class="layui-icon">關閉</i>
+				</button>
+			</div>
+		</fieldset>
+	</div>
+	<script type="text/javascript">
+		var event_state
+		$(function(){
+			if (typeof(form_no) == 'undefined'){
+				layer.msg('找不到form_no')
+			}else{
+				layer.msg('表單號' + form_no) // *********修改處
+			}
+			$("#table").html('<option value='+table_name+'>'+table_chi_name+'</option>')
+			if (typeof(event_id)=='undefined'){
+				console.log('This should not be seen.')
+			}
+			sign_process()
+			$("#confirm_button").click(function() {
+				$.ajax({
+					url: '{{url_for('signing.ajax_sign_confirm')}}',
+					type: "POST",
+					data: JSON.stringify({
+						event_id: event_id
+					}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						sign_process()
+						layer.msg('已簽核')
+
+						if (typeof(execute_fun) != 'undefined'){
+							console.log('here')
+							execute_fun(res)
+						}
+						setTimeout(window.close, 8000)
+						$("#close").show()
+					}
+				})
+			})
+			$("#retreat_button").click(function() {
+				$.ajax({
+					url: '{{url_for('signing.ajax_sign_retreat')}}',
+					type: "POST",
+					data: JSON.stringify({
+						event_id: event_id
+					}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						sign_process()
+						layer.msg('已退回')
+						$("#close").show()
+					}
+				})
+			})
+			// 關閉視窗
+			$("#close").click(function() {
+				window.close()
+			})
+		})
+		var sign_process = function() {
+			$.ajax({
+				url: '{{url_for('signing.ajax_get_event_process')}}',
+				type: "POST",
+				data: JSON.stringify({
+					event_id: event_id
+				}),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res)
+
+					table_data = res
+					table.render({
+						elem: '#process_table',
+						title: '用户表',
+						data: table_data,
+						limit: 80,
+						cols: [
+							[{
+									field: 'order',
+									title: '流程',
+									event: 'order'
+								},
+								{
+									field: 'name',
+									title: '簽核人',
+									event: 'name'
+								},
+								{
+									field: 'sign_state',
+									title: '簽核狀態',
+									event: 'sign_state'
+								},
+								{
+									field: 'sign_date',
+									title: '簽核時間',
+									event: 'sign_date'
+								}
+							]
+						]
+					});
+				}
+			})
+		}
+	</script>
+</body>
+

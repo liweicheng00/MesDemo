@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>螢幕尺寸</title>
+		<!-- <link rel="stylesheet" type="text/css" href="css/ctMonitoring.css" /> -->
+		<!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+	</head>
+	<body>
+		<h2>螢幕尺寸</h2>
+		<div id="show">
+			
+		</div>
+		
+		<div id="screen_size">
+		
+		</div>
+
+		<script>
+
+			function getInfo() {
+				var s = "";
+				s += " <p>網頁可見區域寬：" + document.body.clientWidth;
+				s += " </p><p>網頁可見區域高：" + document.body.clientHeight;
+				s += " </p><p>網頁可見區域寬：" + document.body.offsetWidth + " (包括邊線和捲軸的寬)";
+				s += " </p><p>網頁可見區域高：" + document.body.offsetHeight + " (包括邊線的寬)";
+				s += " </p><p>網頁正文全文寬：" + document.body.scrollWidth;
+				var w = $(window).width();
+				var h = $(window).height();
+				$("#show").html("<p>寬度："+w + "</p><p>高度："+h+"<p>");
+				$("#screen_size").html(s)
+			}
+			getInfo()
+			window.onresize = function() {
+				getInfo()
+			}
+		</script>
+	</body>
+</html>

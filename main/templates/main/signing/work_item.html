@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>工作項目</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+		<script src="static/js/echarts.min.js"></script>
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">工作項目</span>
+			</legend>
+		</fieldset>
+<!--		todo: 完成通知-->
+		<div class="" style="padding: 0px 30px;">
+			<fieldset class="layui-elem-field">
+				<legend>待簽核</legend>
+				<div class="layui-field-box">
+					<table id="work_item"></table>
+				</div>
+			</fieldset>
+			<fieldset class="layui-elem-field">
+				<legend>退回</legend>
+				<div class="layui-field-box">
+					<table id="retreat_item"></table>
+				</div>
+			</fieldset>
+<!--			todo: 數量太多要分頁取資料-->
+			<fieldset class="layui-elem-field">
+				<legend>已簽核</legend>
+				<div class="layui-field-box">
+					<table id="finish_item"></table>
+				</div>
+			</fieldset>
+		</div>
+		
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+		<script src="static/js/moment.js" charset="utf-8"></script>
+		<script type="text/javascript">
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+			$.ajax({
+				url: '{{url_for('signing.ajax_get_work_item')}}',
+				type: "POST",
+				data: JSON.stringify({
+					category: 'work_item',
+				}),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res)
+					table.render({
+						elem: '#work_item',
+						title: '用户表',
+						data: res,
+						limit: 80,
+						cols: [
+							[{
+									field: 'date',
+									title: '日期',
+									event: 'date'
+								},
+								{
+									field: 'work_item_chi',
+									title: '工作項目',
+									event: 'work_item_chi'
+								},
+								{
+									field: 'initiator',
+									title: '發起人',
+									event: 'initiator'
+								},
+								{
+									field: 'url',
+									title: 'url',
+									event: 'url',
+									templet: '<div>{{ '{{d.url}}'|safe }}</div>'
+								},
+								{
+									field: 'state',
+									title: '簽核狀態',
+									event: 'state'
+								}
+							]
+						]
+					});
+				},
+			})
+			$.ajax({
+				url: '{{url_for('signing.ajax_get_work_item')}}',
+				type: "POST",
+				data: JSON.stringify({
+					category: 'retreat_item',
+<!--					work_number: test_name-->
+				}),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res)
+					table.render({
+						elem: '#retreat_item',
+						title: '用户表',
+						data: res,
+						limit: 80,
+						cols: [
+							[{
+									field: 'date',
+									title: '日期',
+									event: 'date'
+								},
+								{
+									field: 'work_item_chi',
+									title: '工作項目',
+									event: 'work_item_chi'
+								},
+								{
+									field: 'initiator',
+									title: '發起人',
+									event: 'initiator'
+								},
+								{
+									field: 'url',
+									title: 'url',
+									event: 'url',
+									templet: '<div>{{ '{{d.url}}'|safe }}</div>'
+								},
+								{
+									field: 'state',
+									title: '簽核狀態',
+									event: 'state'
+								}
+							]
+						]
+					});
+				},
+			})
+			$.ajax({
+				url: '{{url_for('signing.ajax_get_work_item')}}',
+				type: "POST",
+				data: JSON.stringify({
+					category: 'finish_item',
+<!--					work_number: test_name-->
+				}),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res)
+					table.render({
+						elem: '#finish_item',
+						title: '用户表',
+						data: res,
+						limit: 80,
+						cols: [
+							[{
+									field: 'date',
+									title: '日期',
+									event: 'date'
+								},
+								{
+									field: 'work_item_chi',
+									title: '工作項目',
+									event: 'work_item_chi'
+								},
+								{
+									field: 'initiator',
+									title: '發起人',
+									event: 'initiator'
+								},
+								{
+									field: 'url',
+									title: 'url',
+									event: 'url',
+									templet: '<div>{{ '{{d.url}}'|safe }}</div>'
+								},
+								{
+									field: 'state',
+									title: '簽核狀態',
+									event: 'state'
+								}
+							]
+						]
+					});
+				},
+			})
+			window.onfocus = function() {
+				console.log('focus')
+				location.reload()
+			}
+		</script>
+	</body>
+</html>

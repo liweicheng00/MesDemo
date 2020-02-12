@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>不良項目維護</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">不良項目維護</span>
+			</legend>
+		</fieldset>
+		<div id="add" style="display: none;">
+			<form class="layui-form" action="" lay-filter='all'>
+				<div class="layui-form-item">
+					<label class="layui-form-label">不良名稱</label>
+					<div class="layui-input-inline">
+						<input type="text" name="bad_name" id="bad_name" lay-verify="required" placeholder="不良名稱" autocomplete="off" class="layui-input">
+					</div>
+					<label class="layui-form-label">不良代號</label>
+					<div class="layui-input-inline">
+						<input type="text" name="bad_code" id="bad_code" lay-verify="required" placeholder="不良代號" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<button type="button" lay-submit lay-filter="form_submit" class="layui-btn layui-btn-radius">
+							<i class="layui-icon">新增</i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="" style="padding: 0px 30px;">
+			<table class="layui-hide" id="demo" lay-filter="test"></table>
+		</div>
+
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+
+		<script>
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+
+			get_data = function() {
+				$.ajax({
+					url: '{{url_for('production.ajax_revise_get_bad')}}',
+					type: "GET",
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取不良列表')
+						console.log(res)
+						table.render({
+							elem: '#demo',
+							// height: 420,
+							title: '用户表',
+							data: res,
+							limit: 80,
+							// page: true, //开启分页
+							toolbar: 'default', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+							defaultToolbar: [''],
+							cols: [
+								[{
+										type: 'checkbox',
+										fixed: 'left'
+									},
+									{
+										field: 'bad_name',
+										title: '不良名稱',
+										event: 'bad_name'
+									},
+									{
+										field: 'bad_code',
+										title: '不良代碼',
+										event: 'bad_code'
+									}
+								]
+							]
+						});
+						table.on('tool(test)', function(obj) {
+							console.log(obj)
+							var data = obj.data
+							var original = data
+							var revised = $.extend(true, {}, data)
+
+							layer.prompt({
+								formType: 2,
+								title: '修改資料',
+								value: data[obj.event]
+							}, function(value, index) {
+
+								var upload_data = {
+									original,
+									revised
+								}
+								upload_data['revised'][obj.event] = value
+								console.log(upload_data)
+								$.ajax({
+									url: '{{url_for('production.ajax_revise_bad')}}',
+									type: "POST",
+									data: JSON.stringify(upload_data),
+									dataType: 'json',
+									success: function(res) {
+										console.log(res)
+										layer.msg('修改成功')
+										var temp = {}
+										temp[obj.event] = value
+										obj.update(temp); //这里一般是发送修改的Ajax请求
+									},
+								})
+								layer.close(index);
+							});
+
+
+						})
+					}
+				})
+			}
+
+			get_data()
+
+			//监听头工具栏事件 
+			table.on('toolbar(test)', function(obj) {
+				var checkStatus = table.checkStatus(obj.config.id),
+					data = checkStatus.data; //获取选中的数据
+
+				switch (obj.event) {
+					case 'add':
+						$("#add").show("fast")
+						layer.msg('添加項目');
+						break;
+					case 'delete':
+						if (data.length === 0) {
+							layer.msg('請選擇資料');
+						} else {
+							console.log(data)
+							layer.open({
+								title: '確認刪除',
+								content: '確認要刪除嗎?',
+								btn: ['刪除', '取消'],
+								btn1: function(index, layero) {
+									$.ajax({
+										url: '{{url_for('production.ajax_delete_bad')}}',
+										type: "POST",
+										data: JSON.stringify(data),
+										dataType: 'json',
+										success: function(res) {
+											console.log(res)
+											get_data()
+										},
+									})
+									layer.close(index);
+									layer.msg('刪除成功');
+								},
+								btn2: function(index, layero) {
+
+								},
+								cancel: function() {
+									//右上角关闭回调
+								}
+							})
+
+						}
+						break;
+				};
+			});
+			form.on('submit(form_submit)', function(data) {
+				console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+				console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+				console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+				$.ajax({
+					url: '{{url_for('production.ajax_add_bad')}}',
+					type: "POST",
+					data: JSON.stringify(data.field),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						get_data()
+					},
+				})
+			})
+		</script>
+	</body>
+
+
+</html>

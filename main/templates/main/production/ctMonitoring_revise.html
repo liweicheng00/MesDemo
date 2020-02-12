@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="refresh" content="3600" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>逆流監控</title>
+		<link rel="stylesheet" type="text/css" href="css/ctMonitoring.css" />
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/echarts.min.js"></script>
+	</head>
+	<body style="background-color: papayawhip;">
+		<table border="" cellspacing="" cellpadding="">
+			<tr>
+				<th colspan="18">成型逆流監控</th>
+			</tr>
+			<tr class="time0">
+				<td class="gzName" rowspan="2">機台</td>
+				<td class="tabtitle ">記錄時間</td>
+				<td class="tabtitle">平均</td>
+			</tr>
+			<tr class="timeTd0">
+				<td class="tabtitle ">射膠結束位置(mm)</td>
+			</tr>
+			<tr>
+				<td colspan="2" id='state0'>機台狀態:開機</td>
+				<td rowspan="4" colspan="16" style="width: 80%">
+					<div id='chart0' style="width: 100%; height: 100%"></div>
+				</td>
+			</tr>
+			<tr>
+				<td nowrap="nowrap" colspan="2" id='updateTime0'>
+					公差：&plusmn
+					<input type="text" value="0.75" size="4" style="font-size:14px" id='Limit0'>
+					<input type="submit" value="提交" style="font-size:14px" class="Limit" id='Limitbut0'>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" id='timerange0'>終點波動</td>
+			</tr>
+			<tr>
+				<td colspan="2" id='variation0' style="cursor:pointer;" onclick="location.href='variation_monitor.html';">-</td>
+			</tr>
+
+			<tr>
+				<td style="text-align: left; background-color: #52D689;padding-left: 20px" colspan="18">
+					1.射膠終點波動情況
+					<span class="badge badge-success">正常</span>
+					<span class="badge badge-warning">上升趨勢</span>
+					<span class="badge badge-danger">超出閥值</span><br>
+					2.射膠終點超公差:OK顯示灰色,NG顯示橘色<br>
+					3.取中連續20個數值的平均值為射膠終點的基準值
+				</td>
+			</tr>
+		</table>
+		<script>
+			$(function() {
+				var windowH = $(window).innerHeight(); //取得視窗高度
+				//		console.log("window height:" + windowH)
+				//		if (windowH == 996) {
+				//		//	$('table').css('height', 400); //電視險
+				//		}
+				//		$('table').css('height', windowH - 20); //設定表格高度
+				$("#chart0").css('height', windowH * 0.4)
+				// 修改此兩變數,即可換機台
+				var map = {
+					"B12": '1',
+					"B13": '2',
+					"B14": '3',
+					"B15": '4',
+					"B16": '5',
+					"B17": '6',
+					"B18": '7',
+					"B19": '8'
+				}
+				console.log(window.location.search.slice(5))
+				var machineName = window.location.search.slice(5)?window.location.search.slice(5):'B12';
+				var machineid = map[machineName];
+				var day = -10 * 24 * 60 * 60; //抓10天前的數據
+				var ChartArray
+				var chartaverage // 重要! 圖表平均
+
+				//手動更改機台狀態
+				$('#state0').click(function() {
+					$('#chart0').toggle();
+					console.log('hide')
+					$('#state0').text('機台狀態:離線')
+					$('#state0').css('background-color', 'lightgray')
+				})
+				$('#Limitbut0').click(function() {
+					drawLimit(0)
+				})
+				// 初始Echart圖表樣式	
+				var option = {
+					animation: false,
+					grid: {
+						left: 43,
+						right: 40,
+						top: 30,
+						bottom: 43
+					},
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							show: true,
+							type: 'line',
+							lineStyle: {
+								type: 'dashed',
+								width: 2
+							},
+						},
+						formatter: function(params) {
+							params = params[0];
+							var date = new Date(params.data[0]);
+
+							return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '<br/>' +
+								date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '<br/>終點：' + params.value[1];
+						}
+					},
+					dataZoom: [{
+							type: 'slider',
+							show: true,
+							start: 99,
+							end: 100,
+							handleSize: 39,
+							height: '5%',
+							bottom: 40,
+						},
+						{
+							type: 'inside',
+
+							// 						realtime: true,
+							// 						start: 30,
+							// 						end: 70,
+							// 						// xAxisIndex: [0, 1]
+						}
+					],
+					legend: {
+						data: ['波動'],
+					},
+					xAxis: {
+						name: '記錄時間',
+						nameLocation: 'center',
+						//inverse:true,
+						nameGap: 25,
+						type: 'time',
+						axisLabel: {
+							formatter: function(value, index) {
+								var date = new Date(value);
+								var cc = [('0' + (date.getMonth() + 1)).slice(-2), ('0' + date.getDate()).slice(-2)]
+								var dd = [('0' + date.getHours()).slice(-2), ('0' + date.getMinutes()).slice(-2)]
+								return cc.join('/') + ' ' + dd.join(':');
+							}
+
+						},
+						data: [],
+					},
+					yAxis: {
+
+						name: '射膠結束位置(mm)',
+						nameLocation: 'center',
+						nameGap: 29,
+						type: 'value',
+						scale: true,
+						min: function(value) {
+							return (value.min - 0.8).toFixed(2);
+						},
+						max: function(value) {
+							return (value.max + 0.8).toFixed(2);
+						},
+					},
+					markLine: {
+						tooltip: {
+							trigger: 'axis'
+						},
+					},
+					series: [{
+						data: [],
+						type: 'line',
+						markLine: {
+							tooltip: {
+								trigger: 'axis'
+							},
+							silent: false,
+							animation: false,
+							symbol: 'none',
+							lineStyle: {
+								type: 'dash'
+							},
+							data: [{
+									type: 'average',
+									name: '平均值',
+									label: {
+										formatter: function(seriesName, markLineName, value) {
+
+											// console.log("i am here:"+chartaverage); // 找地方记下来，给tooltip用
+											chartaverage = seriesName.data.value
+											return seriesName.data.value
+										}
+									},
+									lineStyle: {
+										color: 'black',
+										width: 3
+									}
+								},
+								{
+									yAxis: 0,
+									name: '上限',
+									label: {
+										formatter: '{b}\n{c}'
+									},
+									lineStyle: {
+										color: 'blue',
+										width: 3
+									}
+								},
+								{
+									yAxis: 0,
+									name: '下限',
+									label: {
+										formatter: '{b}\n{c}'
+									},
+									lineStyle: {
+										color: 'blue',
+										width: 3
+									}
+								}
+
+							]
+						},
+					}]
+				};
+				// 建立圖表
+				ChartArray = echarts.init(document.getElementById('chart0'));
+				ChartArray.setOption(option); // 指定图表的配置项
+				// 調整圖表上下限
+				ChartArray.on('datazoom', function(params) {
+					var limit = parseFloat(document.getElementById('Limit0').value)
+					option = this.getOption();
+					option.series[0].markLine.data[1].yAxis = chartaverage + limit
+					option.series[0].markLine.data[2].yAxis = chartaverage - limit
+					this.setOption(option);
+				});
+
+
+				// 主要功能:進入網頁載入前10天數據,之後每隔20秒新增數據
+
+
+				// 添加歷史數據
+				ajaxFun(0, day.toString());
+
+				// 讀取波動
+				variationFun(machineid, $('#timerange0'), $('#variation0'))
+
+				// 更新最新數據：每20000毫秒，讀取600秒內新的操作記錄
+				setInterval(function(j, time) {
+					ajaxFun(0, time);
+				}, 20000, 0, '-600')
+
+				function variationFun(machineid, timerange, variation) {
+
+					$.post('http://127.0.0.1:5000/ajax_bf_end_var', JSON.stringify({
+						"machineid": machineid
+					}), function(data) {
+						console.log(data)
+
+						timerange.html('終點波動<br><font size="2">' + data.Error[0][0].substr(5, 14) +
+							' ~ ' + data.Error[0][1].substr(5, 14) + '</font>')
+						console.log(parseFloat(data.Error[0][2]).toFixed(2))
+
+						variation.html('&plusmn ' + parseFloat(data.Error[0][2]).toFixed(2).toString() + 'mm')
+
+						console.log('machineid:' + machineid + ' trend:' + parseFloat(data.Error[0][4]))
+						if (parseFloat(data.Error[0][4]) === null) {
+							variation.append('<span class="badge badge-secondary">運算異常</span>');
+						} else if (parseFloat(data.Error[0][4]) >= 0.25) {
+							variation.append('<span class="badge badge-warning">上升趨勢</span>');
+						} else {
+							variation.append('<span class="badge badge-success">正常</span>');
+						}
+						if (parseFloat(data.Error[0][2]) >= 0.75) {
+							variation.append('<span class="badge badge-danger">超出閥值</span>');
+						}
+					}, "json");
+				}
+				// 讀取資料庫數據
+				function ajaxFun(j, time) {
+
+					$.post('http://127.0.0.1:5000/ajax_bf_end', JSON.stringify({
+						"machineid": machineid,
+						"BeginTime": time,
+						"EndTime": ""
+					}), function(data) {
+						console.log(data)
+						if (data) {
+							var Almdata = [];
+							var Mdydata = [];
+
+							// 製作Echart markline資料格式
+							for (var i = 0; i < data.Alm.length; i++) {
+								Almdata.push({
+									xAxis: data.Alm[i][0],
+									name: data.Alm[i][1].substr(7),
+									label: {
+										formatter: '{b}'
+									},
+									lineStyle: {
+										color: 'red',
+									}
+								})
+							}
+							for (var i = 0; i < data.Mdy.length; i++) {
+								Mdydata.push({
+									xAxis: data.Mdy[i][0],
+									name: ' ',
+									label: {
+										formatter: '{b}'
+									},
+									lineStyle: {
+										color: 'darkgreen',
+									}
+								})
+							}
+							// 機台狀態
+							machineState(data.State[0], j)
+
+							// 放入新數據
+							putdataUpdate(data.Data, j, Almdata, Mdydata);
+
+							// 繪製上下限與最後15筆數據
+							drawLimit(j)
+						} else {
+							console.log('没有数据')
+						}
+					}, "json");
+
+				}
+
+				function machineState(state, j) {
+					var map = {
+						"0": "離線",
+						"1": "待機",
+						"2": "生產",
+						"3": "警報"
+					};
+
+
+					if (state[0] == '0') {
+						console.log(map[state[0]])
+						$('#state' + j).text('機台狀態:' + map[state[0]])
+						$('#state' + j).css('background-color', 'lightgray')
+					} else if (state[0] == '1') {
+						console.log(map[state[0]])
+						$('#state' + j).text('機台狀態:' + map[state[0]])
+						$('#state' + j).css('background-color', 'lightyellow')
+					} else if (state[0] == '2') {
+						console.log(map[state[0]])
+						$('#state' + j).text('機台狀態:' + map[state[0]])
+						$('#state' + j).css('background-color', 'lightgreen')
+					} else if (state[0] == '3') {
+						console.log(map[state[0]])
+						$('#state' + j).text('機台狀態:' + map[state[0]])
+						$('#state' + j).css('background-color', 'pink')
+					}
+				}
+				// 更新數據函數
+				function putdataUpdate(dataset1, j, almdata, Mdydata) {
+
+					option = ChartArray.getOption();
+
+					//	if (dataset1.length<=10){
+					//		console.log("putdataUpdate")
+					//		$('#state' + j).text('機台狀態:未開機')
+					//		$('#state' + j).css('background-color', 'pink')
+					//	}
+
+					//新增警告訊息, 參數修改訊息
+					option.series[0].markLine.data = option.series[0].markLine.data.concat(almdata)
+					option.series[0].markLine.data = option.series[0].markLine.data.concat(Mdydata)
+
+					//新增資料點
+					var data = dedup(option.series[0].data.concat(dataset1))
+					option.series[0].data = data;
+					// console.log(data)
+
+
+					// 刪除重複陣列資料		
+					option.series[0].markLine.data = dedup(option.series[0].markLine.data)
+
+					function dedup(arr) {
+						var hashTable = {};
+
+						return arr.filter(function(el) {
+							var key = JSON.stringify(el);
+							var match = Boolean(hashTable[key]);
+
+							return (match ? false : hashTable[key] = true);
+						});
+					}
+
+					// 更新圖表
+					ChartArray.setOption(option);
+				}
+
+				// 繪製上下限與最後15筆數據
+				function drawLimit(j) {
+
+					// 取得圖表內容
+					option = ChartArray.getOption();
+
+					var trHtml1 = '<td class="gzName"  rowspan="2">' + machineName + '</td>' +
+						'<td class="tabtitle ">記錄時間</td>'
+					var trHtml2 = '<td nowrap="nowrap" class="tabtitle ">射膠結束位置(mm)</td>'
+					var sum = 0;
+					var maxArr = [];
+					var minArr = [];
+					var data = option.series[0].data
+					var limit = parseFloat(document.getElementById('Limit' + j).value)
+
+					// 顯示最新15筆數據,判斷超標,改變表格顏色
+					if (data.length >= 15) {
+						for (var i = data.length - 15; i < data.length; i++) {
+							sum += parseFloat(data[i][1]);
+						}
+						var average = (sum / 15).toFixed(2);
+						var maxAverage = parseFloat(average) + limit;
+						var minAverage = parseFloat(average) - limit;
+
+
+						for (var i = data.length - 15; i < data.length; i++) {
+							trHtml1 += '<td>' + data[i][0].substr(5, 14) + '</td>';
+
+							if (data[i][1] < minAverage || data[i][1] > maxAverage) {
+								trHtml2 += '<td bgcolor = "orange">' + data[i][1] + '</td>';
+							} else {
+								trHtml2 += '<td>' + data[i][1] + '</td>';
+							}
+						}
+					} else {
+						average = '-'
+						maxAverage = 0;
+						minAverage = 0;
+						console.log("drawLimit")
+						//		$('#state' + j).text('機台狀態:未開機')
+						//		$('#state' + j).css('background-color', 'pink')
+					}
+
+					trHtml1 += '<td class="tabtitle">平均</td>'
+					trHtml2 += '<td class="average1">' + average + '</td>'
+					$('.time' + j).html(trHtml1);
+					$('.timeTd' + j).html(trHtml2);
+
+
+
+					// 標示上下限
+					option.series[0].markLine.data[1].yAxis = chartaverage + limit
+					option.series[0].markLine.data[2].yAxis = chartaverage - limit
+					ChartArray.setOption(option);
+					Resize(ChartArray, j)
+				}
+
+				// 重置容器高宽
+				function Resize(ChartArray, i) {
+
+					document.getElementById('chart' + i).style.width = $('#chart' + i).width() + 'px';
+					document.getElementById('chart' + i).style.height = $('#chart' + i).height() + 'px';
+					ChartArray.resize();
+				};
+			})
+		</script>
+	</body>
+</html>

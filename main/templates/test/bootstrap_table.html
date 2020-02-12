@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+		<script src="static/js/bootstrap-table.min.js"></script>
+		<link href="static/css/bootstrap-table.css" rel="stylesheet">
+		<link href="static/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="static/css/layui.css" media="all">
+
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">發料</span>
+			</legend>
+		</fieldset>
+		<table id="table">
+
+		</table>
+
+		<script>
+			var $table = $('#table')
+
+			$(function() {
+				
+				$table.bootstrapTable({
+					data: data,
+					columns: [
+						{
+							title: 'ID',
+							field: 'id'
+						},
+						{
+							title: 'Item Name',
+							field: 'name'
+						},
+						{
+							title: 'Item Price',
+							field: 'price'
+						}
+					]
+				})
+			})
+			var data = [{
+					'id': 0,
+					'name': 'Item 0',
+					'price': '$0'
+				},
+				{
+					'id': 1,
+					'name': 'Item 1',
+					'price': '$1'
+				},
+				{
+					'id': 2,
+					'name': 'Item 2',
+					'price': '$2'
+				},
+				{
+					'id': 3,
+					'name': 'Item 3',
+					'price': '$3'
+				},
+				{
+					'id': 4,
+					'name': 'Item 4',
+					'price': '$4'
+				},
+				{
+					'id': 5,
+					'name': 'Item 5',
+					'price': '$5'
+				}
+			]
+		</script>
+	</body>
+</html>

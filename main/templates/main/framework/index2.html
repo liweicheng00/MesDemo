@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>生產管理</title>
+		<link rel="stylesheet" href="/static/js/layui/css/layui.css">
+		<style>
+			.hide_btn {
+				background-color: #009688;
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				z-index: 2000;
+				width: 25px;
+				height: 50px;
+			}
+			.layui-header {
+				height: 50px;
+			}
+
+			/* 			.layui-nav *{
+				font-size: auto;
+			} */
+			.layui-nav .layui-nav-item {
+				line-height: 50px;
+			}
+			.layui-nav-child {
+				top: 50px;
+			}
+
+			.layui-layout-admin .layui-logo {
+				line-height: 50px;
+			}
+
+			.layui-layout-admin .layui-side {
+				top: 50px;
+				width: 200px;
+			}
+
+			.layui-body {
+				left: 200px
+			}
+
+			.layui-layout-admin .layui-body {
+				top: 50px;
+				bottom: 0px; // for footer
+			}
+
+			iframe {
+				border-width: 0px;
+			}
+		</style>
+	</head>
+
+	<body class="layui-layout-body">
+		<div class="layui-layout layui-layout-admin showMenu">
+			<div class="layui-header hide">
+				<div class="layui-logo">成型MES管理系统</div>
+				<!-- 头部区域（可配合layui已有的水平导航） -->
+				<ul class="layui-nav layui-layout-left">
+					<li class="layui-nav-item">
+						<a href="{{url_for('frame.index1')}}" style="font-size:1.1rem;" >現場管理</a>
+					</li>
+					<li class="layui-nav-item layui-this">
+						<a href="javascript::" style="font-size:1.1rem;">生產管理</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="{{url_for('frame.index3')}}" style="font-size:1.1rem;">數據管理</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;" style="font-size:1.1rem;">其它功能</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="{{url_for('signing.sign_process_manager')}}" target="mainShowPage">簽核管理</a>
+							</dd>
+							<dd>
+								<a href="{{url_for('frame.protected')}}" target="mainShowPage">權限登入測試</a>
+							</dd>
+							<dd>
+								<a href="{{url_for('frame.screen_size')}}" target="mainShowPage">裝置螢幕大小測試</a>
+							</dd>
+						</dl>
+					</li>
+				</ul>
+				<ul class="layui-nav layui-layout-right">
+					<li class="layui-nav-item">
+						<a href="javascript:;">
+							<div>
+								{{user}} {{name}}
+								<span class="layui-badge badge" style="position: static;">0</span>
+							</div>
+
+						</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="{{url_for('signing.work_item')}}" target="mainShowPage">
+									工作任務
+									<span class="layui-badge badge" style="position: static;">0</span>
+								</a>
+							</dd>
+							<dd>
+								<a href="{{url_for('signing.launch_item')}}" target="mainShowPage">
+									發起任務
+<!--									<span class="layui-badge launch" style="position: static;">0</span>-->
+								</a>
+							</dd>
+							<dd>
+								<a href="{{url_for('auth.user_auth')}}" target="mainShowPage">權限設置</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" target="mainShowPage">帳戶訊息(X)</a>
+							</dd>
+							<dd>
+								<a href="{{ url_for('auth.change_password')}}" target="mainShowPage">修改密碼</a>
+							</dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="{{ url_for('auth.logout')}}">登出</a>
+					</li>
+				</ul>
+			</div>
+			<!-- 隱藏上側邊欄圖示 -->
+			<div class="hide_btn">
+				<img src="static/img/menu.svg" class="layui-nav-img " style="width: 100%; height: 100%;" id="hide_btn">
+			</div>
+			<div class="layui-side layui-bg-black hide">
+				<div class="layui-side-scroll">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree">
+						<li class="layui-nav-item layui-nav-itemed">
+							<a class="" href="{{url_for('schedule.schedule_overall')}}" target="mainShowPage">日程總覽(△)</a>
+						</li>
+						<li class="layui-nav-item layui-nav-itemed">
+							<a href="javascript:;">報表</a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="{{url_for('schedule.daily_report')}}" target="mainShowPage">
+										<i class="layui-icon layui-icon-star"> </i>
+										生產日報表(△)
+									</a>
+								</dd>
+								<dd>
+									<a href="{{url_for('production.material_check_query')}}" target="mainShowPage">
+										<i class="layui-icon layui-icon-star"> </i>
+										原料盤點查詢
+									</a>
+								</dd>
+
+							</dl>
+						</li>
+						<li class="layui-nav-item layui-nav-itemed">
+							<a href="javascript:;">排產</a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="{{url_for('schedule.import_schedule')}}" target="mainShowPage">
+										<i class="layui-icon layui-icon-star"> </i>
+										排產計畫輸入
+									</a>
+								</dd>
+								<dd>
+									<a href="{{url_for('schedule.revise_schedule')}}" target="mainShowPage">
+										<i class="layui-icon layui-icon-star"> </i>
+										排產修改
+									</a>
+								</dd>
+								<dd>
+									<a href="{{url_for('schedule.demand_input')}}" target="mainShowPage">
+										自動排產(△)
+									</a>
+								</dd>
+							</dl>
+						</li>
+						<li class="layui-nav-item layui-nav-itemed">
+							<a href="javascript:;">發料模塊</a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="{{url_for('schedule.material_dispatch')}}" target="mainShowPage">
+										<i class="layui-icon layui-icon-star"> </i>
+										塑料發料
+									</a>
+								</dd>
+								<dd>
+									<a href="{{url_for('schedule.material_dispatch_confirm')}}" target="mainShowPage">
+										<i class="layui-icon layui-icon-star"> </i>
+										塑料發料確認
+									</a>
+								</dd>
+								<dd>
+									<a href="{{url_for('schedule.material_check1')}}" target="mainShowPage">
+										<i class="layui-icon layui-icon-star"> </i>
+										現場收料
+									</a>
+								</dd>
+							</dl>
+						</li>
+						<li class="layui-nav-item layui-nav-item">
+							<a href="javascript:;">數據維護</a>
+								<dl class="layui-nav-child">
+									<dd>
+										<a href="{{url_for('schedule.product_revise')}}" target="mainShowPage">產品維護</a>
+									</dd>
+									<dd>
+										<a href="{{url_for('schedule.bom_revise')}}" target="mainShowPage">BOM表維護</a>
+									</dd>
+									<dd>
+										<a href="javascript:;" target="mainShowPage">材料維護(X)</a>
+									</dd>
+									<dd>
+										<a href="javascript:;" target="mainShowPage">模具-料號簽樣維護(X)</a>
+									</dd>
+								</dl>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="layui-body" style="float:left">
+				<!-- 内容主体区域 -->
+				<iframe src="{{url_for('schedule.schedule_overall')}}" id="frame1" name="mainShowPage" style="width: 100%; height: 100%;">
+				</iframe>
+			</div>
+		</div>
+		<script src="/static/js/layui/layui.all.js"></script>
+		<script src="/static/js/jquery-3.3.1.min.js"></script>
+		<script>
+			var hide_flag = 0;
+			$('#hide_btn').click(
+				function() {
+					if (hide_flag === 0) {
+						hide_flag = 1;
+						$('.hide').toggle("fast");
+						$('.layui-body').css({
+							'position': 'absolute',
+							'left': '0',
+							'right': '0',
+							'top': '0',
+							'bottom': '0'
+						})
+					} else {
+						hide_flag = 0;
+						$('.hide').toggle("fast", function() {
+							$('.layui-body').css({
+								'position': 'absolute',
+								'left': '200px',
+								'right': '0',
+								'top': '60px',
+								'bottom': '0'
+							})
+						});
+					}
+				},
+			)
+		</script>
+		<script>
+			// todo:工作項目提醒
+			$(function(){
+				badge_update()
+				setInterval(badge_update, 30000)
+			});
+
+			var badge_update = function() {
+				$.ajax({
+					url: '{{url_for('signing.ajax_get_badge_update')}}',
+					type: "GET",
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						$(".badge").html(res.badge)
+
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>
