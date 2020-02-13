@@ -42,13 +42,27 @@
 				width: 200px;
 			}
 
-			.layui-body {
-				left: 200px
+			.main-body {
+				position: absolute;
+				left: 200px;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				z-index: 998;
+				width: auto;
+				overflow: hidden;
+				overflow-y: auto;
+				box-sizing: border-box
 			}
 
-			.layui-layout-admin .layui-body {
-				top: 50px;
-				bottom: 0px; // for footer
+			.sidebar {
+				position: fixed;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				z-index: 999;
+				width: 200px;
+				overflow-x: hidden
 			}
 
 			iframe {
@@ -83,10 +97,10 @@
 		          其它功能
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-		          <a class="dropdown-item" href="{{url_for('signing.sign_process_manager')}}">簽核管理</a>
-		          <a class="dropdown-item" href="{{url_for('frame.protected')}}">權限登入測試</a>
+		          <a class="dropdown-item" href="{{url_for('signing.sign_process_manager')}}" target="mainShowPage">簽核管理</a>
+		          <a class="dropdown-item" href="{{url_for('frame.protected')}}" target="mainShowPage">權限登入測試</a>
 		          <div class="dropdown-divider"></div>
-		          <a class="dropdown-item" href="{{url_for('frame.screen_size')}}">裝置螢幕大小測試</a>
+		          <a class="dropdown-item" href="{{url_for('frame.screen_size')}}" target="mainShowPage">裝置螢幕大小測試</a>
 		        </div>
 		      </li>
 		    </ul>
@@ -99,11 +113,11 @@
 					    
 					  </a>
 					  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					    <a class="dropdown-item" href="{{url_for('signing.work_item')}}">工作任務</a>
-					    <a class="dropdown-item" href="{{url_for('signing.launch_item')}}">發起任務</a>
+					    <a class="dropdown-item" href="{{url_for('signing.work_item')}}" target="mainShowPage">工作任務</a>
+					    <a class="dropdown-item" href="{{url_for('signing.launch_item')}}" target="mainShowPage">發起任務</a>
 					    <div class="dropdown-divider"></div>
-					    <a class="dropdown-item" href="{{url_for('auth.user_auth')}}">權限設置</a>
-					    <a class="dropdown-item" href="{{url_for('auth.change_password')}}">修改密碼</a>
+					    <a class="dropdown-item" href="{{url_for('auth.user_auth')}}" target="mainShowPage">權限設置</a>
+					    <a class="dropdown-item" href="{{url_for('auth.change_password')}}" target="mainShowPage">修改密碼</a>
 					  </div>
 					</li>
 					<li class="nav-item">
@@ -113,67 +127,43 @@
 			</div>
 		  </div>
 		</nav>
-		
-			<div class="layui-side layui-bg-black hide">
-				<div class="layui-side-scroll">
-					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-					<ul class="layui-nav layui-nav-tree">
-						<li class="layui-nav-item layui-nav-itemed">
-<!--							<a class="" href="javascript:;">現場總覽</a>-->
-							<a class="" href="{{url_for('production.production_overall')}}" target="mainShowPage">現場總覽</a>
-						</li>
-						<li class="layui-nav-item layui-nav-itemed">
-							<a href="javascript:;">現場表單</a>
-								<dl class="layui-nav-child">
-									<dd>
-										<a href="{{url_for('production.daily_bad_report')}}" target="mainShowPage">成型不良日報表</a>
-									</dd>
-									<dd>
-										<a href="{{url_for('production.material_check')}}" target="mainShowPage">原料物品盤點表</a>
-									</dd>
-								</dl>
-						</li>
-
-						<li class="layui-nav-item layui-nav-itemed">
-							<a href="javascript:;">查詢紀錄</a>
-								<dl class="layui-nav-child">
-									<dd>
-										<a href="{{url_for('production.bad_report_query')}}" target="mainShowPage">不良統計查詢</a>
-									</dd>
-									<dd>
-										<a href="{{url_for('production.bad_report_progress_query')}}" target="mainShowPage">不良推移查詢</a>
-									</dd>
-									<dd>
-										<a href="{{url_for('production.bad_cause_query')}}" target="mainShowPage">不良對策查詢</a>
-									</dd>
-									<dd>
-										<a href="{{url_for('production.daily_bad_report_query')}}" target="mainShowPage">機台日報查詢</a>
-									</dd>
-								</dl>
-						</li>
-						<li class="layui-nav-item layui-nav-item">
-							<a href="javascript:;">初件紀錄(△)</a>
-								<dl class="layui-nav-child">
-									<dd>
-										<a href="{{url_for('production.first_part_init')}}" target="mainShowPage">初件發起</a>
-									</dd>
-									<dd>
-										<a href="{{url_for('production.first_part_list')}}" target="mainShowPage">初件案件</a>
-									</dd>
-								</dl>
-						</li>
-					</ul>
-				</div>
+		<div class="row">
+			<div class="col-md-1" style="padding: 0; margin: 0;">
+				<ul class="nav flex-column">
+					<li class="nav-item">
+						<a class="" href="{{url_for('production.production_overall')}}" target="mainShowPage">現場總覽</a>
+					</li>
+					<li class="nav-item">
+						<a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">現場表單</a>
+						<div class="collapse" id="collapseExample">
+							<a class="dropdown-item" href="{{url_for('production.daily_bad_report')}}" target="mainShowPage">不良紀錄表</a>
+							<a class="dropdown-item" href="{{url_for('production.material_check')}}" target="mainShowPage">原料盤點</a>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">查詢紀錄</a>
+						<div class="collapse" id="collapseExample">
+							<a class="dropdown-item" href="{{url_for('production.bad_report_query')}}" target="mainShowPage">不良統計查詢</a>
+							<a class="dropdown-item" href="{{url_for('production.bad_report_progress_query')}}" target="mainShowPage">不良推移查詢</a>
+							<a class="dropdown-item" href="{{url_for('production.bad_cause_query')}}" target="mainShowPage">不良對策查詢</a>
+							<a class="dropdown-item" href="{{url_for('production.daily_bad_report_query')}}" target="mainShowPage">機台日報查詢</a>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">初件紀錄</a>
+						<div class="collapse" id="collapseExample">
+							<a class="dropdown-item" href="{{url_for('production.first_part_init')}}" target="mainShowPage">初件發起</a>
+							<a class="dropdown-item" href="{{url_for('production.first_part_list')}}" target="mainShowPage">初件案件</a>
+						</div>
+					</li>
+				</ul>
 			</div>
-
-			<div class="layui-body" style="float:left">
-				<!-- 内容主体区域 -->
-				<iframe src="{{url_for('production.production_overall')}}" id="frame1" name="mainShowPage" style="width: 100%; height: 100%;">
+			<div class="col-md-11" style="padding: 0; margin: 0;">
+				<iframe src="{{url_for('production.production_overall')}}" name="mainShowPage" style="width: 100%; height: 100%;">
 				</iframe>
-
 			</div>
-
 		</div>
+		
 		<script src="/static/js/layui/layui.all.js"></script>
 		<script src="/static/js/jquery-3.3.1.min.js"></script>
 		<script>
