@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-    </list>
+    <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,6 +162,11 @@
               <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
               <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -268,7 +269,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20889595" />
       <window_info id="Favorites" order="1" side_tool="true" />
