@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>數據管理</title>
+		<link rel="stylesheet" type="text/css" href="static/css/semantic.min.css">
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+		<script src="static/js/semantic.min.js"></script>
+	</head>
+	<body>
+		<div class="ui top attached demo menu">
+			<a class="item" href="#">
+				<img id="hide_btn" src="static/img/menu.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+				成型MES管理系统
+			</a>
+			<a class="item" href="{{url_for('frame.index1')}}">現場管理</a>
+			<a class="item" href="{{url_for('frame.index2')}}">生產管理</a>
+			<a class="item" href="#">數據管理</a>
+			<div class="ui pointing dropdown link item">
+				<span class="text">其他功能</span>
+				<i class="dropdown icon"></i>
+				<div class="menu">
+					<a class="item" href="{{url_for('signing.sign_process_manager')}}" target="mainShowPage">簽核管理</a>
+					<a class="item" href="{{url_for('frame.protected')}}" target="mainShowPage">權限登入測試</a>
+					<a class="item" href="{{url_for('frame.screen_size')}}" target="mainShowPage">裝置螢幕大小測試</a>
+				</div>
+			</div>
+			<div class="right menu">
+				<div class="ui pointing dropdown link item">
+					{{user}} {{name}}
+					<span class="ui red label">0</span>
+					
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item" href="{{url_for('signing.work_item')}}" target="mainShowPage">工作任務</a>
+						<a class="item" href="{{url_for('signing.launch_item')}}" target="mainShowPage">發起任務</a>
+						<div class="divider"></div>
+						<a class="item" href="{{url_for('auth.user_auth')}}" target="mainShowPage">權限設置</a>
+						<a class="item" href="{{url_for('auth.change_password')}}" target="mainShowPage">修改密碼</a>
+					</div>
+				</div>
+				<a class="ui item active" href="{{ url_for('auth.logout')}}">
+					登出
+				</a>
+			</div>
+		</div>
+		<div class="ui bottom attached segment">
+			<div class="ui thin left sidebar visible demo vertical menu inverted labeled " style="">
+				<a class="item" href="{{url_for('revise.upload_data')}}" target="mainShowPage">數據庫資料導入</a>
+				<a class="item" href="{{url_for('revise.product_revise')}}" target="mainShowPage">產品維護</a>
+				<a class="item" href="{{url_for('revise.bom_revise')}}" target="mainShowPage">BOM表維護</a>
+				<a class="item" href="{{url_for('revise.material_revise')}}" target="mainShowPage">材料維護</a>
+				<a class="item" href="javascript:;" target="mainShowPage">模具-料號簽樣維護(X)</a>
+				<a class="item" href="{{url_for('revise.bad_revise')}}" target="mainShowPage">不良項目維護</a>
+				<a class="item" href="{{url_for('revise.anomaly_revise')}}" target="mainShowPage">異常項目維護</a>
+			</div>
+			<div class="pusher">
+				<!-- <div class="ui basic segment"> -->
+				<iframe 
+					id="frame"
+					src="{{url_for('revise.upload_data')}}" 
+					name="mainShowPage" 
+					style="width: 100%; min-height: 100%; border: 0; ">
+				</iframe>
+				<!-- </div> -->
+				
+			</div>
+		</div>
+		<script type="text/javascript">
+			
+			$(function() {
+				console.log($(".pusher").css('height'))
+				$("#frame").css('height', parseFloat($(".pusher").css('height'))-50)
+				// $(".pusher").resize(function(){
+				// 	$("#frame").css('height', $(".pusher").css('height'))
+				// })
+			})
+			
+			$('.ui.sidebar')
+				.sidebar({
+					context: $('.bottom.segment'),
+					dimPage: false,
+					onVisible: function() {
+						console.log('visible')
+					},
+					onHide: function() {
+						console.log('hide')
+					}
+				})
+				.sidebar('attach events', '#hide_btn');
+			$('.ui.dropdown')
+				.dropdown({
+					on: 'hover'
+				})
+		</script>
+	</body>
+</html>

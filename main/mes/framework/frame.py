@@ -15,14 +15,14 @@ user_permission = Permission(RoleNeed('user'))
 def index1():
     user = current_user.username
     name = current_user.name
-    return render_template('main/framework/index1.html', user=user, name=name)
+    return render_template('main/framework/index.html', user=user, name=name)
 
 
 @bp.route('/index2')
 def index2():
     user = current_user.username
     name = current_user.name
-    return render_template('main/framework/index2.html', user=user, name=name)
+    return render_template('main/framework/index.1.html', user=user, name=name)
 
 
 @bp.route('/index3')
@@ -30,7 +30,7 @@ def index2():
 def index3():
     user = current_user.username
     name = current_user.name
-    return render_template('main/framework/index3.html', user=user, name=name)
+    return render_template('main/framework/index.2.html', user=user, name=name)
 
 
 @bp.errorhandler(403)
