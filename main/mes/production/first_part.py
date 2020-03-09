@@ -1,4 +1,5 @@
 import datetime
+import json
 from flask import (
     jsonify, render_template, request,session
 )
@@ -216,10 +217,14 @@ def ajax_upload_record_data():
     data = request.get_data()
     data = json.loads(data)
     print(data)
-    q_init = FirstPartRecord.query.filter(FirstPartRecord.pnlist_id == data['first_part_id']).first()
-    q_init.batch_number = data['batch_number']
-    q_init.examine_dependency = data['examine_dependency']
-    q_init.grn_no = data['grn_no']
+    q_init = FirstPartRecord.query.filter(FirstPartRecord.id == data['first_part_id']).first()
+    if 'batch_number' in data['data']:
+        q_init.batch_number = data['batch_number']
+    if 'examine_dependency' in data['data']:
+        q_init.examine_dependency = data['examine_dependency']
+    if 'grn_no' in data['data']:
+        q_init.grn_no = data['grn_no']
+
     db_session.add(q_init)
     db_session.commit()
 

@@ -270,21 +270,51 @@ def fun_q_report(q_type, q_report, begin_time, end_time):
         if temp['mold'] is not None:
             sql_filter = sql_filter + "daily_report.mold = '" + temp['mold'] + "' and "
 
+        # sql = """
+        #     select
+        #         bad_amount,
+        #         bad_list.bad_name
+        #     from(select
+        #                 bad_id,
+        #                 COUNT(bad_id) as bad_amount
+        #             from bad_record
+        #             where daily_report_id in (
+        #                 SELECT
+        #                     id
+        #                 FROM
+        #                     (SELECT
+        #                         daily_report.id,
+        #                         daily_report.part_number,
+        #                         pn_list.inj_product_name AS inj_product_name,
+        #                         product_list.product_name as product_name
+        #                     FROM
+        #                         daily_report
+        #                     INNER JOIN pn_list ON pn_list.part_number = daily_report.part_number
+        #                     INNER JOIN bom on pn_list.id = bom.pnlist_id
+        #                     inner JOIN product_list on product_list.id = bom.product_id
+        #                     where (""" + sql_filter + """
+        #                           "date" >=  to_date('""" + begin_time + """', 'yyyy-mm-dd') and
+        #                           "date" <=  to_date('""" + end_time + """', 'yyyy-mm-dd')))
+        #                 )
+        #             GROUP BY bad_id)
+        #     right join bad_list on bad_list.id=bad_id
+        #     order by bad_list.id
+        # """
         sql = """
-            select
-                bad_amount,
-                bad_list.bad_name
-            from(select
+                select
+                    bad_amount,
+                    bad_list.bad_name
+                from(
+                    select
                         bad_id,
                         COUNT(bad_id) as bad_amount
                     from bad_record
                     where daily_report_id in (
                         SELECT
-                            id
-                        FROM
-                            (
+                            idarray.id
+                        FROM (
                             SELECT
-                                daily_report.id,
+                                daily_report.id as id,
                                 daily_report.part_number,
                                 pn_list.inj_product_name AS inj_product_name,
                                 product_list.product_name as product_name 
@@ -293,14 +323,16 @@ def fun_q_report(q_type, q_report, begin_time, end_time):
                             INNER JOIN pn_list ON pn_list.part_number = daily_report.part_number
                             INNER JOIN bom on pn_list.id = bom.pnlist_id
                             inner JOIN product_list on product_list.id = bom.product_id
-                            where (""" + sql_filter + """ 
-                                  "date" >=  to_date('""" + begin_time + """', 'yyyy-mm-dd') and
-                                  "date" <=  to_date('""" + end_time + """', 'yyyy-mm-dd')))
-                        )
-                    GROUP BY bad_id)
-            right join bad_list on bad_list.id=bad_id
-            order by bad_list.id
-        """
+                            where ({} 
+                                  "date" >=  to_date('{}', 'yyyy-mm-dd') and
+                                  "date" <=  to_date('{}', 'yyyy-mm-dd'))
+                        ) as idarray
+                    )
+                    GROUP BY bad_id
+                ) as badtb
+                right join bad_list on bad_list.id=bad_id
+                order by bad_list.id
+        """.format(sql_filter, begin_time, end_time)
         q_bad_statistic = db_session.execute(sql)
 
         temp_a = []
@@ -315,31 +347,35 @@ def fun_q_report(q_type, q_report, begin_time, end_time):
         select
             lost_time,
             anomaly_list.anomaly_name
-        from(select
-                    anomaly_id,
-                    sum(lost_time) as lost_time
-                from anomaly_record
-                where daily_report_id in (
+        from(
+            select
+                anomaly_id,
+                sum(lost_time) as lost_time
+            from anomaly_record
+            where daily_report_id in (
+                SELECT
+                    id
+                FROM (
                     SELECT
-                        id
-                    FROM (
-                        SELECT
-                             daily_report.id,
-                             daily_report.part_number,
-                             pn_list.inj_product_name AS inj_product_name,
-                             product_list.product_name as product_name 
-                        FROM 
-                            daily_report
-                        INNER JOIN pn_list ON pn_list.part_number = daily_report.part_number
-                        INNER JOIN bom on pn_list.id = bom.pnlist_id
-                        inner JOIN product_list on product_list.id = bom.product_id
-                        where (""" + sql_filter + """
-                              "date" >=  to_date('""" + begin_time + """', 'yyyy-mm-dd') and
-                              "date" <=  to_date('""" + end_time + """', 'yyyy-mm-dd'))))
-                GROUP BY anomaly_id)
+                         daily_report.id,
+                         daily_report.part_number,
+                         pn_list.inj_product_name AS inj_product_name,
+                         product_list.product_name as product_name 
+                    FROM 
+                        daily_report
+                    INNER JOIN pn_list ON pn_list.part_number = daily_report.part_number
+                    INNER JOIN bom on pn_list.id = bom.pnlist_id
+                    inner JOIN product_list on product_list.id = bom.product_id
+                    where ({}
+                          "date" >=  to_date('{}', 'yyyy-mm-dd') and
+                          "date" <=  to_date('{}', 'yyyy-mm-dd'))
+                ) as idarray
+            )
+            GROUP BY anomaly_id
+        ) as anotb
         right join anomaly_list on anomaly_list.id=anomaly_id
         order by anomaly_list.id
-        """
+        """.format(sql_filter, begin_time, end_time)
         q_anomaly_statistic = db_session.execute(sql1)
 
         temp_a = []
@@ -359,6 +395,10 @@ def ajax_get_bad_progress():
     data = request.get_data()
     data = json.loads(data)
     print(data)
+    if 'inj_product_name' in data.keys() and 'inj_part_number' in data.keys():
+        q = PNList.query.filter(PNList.part_number == data['inj_part_number']).first()
+        data['inj_product_name'] = q.inj_product_name
+        print('here')
     weekday = datetime.date.today().weekday()
     result = []
     for i in range(weekday+3):
@@ -531,6 +571,7 @@ def ajax_get_improvement():
     # print(end_time)
     data['time_range'] = begin_time + ' - ' + end_time
     result.append({'day': 'W' + str(week), 'data': fun_bad_query(data)})
+    print(result[0]['data'])
     bad_name = []
     bad_value = []
     for bad in result[0]['data'][0]['bad_statistic']:

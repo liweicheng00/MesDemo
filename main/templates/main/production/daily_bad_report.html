@@ -70,7 +70,7 @@
 				</legend>
 			</fieldset>
 			<div class="layui-row">
-				<form class="layui-form" action="" lay-filter='all'>
+				<form class="layui-form" action="" lay-filter='all' id="info">
 					<div class="layui-form-item">
 						<label class="layui-form-label">日期</label>
 						<div class="layui-input-inline">
@@ -79,15 +79,6 @@
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">棟別</label>
-						<div class="layui-input-inline">
-							<select name="building" id="building" lay-filter='select_building' lay-verify="required">
-								<!-- session預設值 -->
-								<option value="A18">A18</option>
-								<option value="A17">A17</option>
-								<option value="A16">A16</option>
-							</select>
-						</div>
 						<label class="layui-form-label">噸數</label>
 						<div class="layui-input-inline">
 							<select name="tonnage" id="tonnage" lay-filter='select_tonnage' lay-verify="required">
@@ -104,19 +95,13 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">料號</label>
 						<div class="layui-input-inline">
-							<!-- session預設值 -->
-							<input type="text" name="part_number" id="part_number" lay-verify="required" placeholder="料號" autocomplete="off" class="layui-input"
-							 disabled>
+							<input type="text" name="part_number" id="part_number" lay-verify="required" placeholder="料號" class="layui-input"
+							 readonly>
 						</div>
 						<label class="layui-form-label">模穴號</label>
 						<div class="layui-input-inline" id="mold_div">
-							<!-- session預設值 -->
-							<input type="text" name="mold" id="mold" lay-verify="required" placeholder="模穴號" autocomplete="off" class="layui-input" disabled>
-						</div>
-						<div class="layui-input-inline">
-							<button id="submit_button" type="button" lay-submit lay-filter="form_submit" class="layui-btn layui-btn-radius" style="display: None;">
-								<i class="layui-icon">建立表單</i>
-							</button>
+							<input type="text" name="mold" id="mold" lay-verify="required" placeholder="模穴號" class="layui-input" 
+							readonly>
 						</div>
 					</div>
 				</form>
@@ -249,7 +234,6 @@
 		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
 		<script src="static/js/moment.js" charset="utf-8"></script>
 		<script>
-			$(".hide").hide()
 			var form = layui.form;
 			var table = layui.table;
 			var laydate = layui.laydate;
@@ -270,63 +254,44 @@
 				}
 			});
 			
-			// 監聽棟別
-			form.on('select(select_building)', function(data) {
-				console.log('棟別:'+ data.value); //得到被选中的值
-				server_post['building'] = data.value
-				get_schedule(data.value)
-			})
-			// 獲取監聽機台,排產
-			var get_schedule = function(fn_data){
-				$.ajax({
-					url: '{{url_for('schedule.ajax_machine_list')}}',
-					type: "POST",
-					data: JSON.stringify({
-						'building': fn_data
-					}),
-					dataType: 'json',
-					success: function(res) {
-						console.log('獲取機台列表')
-						console.log(res)
-						for (var key in res) {
-							var html = '<option value="' + key + '">' + key + '</option>'
-							$('#tonnage').append(html)
+			
+			$.ajax({
+				url: '{{url_for('schedule.ajax_machine_list')}}',
+				type: "POST",
+				data: JSON.stringify({
+					'building': 'A18'
+				}),
+				dataType: 'json',
+				success: function(res) {
+					console.log('獲取機台列表')
+					console.log(res)
+					for (var key in res) {
+						var html = '<option value="' + key + '">' + key + '</option>'
+						$('#tonnage').append(html)
+					}
+					form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+
+					// 監聽噸數
+					form.on('select(select_tonnage)', function(data) {
+						console.log("噸數:" + data.value); //得到被选中的值
+						$('#machine').html('<option value="">請選擇</option>')
+						for (var i = 0; i < res[data.value].length; i++) {
+							var html = '<option value="' + res[data.value][i] + '">' + res[data.value][i] + '</option>'
+							$('#machine').append(html)
 						}
 						form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
-
-						// session預設
-						ton = $("#tonnage").val()
-						server_post['tonnage'] = ton
-						console.log(ton)
-						if (ton != ''){
-							for (var i = 0; i < res[ton].length; i++) {
-									var html = '<option value="' + res[ton][i] + '">' + res[ton][i] + '</option>'
-									$('#machine').append(html)
-								}
-							form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
-						}
-
-						// 監聽噸數
-						form.on('select(select_tonnage)', function(data) {
-							console.log("噸數:" + data.value); //得到被选中的值
-							$('#machine').html('<option value="">請選擇</option>')
-							for (var i = 0; i < res[data.value].length; i++) {
-								var html = '<option value="' + res[data.value][i] + '">' + res[data.value][i] + '</option>'
-								$('#machine').append(html)
-							}
-							form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
-						})
-						// 監聽機台
-                        form.on('select(select_machine)', function(data) {
-                            console.log("機台:" + data.value); //得到被选中的值
-                            server_post['machine'] = data.value
-                            // 讀取生產計劃取得料號/模號
-                            console.log(server_post)
-                            get_part_number()
-                        })
-					}
-				})
-			}
+					})
+					// 監聽機台
+					form.on('select(select_machine)', function(data) {
+						console.log("機台:" + data.value); //得到被选中的值
+						server_post['machine'] = data.value
+						// 讀取生產計劃取得料號/模號
+						console.log(server_post)
+						get_part_number()
+					})
+				}
+			})
+			
 			var get_part_number = function() {
 				$(".hide").hide()
 				$.ajax({
@@ -362,545 +327,269 @@
 							form.on('select(select_mold)', function(data) {
 								console.log("模具:" + data.value); //得到被选中的值
 								server_post['mold'] = data.value
-								$("#submit_button").show()
+								$("#info").submit()
 							})
 						}else{
-							html = '<input type="text" name="mold" id="mold" lay-verify="required" placeholder="模穴號" autocomplete="off" class="layui-input" disabled>'
+							html = '<input type="text" name="mold" id="mold" lay-verify="required" placeholder="模穴號" autocomplete="off" class="layui-input" readonly>'
 							$('#mold_div').html(html)
 							form.val('all', {
 								"part_number": res.data[0]['part_number'],
 								'mold': res.data[0]['mold']
 							})
-							$("#submit_button").show()
+							let data = $("#info").serializeArray().reduce(function(obj, item){
+								obj[item.name] = item.value
+								return obj
+							}, {})
+							create_form(data)
 						}
 					},
 				})
 			}
-			get_schedule(server_post['building'])
 			// 建立表單 
 			var form_no
-			form.on('submit(form_submit)', function(data) {
-				console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-				console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-				console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-				$("#submit_button").hide()
+			var create_form = function(data) {
 				$.ajax({
 					url: '{{url_for('production.ajax_add_daily_report')}}',
 					type: "POST",
-					data: JSON.stringify(data.field),
+					data: JSON.stringify(data),
 					dataType: 'json',
 					success: function(res) {
 						console.log(res)
 						layer.msg(res.msg)
 						$(".hide").show()
 						form_no = res.form_no
-						
-						// 每半點重新獲取班別
-						var datetime = new Date();
-						var execute_datetime = new Date();
-						console.log(datetime.getMinutes())
-						if (datetime.getMinutes()<=30){
-							execute_datetime.setHours(datetime.getHours(), 30, 0)
-						}else{
-							execute_datetime.setHours(datetime.getHours()+1, 30, 0)
-						}
-						console.log(execute_datetime-datetime)
-						setTimeout(execute_time_interval, execute_datetime-datetime)
-						
-						get_time()
+						record()
 						daily_report()
-						$("#final").click(function() {
-							layer.open({
-								title: '確認提交',
-								content: '輸入實際週期 : <input id="real_cycle_time"></input>',
-								btn: ['確認存檔', '取消'],
-								btn1: function(index, layero) {
-									var real_cycle_time = $("#real_cycle_time").val()
-									console.log(real_cycle_time)
-									final_upload = {
-										'form_no': form_no,
-										'real_cycle_time': real_cycle_time
-									}
-									$.ajax({
-										url: '{{url_for('production.ajax_real_cycle_time')}}',
-										type: "POST",
-										data: JSON.stringify(final_upload),
-										dataType: 'json',
-										success: function(res) {
-											console.log('上傳實際週期成功')
-											console.log(res)
-										},
-									})
-									layer.close(index);
-								},
-								btn2: function(index, layero) {
-
-								},
-								cancel: function() {
-									//右上角关闭回调
-								}
-							})
-						})
 					}
 				})
-			})
-			// 箱數/產量 
-			// 取得班別/箱數
-			get_time = function() {
+			}
+			var record = function() {
+				// 取得不良種類
 				$.ajax({
-					url: '{{url_for('production.ajax_time')}}',
-					type: "POST",
-					data: JSON.stringify({
-						'form_no': form_no
-					}),
+					url: '{{url_for('production.ajax_bad_list')}}',
+					type: "GET",
 					dataType: 'json',
-					success: function(res) {
-						console.log('獲取時間班別')
-						console.log(res)
-						console.log(String.fromCharCode(res.work_class.charCodeAt(0)-1))
-						if (typeof(res[res.work_class].box_pics) != 'undefined'){
-							temp_box_pics = res[res.work_class].box_pics
-						}else{
-							if (res.work_class === 'A'){
-								temp_box_pics = ''
-							}else{
-								// 獲取前一班的裝箱數量
-								console.log(String.fromCharCode(res.work_class.charCodeAt(0)-1))
-								temp_box_pics = res[String.fromCharCode(res.work_class.charCodeAt(0)-1)].box_pics
-							}
+					success: function(res){
+						console.log('獲取不良列表')
+						$("#bad").html('')
+						$("#bad_name").html('')
+						for (var i = 0; i < res.length; i++) {
+							html = '<input type="checkbox" name="" title="' + res[i] + '" value="bad' + i + '" lay-filter="*">'
+							$("#bad_name").append(html)
 						}
-						
-						form.val('all_2', {
-							"box": temp_box_pics,
-							"work_class": res.work_class,
-						})
-						for (var key in res) {
-							if (key != 'work_class') {
-								$("#" + key + "_box").html(res[key].box_number)
-								console.log(res[key].box_number*res[key].box_pics)
-								$("#" + key + "_amount").html(res[key].box_number*res[key].box_pics)
-							}
-						}
+						form.render(null, 'all');
 					}
 				})
-				// 獲取額外數量
-				$.ajax({
-					url: '{{url_for('production.ajax_additional_amount')}}',
-					type: "POST",
-					data: JSON.stringify({
-								'form_no': form_no
-							}),
-					dataType: 'json',
-					success: function(res) {
-						console.log('獲取額外數量')
-						console.log(res)
-						$("#addition").val(res.additional_amount)
-					},
-				})
-			}
-
-			// 每半點重新獲取班別
-			execute_time_interval = function() {
-				get_time()
-				setInterval(get_time, 60*60*1000)
-			}
-			// 增加箱數/計算產量
-			form.on('submit(box_submit)', function(data) {
-				console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-				console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-				console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-				if (data.field['box'] === '') {
-					layer.msg('請填入每箱數量')
-					return
-				}
-
-				var temp = parseFloat($("#" + data.field['work_class'] + "_box")[0].innerHTML)
-				var pics = parseFloat($("#box").val())
-				console.log($(temp + 1))
-				$("#" + data.field['work_class'] + "_box").html(temp + 1)
-				$("#" + data.field['work_class'] + "_amount").html((temp+1)*pics)
+				// 監聽不良複選框
+				form.on('checkbox(*)', function(data) {
+					var id = data.value
+					if (data.elem.checked) {
 				
-				var sum_1 = parseFloat($("#A_box")[0].innerHTML) +
-					parseFloat($("#B_box")[0].innerHTML) +
-					parseFloat($("#C_box")[0].innerHTML)
-				var sum_2 = parseFloat($("#D_box")[0].innerHTML) +
-					parseFloat($("#E_box")[0].innerHTML) +
-					parseFloat($("#F_box")[0].innerHTML)
-				var amount_1 = parseFloat($("#A_amount")[0].innerHTML) +
-					parseFloat($("#B_amount")[0].innerHTML) +
-					parseFloat($("#C_amount")[0].innerHTML)
-				var amount_2 = parseFloat($("#D_amount")[0].innerHTML) +
-					parseFloat($("#E_amount")[0].innerHTML) +
-					parseFloat($("#F_amount")[0].innerHTML)
-				$("#sum_box_1").html(sum_1)
-				$("#sum_box_2").html(sum_2)
-				$("#amount_1").html(amount_1)
-				$("#amount_2").html(amount_2)
-
-				var amount_upload = {
-					'form_no': form_no,
-					'amount_1': sum_1 * pics,
-					'amount_2': sum_2 * pics,
-					'work_class': data.field['work_class'],
-					'box_number': temp + 1,
-					'box_pics': data.field['box']
-				}
-				$.ajax({
-					url: '{{url_for('production.ajax_amount_upload')}}',
-					type: "POST",
-					data: JSON.stringify(amount_upload),
-					dataType: 'json',
-					success: function(res) {
-						console.log(res)
-						get_time()
-						daily_report()
-						// form_no = res.form_no
-					}
-				})
-			})
-			// 修改數據 
-			$(".revise").click(function(e) {
-				console.log(e)
-				var content = e.target.innerText
-				layer.open({
-					title: '修改參數',
-					content: content,
-					btn: ['增加', '減少', '確認'],
-					btn1: function(index, layero) {
-						var temp = parseFloat($(".layui-layer-content")[0].innerHTML)
-						$(".layui-layer-content").html(temp + 1)
-					},
-					btn2: function(index, layero) {
-						var temp = parseFloat($(".layui-layer-content")[0].innerHTML)
-						if (temp === 0) {
-							layer.msg('不得小於0')
-						} else {
-							$(".layui-layer-content").html(temp - 1)
-						}
-						return false
-					},
-					btn3: function(index, layero) {
-
-						var pics = parseFloat($("#box").val())
-						if (pics) {
-							
-							var temp = parseFloat($(".layui-layer-content")[0].innerHTML)
-							e.target.innerText = temp
-							$("#" + e.target.id).html(temp)
-							$("#" + e.target.id.substr(0,1) + "_amount").html(temp*pics)
-							var sum_1 = parseFloat($("#A_box")[0].innerHTML) +
-								parseFloat($("#B_box")[0].innerHTML) +
-								parseFloat($("#C_box")[0].innerHTML)
-							var sum_2 = parseFloat($("#D_box")[0].innerHTML) +
-								parseFloat($("#E_box")[0].innerHTML) +
-								parseFloat($("#F_box")[0].innerHTML)
-							var amount_1 = parseFloat($("#A_amount")[0].innerHTML) +
-								parseFloat($("#B_amount")[0].innerHTML) +
-								parseFloat($("#C_amount")[0].innerHTML)
-							var amount_2 = parseFloat($("#D_amount")[0].innerHTML) +
-								parseFloat($("#E_amount")[0].innerHTML) +
-								parseFloat($("#F_amount")[0].innerHTML)
-							$("#sum_box_1").html(sum_1)
-							$("#sum_box_2").html(sum_2)
-							$("#amount_1").html(amount_1)
-							$("#amount_2").html(amount_2)
-							
-							var amount_upload = {
+						var html = "<div id='" + id + "' class='layui-col-xs6 layui-col-sm4 layui-col-md4'>" +
+							"<div class='bad_c1'>" +
+							"<div class='layui-col-xs12 layui-col-sm12 layui-col-md12 bad_c2'>" + data.elem.title +
+							"<span class=' layui-badge' id='" + id + "_badge' >0</span></div>" +
+							"<div class='layui-col-xs6 layui-col-sm6 layui-col-md6 add'>+1</div>" +
+							"<div class='layui-col-xs6 layui-col-sm6 layui-col-md6 minus'>-1</div>" +
+							"</div>" +
+							"</div>"
+						$("#bad").append(html)
+						$.ajax({
+							url: '{{url_for('production.ajax_bad_amount')}}',
+							type: "POST",
+							data: JSON.stringify({
 								'form_no': form_no,
-								'amount_1': sum_1 * pics,
-								'amount_2': sum_2 * pics,
-								'work_class': e.target.id,
-								'box_number': temp,
-								'box_pics': pics
-							}
-							$.ajax({
-								url: '{{url_for('production.ajax_amount_upload')}}',
-								type: "POST",
-								data: JSON.stringify(amount_upload),
-								dataType: 'json',
-								success: function(res) {
-									console.log(res)
-									get_time()
-									daily_report()
-									// form_no = res.form_no
-								}
-							})
-						} else {
-							layer.msg('請填入每箱數量')
-						}
-
-					},
-					cancel: function() {
-						console.log('關閉')
-						//右上角关闭回调
-					}
-				})
-			})
-			// 增加額外數量
-			
-			$('#additional_button').click(function(e){
-				console.log(e)
-				layer.open({
-					title: '確認提交',
-					content: '輸入額外數量 : <input id="additional_input" value=0></input>',
-					btn: ['確認', '取消'],
-					btn1: function(index, layero) {
-						var additional_input = $("#additional_input").val()
-						console.log(additional_input)
-						additional_amount_upload = {
-							'form_no': form_no,
-							'additional_amount': additional_input
-						}
-						$.ajax({
-							url: '{{url_for('production.ajax_additional_amount')}}',
-							type: "POST",
-							data: JSON.stringify(additional_amount_upload),
+								'bad_name': data.elem.title
+							}),
 							dataType: 'json',
 							success: function(res) {
-								console.log('上傳額外數量成功')
+								console.log('取得不良各數')
 								console.log(res)
-								$("#addition").val(additional_input)
-								daily_report()
+								$("#" + id + "_badge").html(res)
 							},
 						})
-						layer.close(index);
-					},
-					btn2: function(index, layero) {
 				
-					},
-					cancel: function() {
-						//右上角关闭回调
-					}
-				})
-			})
-			// 取得不良種類
-			$.ajax({
-				url: '{{url_for('production.ajax_bad_list')}}',
-				type: "GET",
-				dataType: 'json',
-				success: function(res) {
-					console.log('獲取不良列表')
-					for (var i = 0; i < res.length; i++) {
-						html = '<input type="checkbox" name="" title="' + res[i] + '" value="bad' + i + '" lay-filter="*">'
-						$("#bad_name").append(html)
-					}
-					form.render(null, 'all');
-				}
-			})
-			// 監聽不良複選框
-			form.on('checkbox(*)', function(data) {
-				console.log(data.elem.title); //得到checkbox原始DOM对象
-				// console.log(data.elem.checked); //是否被选中，true或者false
-				console.log(data.value); //复选框value值，也可以通过data.elem.value得到
-				// console.log(data.othis); //得到美化后的DOM对象
-				var id = data.value
-				if (data.elem.checked) {
-
-					var html = "<div id='" + id + "' class='layui-col-xs6 layui-col-sm4 layui-col-md4'>" +
-						"<div class='bad_c1'>" +
-						"<div class='layui-col-xs12 layui-col-sm12 layui-col-md12 bad_c2'>" + data.elem.title +
-						"<span class=' layui-badge' id='" + id + "_badge' >0</span></div>" +
-						"<div class='layui-col-xs6 layui-col-sm6 layui-col-md6 add'>+1</div>" +
-						"<div class='layui-col-xs6 layui-col-sm6 layui-col-md6 minus'>-1</div>" +
-						"</div>" +
-						"</div>"
-					$("#bad").append(html)
-					// $("#bad_table_1").append(
-					// 	'<tr id="' + id + '_table"><td>' + data.elem.title + '</td><td class="' + id + '_1">' +
-					// 	'</td><td class="' + id + '_2">' + '</td></tr>')
-					// 
-					$.ajax({
-						url: '{{url_for('production.ajax_bad_amount')}}',
-						type: "POST",
-						data: JSON.stringify({
-							'form_no': form_no,
-							'bad_name': data.elem.title
-						}),
-						dataType: 'json',
-						success: function(res) {
-							console.log('取得不良各數')
-							console.log(res)
-							$("#" + id + "_badge").html(res)
-						},
-					})
-
-
-					$("#" + id + " .add").click(function(e) {
-						console.log(e)
-						console.log(e.target.parentElement.firstChild.firstChild.data)
-						var bad_item = e.target.parentElement.firstChild.firstChild.data
-						var bad_upload = {
-							'bad_type': bad_item,
-							'form_no': form_no,
-							'move': 'add'
-						}
-						var temp = parseFloat($("#" + id + "_badge")[0].innerHTML)
-						$("#" + id + "_badge").html(temp + 1)
-
-						// ajax 上傳不良
-						$.ajax({
-							url: '{{url_for('production.ajax_bad_upload')}}',
-							type: "POST",
-							data: JSON.stringify(bad_upload),
-							dataType: 'json',
-							success: function(res) {
-								console.log('不良上傳成功')
-								console.log(res)
-								daily_report()
-							},
-						})
-					})
-					$("#" + id + " .minus").click(function(e) {
-						console.log(e)
-						if ($("#" + id + "_badge")[0].innerHTML > 0) {
+				
+						$("#" + id + " .add").click(function(e) {
+							console.log(e)
+							console.log(e.target.parentElement.firstChild.firstChild.data)
 							var bad_item = e.target.parentElement.firstChild.firstChild.data
 							var bad_upload = {
 								'bad_type': bad_item,
 								'form_no': form_no,
-								'move': 'last_bad'
+								'move': 'add'
 							}
+							var temp = parseFloat($("#" + id + "_badge")[0].innerHTML)
+							$("#" + id + "_badge").html(temp + 1)
+				
+							// ajax 上傳不良
 							$.ajax({
 								url: '{{url_for('production.ajax_bad_upload')}}',
 								type: "POST",
 								data: JSON.stringify(bad_upload),
 								dataType: 'json',
 								success: function(res) {
-									console.log('取得最新不良')
+									console.log('不良上傳成功')
 									console.log(res)
-									layer.open({
-										title: '修改參數',
-										content: '時間:' + res.record_time + " -" + res.bad_name,
-										btn: ['刪除', '取消'],
-										btn1: function(index, layero) {
-											var bad_upload = {
-												'bad_type': bad_item,
-												'form_no': form_no,
-												'move': 'minus'
-											}
-											$.ajax({
-												url: '{{url_for('production.ajax_bad_upload')}}',
-												type: "POST",
-												data: JSON.stringify(bad_upload),
-												dataType: 'json',
-												success: function(res) {
-													console.log('刪除不良成功')
-													console.log(res)
-													var temp = parseFloat($("#" + id + "_badge")[0].innerHTML)
-													$("#" + id + "_badge").html(temp - 1)
-													daily_report()
-												},
-											})
-											layer.close(index);
-										},
-										btn2: function(index, layero) {
-
-										},
-										cancel: function() {
-											//右上角关闭回调
-										}
-									})
+									daily_report()
 								},
 							})
-						} else {
-							layer.msg('此不良為0')
-						}
-					})
-				} else {
-					$("#" + id).remove()
-					$("#" + id + "_table").remove()
-				}
-
-			});
-
-			// 取得異常種類列表
-			$.ajax({
-				url: '{{url_for('production.ajax_anomaly_type_list')}}',
-				type: "GET",
-				dataType: 'json',
-				success: function(res) {
-					console.log('獲取異常種類列表')
-					console.log(res)
-					for (var key in res) {
-						html = '<option value="' + key + '">' + res[key] + '</option>'
-						$("#anomaly_type").append(html)
+						})
+						$("#" + id + " .minus").click(function(e) {
+							console.log(e)
+							if ($("#" + id + "_badge")[0].innerHTML > 0) {
+								var bad_item = e.target.parentElement.firstChild.firstChild.data
+								var bad_upload = {
+									'bad_type': bad_item,
+									'form_no': form_no,
+									'move': 'last_bad'
+								}
+								$.ajax({
+									url: '{{url_for('production.ajax_bad_upload')}}',
+									type: "POST",
+									data: JSON.stringify(bad_upload),
+									dataType: 'json',
+									success: function(res) {
+										console.log('取得最新不良')
+										console.log(res)
+										layer.open({
+											title: '修改參數',
+											content: '時間:' + res.record_time + " -" + res.bad_name,
+											btn: ['刪除', '取消'],
+											btn1: function(index, layero) {
+												var bad_upload = {
+													'bad_type': bad_item,
+													'form_no': form_no,
+													'move': 'minus'
+												}
+												$.ajax({
+													url: '{{url_for('production.ajax_bad_upload')}}',
+													type: "POST",
+													data: JSON.stringify(bad_upload),
+													dataType: 'json',
+													success: function(res) {
+														console.log('刪除不良成功')
+														console.log(res)
+														var temp = parseFloat($("#" + id + "_badge")[0].innerHTML)
+														$("#" + id + "_badge").html(temp - 1)
+														daily_report()
+													},
+												})
+												layer.close(index);
+											},
+											btn2: function(index, layero) {
+				
+											},
+											cancel: function() {
+												//右上角关闭回调
+											}
+										})
+									},
+								})
+							} else {
+								layer.msg('此不良為0')
+							}
+						})
+					} else {
+						$("#" + id).remove()
+						$("#" + id + "_table").remove()
 					}
-					form.render(null, 'all_1');
-				}
-			})
-			// 監聽異常種類選擇
-			form.on('select(select_anomaly_type)', function(data) {
-				console.log(data.elem); //得到select原始DOM对象
-				console.log(data.value); //得到被选中的值
-				console.log(data.othis); //得到美化后的DOM对象
+				
+				});
+				
+				// 取得異常種類列表
 				$.ajax({
-					url: '{{url_for('production.ajax_anomaly_list')}}',
-					type: "POST",
-					data: JSON.stringify({
-						'type_id': data.value
-					}),
+					url: '{{url_for('production.ajax_anomaly_type_list')}}',
+					type: "GET",
 					dataType: 'json',
 					success: function(res) {
-						console.log('獲取異常列表')
+						console.log('獲取異常種類列表')
 						console.log(res)
-						$("#anomaly_msg").html('<option value="">請選擇</option>')
-						for (var i = 0; i < res.length; i++) {
-							html = '<option value="' + res[i] + '">' + res[i] + '</option>'
-							$("#anomaly_msg").append(html)
+						$("#anomaly_type").html('')
+						$("#anomaly_msg").html('')
+						for (var key in res) {
+							html = '<option value="' + key + '">' + res[key] + '</option>'
+							$("#anomaly_type").append(html)
 						}
 						form.render(null, 'all_1');
 					}
 				})
-			})
-			laydate.render({
-				elem: '#time',
-				type: 'time',
-				range: true,
-				done: function(value, date, endDate) {
-					console.log(value); //得到日期生成的值，如：2017-08-18
-					console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-					console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-					// 計算損失工時
-					var a = moment(date)
-					var b = moment(endDate)
-					diff = b.diff(a, 'minutes', true)
-					diff = diff.toFixed(2)
-					console.log(diff)
-					if (diff > 0) {
-						form.val('all_1', {
-							"lost_time": diff,
-						})
-					} else {
-						// 警告訊息
-						form.val('all_1', {
-							"lost_time": 1440+parseFloat(diff),
-						})
-						layer.msg('夜班跨日')
-					}
-				}
-			});
-			// 上傳異常
-			form.on('submit(anomaly_submit)', function(data) {
-				console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-				console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-				console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-				var anomaly_upload = data.field
-				anomaly_upload['form_no'] = form_no
-				anomaly_upload['date'] = $("#date").val()
-				console.log(anomaly_upload)
-				// ajax 上傳異常
-				$.ajax({
-					url: '{{url_for('production.ajax_anomaly_upload')}}',
-					type: "POST",
-					data: JSON.stringify(anomaly_upload),
-					dataType: 'json',
-					success: function(res) {
-						console.log('上傳異常成功')
-						layer.msg('上傳異常成功')
-						daily_report()
-					}
+				// 監聽異常種類選擇
+				form.on('select(select_anomaly_type)', function(data) {
+					console.log(data.elem); //得到select原始DOM对象
+					console.log(data.value); //得到被选中的值
+					console.log(data.othis); //得到美化后的DOM对象
+					$.ajax({
+						url: '{{url_for('production.ajax_anomaly_list')}}',
+						type: "POST",
+						data: JSON.stringify({
+							'type_id': data.value
+						}),
+						dataType: 'json',
+						success: function(res) {
+							console.log('獲取異常列表')
+							console.log(res)
+							$("#anomaly_msg").html('<option value="">請選擇</option>')
+							for (var i = 0; i < res.length; i++) {
+								html = '<option value="' + res[i] + '">' + res[i] + '</option>'
+								$("#anomaly_msg").append(html)
+							}
+							form.render(null, 'all_1');
+						}
+					})
 				})
-
-			})
+				laydate.render({
+					elem: '#time',
+					type: 'time',
+					range: true,
+					done: function(value, date, endDate) {
+						console.log(value); //得到日期生成的值，如：2017-08-18
+						console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+						console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+						// 計算損失工時
+						var a = moment(date)
+						var b = moment(endDate)
+						diff = b.diff(a, 'minutes', true)
+						diff = diff.toFixed(2)
+						console.log(diff)
+						if (diff > 0) {
+							form.val('all_1', {
+								"lost_time": diff,
+							})
+						} else {
+							// 警告訊息
+							form.val('all_1', {
+								"lost_time": 1440+parseFloat(diff),
+							})
+							layer.msg('夜班跨日')
+						}
+					}
+				});
+				// 上傳異常
+				form.on('submit(anomaly_submit)', function(data) {
+					console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+					console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+					console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+					var anomaly_upload = data.field
+					anomaly_upload['form_no'] = form_no
+					anomaly_upload['date'] = $("#date").val()
+					console.log(anomaly_upload)
+					// ajax 上傳異常
+					$.ajax({
+						url: '{{url_for('production.ajax_anomaly_upload')}}',
+						type: "POST",
+						data: JSON.stringify(anomaly_upload),
+						dataType: 'json',
+						success: function(res) {
+							console.log('上傳異常成功')
+							layer.msg('上傳異常成功')
+							daily_report()
+						}
+					})
+				
+				})
+			}
+			record()
 			// 取得以上傳數據
 
 			daily_report = function() {
@@ -1039,8 +728,4 @@
 			}
 		</script>
 	</body>
-<!--	<body>-->
-<!--		{% include 'main/signing/signing_process.html' %}-->
-<!--	</body>-->
-
 </html>

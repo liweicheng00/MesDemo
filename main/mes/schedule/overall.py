@@ -14,8 +14,8 @@ def schedule_overall():
 @bp.route("/ajax_machine_resource", methods=['GET'])
 def ajax_machine_resource():
     # q_schedule = ProduceSchedule.query.filter(ProduceSchedule.date >= datetime.date.today()).all()
-    q_machine = MachineList.query.filter(MachineList.machine_tonnage == '450T').all()
-    # q_machine = MachineList.query.filter().all()
+    # q_machine = MachineList.query.filter(MachineList.machine_tonnage == '450T').all()
+    q_machine = MachineList.query.filter().all()
 
     result = []
     for machine in q_machine:

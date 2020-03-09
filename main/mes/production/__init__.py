@@ -22,7 +22,7 @@ def ajax_get_time():
                     'next_day': next_day})
 
 
-from . import production_overall, bad_statistic, bad_revise, anomaly_revise, \
+from . import production_overall, bad_statistic, \
     material_check, issuance, inbound, get_bad_statistic, bad_cause_query, \
     first_part
 

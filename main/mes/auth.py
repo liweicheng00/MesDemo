@@ -28,10 +28,10 @@ def register():
         elif not pwd:
             error = 'Password is required.'
         elif not pwd == pwd_confirm:
-            error = 'Password is the same.'
+            error = 'Password is not the same.'
         elif User.query.filter_by(username=ID).first() is not None:
             error = 'User {} is already registered.'.format(ID)
-            return redirect(url_for('auth.login', error=error))
+            return redirect(url_for('frame.index1', error=error))
 
         if error is None:
             new_client = User(username=ID, password=generate_password_hash(pwd), name=name)
@@ -39,9 +39,9 @@ def register():
             db1.commit()
             db1.remove()
             error = 'register success'
-            return redirect(url_for('auth.login', error=error))
+            return redirect(url_for('frame.index1', error=error))
         flash(error)
-    return render_template('register.html', error=error)
+    return redirect(url_for('frame.index1', error=error))
 
 
 @bp.route('/', methods=('GET', 'POST'))
@@ -69,11 +69,10 @@ def login():
             next = request.args.get('next')
             if not next_is_valid(next):
                 return 'What do you want to do!'
-
             return redirect(next or url_for('frame.index1'))
 
         flash(error)
-    return render_template('login.html', pre_error=pre_error, error=error)
+    return render_template('main/framework/index.html', pre_error=pre_error, error=error)
 
 
 @bp.route('/change_password', methods=('GET', 'POST'))
@@ -111,7 +110,7 @@ def logout():
     for key in ('identity.name', 'identity.auth_type'):
         session.pop(key, None)
     identity_changed.send(current_app._get_current_object(), identity=AnonymousIdentity())
-    return 'logged out <br> ' + '''<a href='/login'>login</a>'''
+    return redirect(url_for('frame.index1'))
 
 
 @bp.route('/user_auth')

@@ -2,13 +2,15 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title >現場總覽</title>
+		<title>現場總覽</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
 		<script src="static/js/vue.js"></script>
-		<script src="static/js/echarts.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
+		<link href="static/css/bootstrap.min.css" rel="stylesheet">
 		<style type="text/css">
 			.building {
 				padding: 10px;
@@ -18,10 +20,17 @@
 				border-radius: 6px;
 			}
 			.area {
-				padding: 3px;
+				padding: 5px 0px;
 				/* text-align: center; */
 				/* background: white; */
 				/* border: 2px solid #0071ff; */
+			}
+			.section {
+				padding: 5px 15px;
+			}
+			.section_name {
+				width: 60px;
+				font-size: 1.2rem;
 			}
 			.machine {
 				/* border: 3px solid white;
@@ -34,8 +43,8 @@
 				border-top: 2px solid white;
 				border-left: 2px solid white;
 				border-right: 2px solid white;
-				border-radius: 3px 3px 0px 0px;
-				padding: 2px;
+				border-radius: 8px 8px 0px 0px;
+				/* padding: 2px; */
 				font-size: 0.8rem;
 				/* height: inherit; */
 				text-align: center;
@@ -48,7 +57,7 @@
 				background: orange;
 			}
 			.machine .online {
-				background: #74AFF9;
+				background: lightgreen;
 			}
 			.machine .alarm {
 				background: red;
@@ -57,9 +66,9 @@
 				border-left: 2px solid white;
 				border-right: 2px solid white;
 				border-bottom: 2px solid white;
-				border-radius: 0px 0px 3px 3px;
+				border-radius: 0px 0px 8px 8px;
 				padding: 2px;
-				font-size: 1px;
+				font-size: 0.8rem;
 				background: papayawhip;
 				/* height: inherit; */
 				text-align: center;
@@ -81,7 +90,7 @@
 				vertical-align: middle;
 			}
 			.modal-container {
-				width: 300px;
+				width: 600px;
 				margin: 0px auto;
 				padding: 20px 30px;
 				background-color: #fff;
@@ -125,64 +134,70 @@
 		</style>
 	</head>
 	<body>
-		<div id="A18" style="padding: 10px 30px;">
-			<div class="layui-row" style="text-align: center;">
-				<div style="display: inline-block; float: left;">
+		<div id="A18" style="padding: 0px 30px;">
+			<div class="row d-flex justify-content-between qqq" style="text-align: center;">
+				<div style="display: inline-block;">
 					<span style=" vertical-align: text-bottom;">採集時間: {[time]}</span>
 				</div>
-<!--				<div  style="display: inline-block; font-size: 1.5rem; font-weight:bold">-->
-					<span style="display: inline-block; font-size: 1.5rem; font-weight:bold">成型設備監控系統</span>
-<!--				</div>-->
-				<div style="display: inline-block; vertical-align: bottom; float: right;">
+				<span style="display: inline-block; font-size: 1.5rem; font-weight:bold">成型設備監控系統</span>
+				<div style="display: inline-block; vertical-align: bottom;">
 					<span style="font-size: 1.5rem;">生產區域：A18-1F</span>
 				</div>
 			</div>
-			<vue-building>
+			<vue-building style="padding: 0px 15px;">
 				<div class="">
-					<div class="layui-row">
-						<h3>A區</h3>
-						<vue-area class="layui-col-md5 layui-col-sm5">
-							<vue-machine v-for="info in infos.A1" :info="info"></vue-machine>
+					<div class="row section">
+						<vue-area class="col-sm-5 d-flex justify-content-between">
+							<div class="section_name">A區</div>
+							<vue-machine v-for="(info, index) in infos.A1" :key="index" :info="info"></vue-machine>
 						</vue-area>
-						<vue-area class="layui-col-md7 layui-col-sm7">
-							<vue-machine v-for="info in infos.A2" :info="info"></vue-machine>
-						</vue-area>
-					</div>
-					<div class="layui-row">
-						<h3>B區</h3>
-						<vue-area class="layui-col-md5  layui-col-sm5">
-							<vue-machine v-for="info in infos.B1" :info="info"></vue-machine>
-						</vue-area>
-						<vue-area class="layui-col-md7 layui-col-sm7">
-							<vue-machine v-for="info in infos.B2" :info="info"></vue-machine>
+						<div class="col-sm-1"></div>
+
+						<vue-area class="col-sm-6 d-flex justify-content-between">
+							<vue-machine v-for="(info, index) in infos.A2" :key="index" :info="info"></vue-machine>
 						</vue-area>
 					</div>
-					<div class="layui-row">
-						<h3>C區</h3>
-						<vue-area class="layui-col-md5 layui-col-sm5s">
-							<vue-machine v-for="info in infos.C1" :info="info"></vue-machine>
+					<div class="row section">
+						<vue-area class="col-sm-5 d-flex justify-content-between">
+							<div class="section_name">B區</div>
+							<vue-machine v-for="(info, index) in infos.B1" :key="index" :info="info"></vue-machine>
 						</vue-area>
-						<vue-area class="layui-col-md7 layui-col-sm7">
-							<vue-machine v-for="info in infos.C2" :info="info"></vue-machine>
+						<div class="col-sm-1"></div>
+
+						<vue-area class="col-sm-6 d-flex justify-content-between">
+							<vue-machine v-for="(info, index) in infos.B2" :key="index" :info="info"></vue-machine>
+							<div class="d-flex justify-content-center align-items-center" style="width: 200px; border: 1px solid black;">維修區</div>
 						</vue-area>
 					</div>
-					<div class="layui-row">
-						<h3>D區</h3>
-						<vue-area class="layui-col-md5 layui-col-sm5">
-							<vue-machine v-for="info in infos.D1" :info="info"></vue-machine>
+					<div class="row section">
+						<vue-area class="col-sm-5 d-flex justify-content-between">
+							<div class="section_name">C區</div>
+							<vue-machine v-for="(info, index) in infos.C1" :key="index" :info="info"></vue-machine>
 						</vue-area>
-						<vue-area class="layui-col-md7 layui-col-sm7">
-							<vue-machine v-for="info in infos.D2" :info="info"></vue-machine>
+						<div class="col-sm-1"></div>
+
+						<vue-area class="col-sm-6 d-flex justify-content-between">
+							<vue-machine v-for="(info, index) in infos.C2" :key="index" :info="info"></vue-machine>
+						</vue-area>
+					</div>
+					<div class="row section">
+						<vue-area class="col-sm-5 d-flex justify-content-between">
+							<div class="section_name">D區</div>
+							<vue-machine v-for="(info, index) in infos.D1" :key="index" :info="info"></vue-machine>
+						</vue-area>
+						<div class="col-sm-1"></div>
+						<vue-area class="col-sm-6 d-flex justify-content-between">
+							<vue-machine v-for="(info, index) in infos.D2" :key="index" :info="info"></vue-machine>
 						</vue-area>
 					</div>
 				</div>
-				<div class="layui_row" style="text-align: center;">
-					<span>機台總數: 90</span>
-					<span style="color: #74AFF9; font-size: 1.5rem;">■</span><span>生產</span>
-					<span style="color: orange; font-size: 1.5rem;">■</span><span>待機</span>
-					<span style="color: red; font-size: 1.5rem;">■</span><span>警報</span>
-					<span style="color: lightgrey; font-size: 1.5rem;">■</span><span>離線</span>
-					<!-- <span style="color: papayawhip; font-size: 1.5rem;">■</span><span>產能</span> -->
+				<div class="d-flex justify-content-center section" style="text-align: center;">
+					<span>機台總數 : 90</span>
+					<span style="color: lightgreen; font-size: 1rem;">■</span><span>生產</span>
+					<span style="color: orange; font-size: 1rem;">■</span><span>待機</span>
+					<span style="color: red; font-size: 1rem;">■</span><span>警報</span>
+					<span style="color: lightgrey; font-size: 1rem;">■</span><span>離線</span>
+					<span style="color: papayawhip; font-size: 1rem;">■</span><span>產能</span>
 					<span style="font-size: 0.6rem;">
 						<span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;北</span>
 						<img src="static/img/direction.png" style="transform: rotate(270deg);">
@@ -190,35 +205,17 @@
 				</div>
 			</vue-building>
 		</div>
-		<fieldset class="layui-elem-field layui-field-title">
-			<legend style="font-weight:bold">
-				<span style="font-size: 1.5rem;">成型生產計劃&實際</span>
-			</legend>
-		</fieldset>
-		<div class="layui-row" style="padding: 0 30px;">
-			<div class="layui-col-md12">
-				<div id="nme_ntp" style="height: 300px;width:100%">
-
-				</div>
-			</div>
-		</div>
-
-		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
-		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
 		<script src="static/js/moment.js" charset="utf-8"></script>
 		<script type="text/javascript">
-			var A1_list = ['A27', 'A26', 'A25', 'A24', 'A23', 'A22', 'A21', 'A20', 'A19']
-			var A2_list = ['A18', 'A17', 'A16', 'A15', 'A14', 'A13', 'A12', 'A11', 'A10', 'A09', 'A08', 'A07', 'A06',
-				'A05', 'A04', 'A03', 'A02', 'A01'
-			]
-			var B1_list = ['B19', 'B18', 'B17', 'B16', 'B15', 'B14', 'B13', 'B12']
-			var B2_list = ['B11', 'B10', 'B09', 'B08', 'B07', 'B06', 'B05', 'B04']
+			
+			var A1_list = ['A18', 'A17', 'A16', 'A15', 'A14', 'A13', 'A12', 'A11', 'A10']
+			var A2_list = ['A09', 'A08', 'A07', 'A06', 'A05', 'A04', 'A03', 'A02', 'A01']
+			var B1_list = ['B16', 'B15', 'B14', 'B13', 'B12', 'B11', 'B10', 'B09']
+			var B2_list = ['B08', 'B07', 'B06', 'B05', 'B04', 'B03', 'B02', 'B01']
 			var C1_list = ['C22', 'C21', 'C20', 'C19', 'C18', 'C17', 'C16', 'C15', 'C14', 'C13']
 			var C2_list = ['C12', 'C11', 'C10', 'C09', 'C08', 'C07', 'C06', 'C05', 'C04', 'C03', 'C02', 'C01']
-			var D1_list = ['D27', 'D26', 'D25', 'D24', 'D23', 'D22', 'D21', 'D20', 'D19', 'D18', 'D17']
-			var D2_list = ['D16', 'D15', 'D14', 'D13', 'D12', 'D11', 'D10', 'D09', 'D08', 'D07', 'D05', 'D04',
-				'D03', 'D02'
-			]
+			var D1_list = ['D20', 'D19', 'D18', 'D17', 'D16', 'D15', 'D14', 'D13', 'D12', 'D11', 'D10']
+			var D2_list = ['D09', 'D08', 'D07', 'D06', 'D05', 'D04', 'D03', 'D02', 'D01']
 			Vue.component('vue-building', {
 				template: '<div class=" building" >\
 					<slot></slot>\
@@ -234,12 +231,12 @@
 				delimiters: ['{[', ']}'],
 			})
 			Vue.component('vue-machine', {
-				template: '<div style="display: inline-block; width: 40px;" class=" machine">\
-								<div class="layui-row" style="" v-on:click="detail">\
-									<div class="layui-col-md12 machine_state" v-bind:class="state">\
-										<p>{[info.machine_name]} </p>\
+				template: '<div  style="display: inline-block; width: 40px;" class="machine pop">\
+								<div v-on:click="detail">\
+									<div class="machine_state" v-bind:class="state">\
+										{[info.machine_name]}\
 									</div>\
-									<div v-if="0" class="layui-col-md12 machine_produce">\
+									<div class="machine_produce">\
 										<p>{[info.QcTolCnt == 0 ? "-" : info.QcTolCnt]}</p>\
 									</div>\
 								</div>\
@@ -254,11 +251,7 @@
 				},
 				methods: {
 					detail: function() {
-						if (this.test) {
-							this.test = 0
-						} else {
-							this.test = 1
-						}
+						this.test = this.test?0:1
 					},
 				},
 				computed: {
@@ -282,6 +275,14 @@
 								}
 						}
 					}
+				},
+				mounted() {
+					$('.pop').popup(
+						{	
+							content  : '點擊詳情！'
+						}
+					)
+					// $('.pop').popup('show')
 				}
 			})
 			Vue.component('vue-detail', {
@@ -303,16 +304,6 @@
 								<ul>\
 									<li>模號: {[detail.mold]}</li>\
 									<li>模穴數: {[detail.cave]}</li>\
-									<li>今日模次:{[post_data.QcTolCnt == 0 ? "-" : post_data.QcTolCnt/2]}</li>\
-									<li>累計模次:{[detail.mold_total == 0 ? "-" : detail.mold_total]}(2019-11-01起始)</li>\
-								</ul>\
-							</div>\
-							<div class="modal-body">\
-								<h2>機台訊息</h2>\
-								<ul>\
-									<li>噸數: {[machine.tonnage]}</li>\
-									<li>廠商: {[machine.brand]}</li>\
-									<li>型號: {[machine.type]}</li>\
 								</ul>\
 							</div>\
 						</div>\
@@ -364,7 +355,7 @@
 					this.get_machine_detail()
 					var get_detail = setInterval(function(){
 						vm.get_machine_detail()
-					}, 40000)
+					}, w000)
 					this.interval = get_detail
 				},
 				methods: {
@@ -383,7 +374,7 @@
 						})
 					},
 					close_detail: function(){
-						clearInterval(this. interval)
+						clearInterval(this.interval)
 						this.$emit('close')
 					}
 				}
@@ -392,265 +383,47 @@
 				delimiters: ['{[', ']}'],
 				el: '#A18',
 				data: {
-					// info: {
-					// 	A1: [],
-					// 	B1: [],
-					// 	C1: [],
-					// 	D1: [],
-					// 	A2: [],
-					// 	B2: [],
-					// 	C2: [],
-					// 	D2: [],
-					// },
-					time: ''
+					time: moment().format('YYYY-MM-DD HH:mm:ss'),
+					infos: {}
 				},
 				computed: {
-					infos: function() {
-						var init_machine = function(element, index, array) {
-							return {
-								machine_name: element,
-								machine_state: 0,
-								QcTolCnt: 0,
-								building: 'A18'
+					
+				},
+				mounted() {
+					var init_machine = function(element, index, array) {
+						return {
+							machine_name: element,
+							machine_state: Math.floor(Math.random()*3),
+							QcTolCnt: Math.floor(Math.random()*1000)+1, // 亂數
+							building: 'X02'
+						}
+					}
+					var A1 = A1_list.map(init_machine)
+					var A2 = A2_list.map(init_machine)
+					var B1 = B1_list.map(init_machine)
+					var B2 = B2_list.map(init_machine)
+					var C1 = C1_list.map(init_machine)
+					var C2 = C2_list.map(init_machine)
+					var D1 = D1_list.map(init_machine)
+					var D2 = D2_list.map(init_machine)
+					this.infos = {A1: A1, A2:A2, B1:B1, B2:B2, C1:C1, C2:C2, D1:D1, D2:D2}
+					
+					var vm = this
+					setInterval(function() {
+						for (key in vm.infos) {
+							for (var i=0; i<vm.infos[key].length; i++){
+								if (vm.infos[key][i].machine_state == 2){
+									vm.infos[key][i].QcTolCnt++
+								}
+								
 							}
 						}
-						var A1 = A1_list.map(init_machine)
-						var A2 = A2_list.map(init_machine)
-						var B1 = B1_list.map(init_machine)
-						var B2 = B2_list.map(init_machine)
-						var C1 = C1_list.map(init_machine)
-						var C2 = C2_list.map(init_machine)
-						var D1 = D1_list.map(init_machine)
-						var D2 = D2_list.map(init_machine)
-						return {A1: A1, A2:A2, B1:B1, B2:B2, C1:C1, C2:C2, D1:D1, D2:D2}
-					}
+						A18.infos = vm.infos
+						A18.time = moment().format('YYYY-MM-DD HH:mm:ss')
+					}, 1000)
+					// todo: 時間
 				}
 			})
-			var get_query = function(query_post) {
-				$.ajax({
-					url: '{{url_for('production.ajax_get_machine_state')}}',
-					type: 'GET',
-					dataType: 'json',
-					timeout: 10000,
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-						layer.msg('數據庫連線異常!')
-					},
-					success: function(res) {
-						console.log('獲取不良統計')
-						console.log(res)
-						// A18.infos = res.result
-						var arrange_machine = function(element, index, array) {
-							for (var i = 0; i < res.result.length; i++) {
-								if (res.result[i]['machine_name'] == element) {
-									return res.result[i]
-								}
-							}
-							return {
-								machine_name: element,
-								machine_state: 0,
-								QcTolCnt: 0,
-								building: 'A18'
-							}
-						}
-						
-						var A1 = A1_list.map(arrange_machine)
-						var A2 = A2_list.map(arrange_machine)
-						var B1 = B1_list.map(arrange_machine)
-						var B2 = B2_list.map(arrange_machine)
-						var C1 = C1_list.map(arrange_machine)
-						var C2 = C2_list.map(arrange_machine)
-						var D1 = D1_list.map(arrange_machine)
-						var D2 = D2_list.map(arrange_machine)
-						A18.infos.A1 = A1
-						A18.infos.A2 = A2
-						A18.infos.B1 = B1
-						A18.infos.B2 = B2
-						A18.infos.C1 = C1
-						A18.infos.C2 = C2
-						A18.infos.D1 = D1
-						A18.infos.D2 = D2
-						A18.time = res['time']
-						console.log(A18.infos)
-
-						source = res.compare_schedule_actual[0]
-
-						option.dataset.source = source
-						myChart.setOption(option, true);
-					}
-				})
-			}
-			get_query()
-			setInterval(get_query, 40000)
+			
 		</script>
-		
-		<script type="text/javascript">
-			var dom = document.getElementById("nme_ntp");
-			var myChart = echarts.init(dom);
-			var option = {
-				title: {
-					text: 'B區',
-				},
-				color: ['darkorange', '#1E9FFF', '#5fb878', '#e5323e'],
-				tooltip: {
-					trigger: 'axis',
-					axisPointer: {
-						type: 'shadow'
-					}
-				},
-				grid: {
-					x: 50,
-					y: 50,
-					x2: 50,
-					y2: 40,
-				},
-				legend: {
-					data: ['總計劃', '計劃', '實績(達成)', '實績(未達成)'],
-					textStyle: {
-						fontSize: 10
-					}
-				},
-				dataset: {
-					source: []
-				},
-				xAxis: [{
-					type: 'category',
-					axisTick: {
-						show: false
-					},
-					name: '線別',
-					axisLabel: {
-						//interval: 0,    //强制文字产生间隔
-						//rotate: 45,     //文字逆时针旋转45°
-					},
-				}],
-				yAxis: [{
-					type: 'value',
-				}],
-				series: [{
-						name: '總計劃',
-						type: 'line',
-						barGap: 0,
-						itemStyle: {
-							normal: {
-								label: {
-									show: false, //开启显示
-									position: 'top', //在上方显示
-									textStyle: { //数值样式
-										color: 'gray',
-										fontSize: 12
-									},
-								},
-								lineStyle: {
-									// color: 'darkorange'
-								}
-							}
-						},
-						seriesLayoutBy: 'row',
-					},
-					{
-						name: '計劃',
-						type: 'bar',
-						barGap: 0,
-						itemStyle: {
-							normal: {
-								label: {
-									show: false, //开启显示
-									position: 'inside', //在上方显示
-									rotate: 90,
-									textStyle: { //数值样式
-										color: 'white',
-										fontSize: 12,
-									},
-								}
-							}
-						},
-						seriesLayoutBy: 'row',
-					},
-					{
-						name: '實績',
-						type: 'bar',
-						stack: '隱藏',
-						itemStyle: {
-							normal: {
-								color: function(params) {
-									console.log(params.data[3], params.data[2], params.data[3]<params.data[2])
-									if (params.data[3]<params.data[2]){
-										return '#e5323e'
-									}else{
-										return '#5fb878'
-									}
-								},
-								label: {
-									show: false, //开启显示
-									rotate: 90,
-									position: 'inside', //在上方显示
-									textStyle: { //数值样式
-										color: 'white',
-										fontSize: 12
-									},
-								}
-							}
-						},
-						seriesLayoutBy: 'row',
-					},
-					{
-						name: '差異',
-						type: 'bar',
-						stack: '隱藏',
-						itemStyle: {
-							normal: {
-								color: 'rgba(237,125,49, 0.0)',
-								label: {
-									show: 0, //开启显示
-									position: 'insideBottom', //在上方显示
-									textStyle: { //数值样式
-										color: 'black',
-										fontSize: 12
-									},
-									formatter: function(a) {
-										return a.value;
-									}
-								}
-							}
-						},
-						seriesLayoutBy: 'row',
-					},
-					{
-						name: '實績(達成)',
-						type: "bar",
-						stack: '隱藏',
-						data: []
-					},
-					{
-						name: '實績(未達成)',
-						type: "bar",
-						stack: '隱藏',
-						data: []
-					},
-					
-				]
-			};
-			if (option && typeof option === "object") {
-				myChart.setOption(option, true);
-			}
-		
-			// var get_date = function() {
-			// 	$.ajax({
-			// 		url:'http://10.194.179.37:8000/ajax_compare_schedule_actual',
-			// 		type: 'GET',
-			// 		dataType: 'json',
-			// 		success: function(res) {
-			// 			console.log('獲取生產實際對比')
-			// 			console.log(res)
-			// 			console.log(option)
-			// 			source = res
-			//
-			// 			option.dataset.source = source
-			// 			myChart.setOption(option, true);
-			//
-			// 		},
-			// 	})
-			// }
-			// get_date()
-			// setInterval(get_date,40000)
-		</script>
+	</body>

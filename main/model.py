@@ -8,8 +8,8 @@ import os
 import datetime
 
 # os.environ["NLS_LANG"] = "GERMAN_GERMANY.UTF8"
-# engine = create_engine('postgresql+psycopg2://liweicheng:@127.0.0.1:5432/liweicheng', convert_unicode=True, encoding='utf8')
-engine = create_engine('postgresql+psycopg2://unymxrqwutxiwc:7cc2e0a2c6ac59e80e99ab23983e23ade56e5fb561fd78c18e503f6225ef82ce@ec2-52-203-160-194.compute-1.amazonaws.com:5432/d1nhnopcv10lc3', convert_unicode=True, encoding='utf8')
+engine = create_engine('postgresql+psycopg2://liweicheng:@127.0.0.1:5432/liweicheng', convert_unicode=True, encoding='utf8')
+# engine = create_engine('postgresql+psycopg2://unymxrqwutxiwc:7cc2e0a2c6ac59e80e99ab23983e23ade56e5fb561fd78c18e503f6225ef82ce@ec2-52-203-160-194.compute-1.amazonaws.com:5432/d1nhnopcv10lc3', convert_unicode=True, encoding='utf8')
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
@@ -104,7 +104,7 @@ class MoldList(Base):
     __tablename__ = 'mold_list'
     id = Column(Integer, Sequence('mold_list_id'), primary_key=True)
     mold_number = Column(String(80), unique=True, nullable=False)
-    mold_number_f = Column(String(80), unique=True, nullable=False)
+    mold_number_f = Column(String(80), unique=False, nullable=False)
     cave_number = Column(Integer, unique=False, nullable=False)
     ejection_mode = Column(String(80), unique=False, nullable=True)
     mold_state = Column(Integer, unique=False, nullable=True)
@@ -401,12 +401,12 @@ class BackendDemand(Base):
     __tablename__ = 'backend_demand'
     id = Column(Integer, Sequence('backend_demand_id'), primary_key=True)
     date = Column(Date, unique=False, nullable=False)
-    product_name = Column(String(80), unique=False, nullable=False)
-    part_number = Column(String(80), unique=False, nullable=False)
-    demand_amount = Column(Integer, unique=False, nullable=False)
-    open_num = Column(Integer, unique=False, nullable=False)
-    revise_amount = Column(Integer, unique=False, nullable=False)
-    revise_open_num = Column(Integer, unique=False, nullable=False)
+    product_name = Column(String(80), unique=False, nullable=True)
+    part_number = Column(String(80), unique=False, nullable=True)
+    demand_amount = Column(Integer, unique=False, nullable=True)
+    open_num = Column(Integer, unique=False, nullable=True)
+    revise_amount = Column(Integer, unique=False, nullable=True)
+    revise_open_num = Column(Integer, unique=False, nullable=True)
     scheduled_num = Column(Integer, unique=False, nullable=True)
     state = Column(Integer, unique=False, nullable=True)
     ps = Column(Text, unique=False, nullable=True)

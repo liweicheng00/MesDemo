@@ -6,7 +6,10 @@
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="stylesheet" href="/static/js/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+		<script src="static/js/xlsx.min.js"></script>
+
 		<!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 	</head>
 	<body>
@@ -19,11 +22,9 @@
 		</div>
 		<div style="margin-left: 50px">
 			<form class="layui-form" action="">
-				<input type="file" class="form-control" id="file-value">
-				<button type="button" class="layui-btn layui-btn-radius" id="preview-btn">預覽</button>
-
+				<input type="file" class="form-control" id="file-value" value="*.xls">
 				<div class="layui-input-inline">
-					<select name="upload_table" id="select">
+					<select name="upload_table" >
 						<option value=""></option>
 						<option value="Bom">Bom</option>
 						<option value="MachineList">機台列表</option>
@@ -34,33 +35,19 @@
 
 				<button type="button" class="layui-btn layui-btn-radius" lay-submit lay-filter="formDemo" id="upload-btn">上傳</button>
 			</form>
+			<p>上傳*.xls格式</p>
 		</div>
 		<hr class="layui-bg-green">
 
-		<!--  <button type="button" class="layui-btn layui-btn-radius" id="update">確認更新</button>-->
 		<div style="margin-left: 50px">
 			<table id="demo" lay-filter="demo" ></table>
 		</div>
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
 
-
-
-		<script src="/static/js/layui/layui.all.js" charset="utf-8"></script>
-		<script src="/static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
-		<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 		<script>
 			var table = layui.table;
 			var layer = layui.layer;
 			var form = layui.form;
-			//
-			// $.ajax({
-			// 	url: '',
-			// 	type: "get",
-			// 	dataType: 'json',
-			// 	success: function(res) {
-			// 		console.log('success')
-			// 		$('#select').html('')
-			// 	}
-			// })
 
 			//监听提交
 			form.on('submit(formDemo)', function(f) {
@@ -88,6 +75,13 @@
 										layer.msg('上傳成功')
 										console.log('上傳成功')
 										console.log(res)
+									},
+									error: function(XMLHttpRequest, textStatus, errorThrown) {
+										layer.open({
+											title: '上傳失敗',
+											content: XMLHttpRequest.responseText,
+											area: '500px'
+										})
 									}
 								})
 							}
@@ -102,80 +96,53 @@
 					layer.msg('沒有上傳數據');
 				}
 
-				// layer.msg(JSON.stringify(data.field));
 				return false;
 			});
 
 			var data = [];
-			$("#preview-btn").click(function() {
-				data = [];
-				var files = document.getElementById("file-value").files;
-				var regp = new RegExp(".*,\".*,.*\"$");
-				if (files.length) {
-					var file = files[0];
 
-					var reader = new FileReader(); //new一个FileReader实例
-					if (typeof FileReader == 'undefined') {
-						layer.alert("你的浏览器暂不支持该功能", {
-							title: "提示",
-							skin: "layui-layer-molv"
-						});
-						file.setAttribute("disabled", "disabled");
-						return;
-					}
-					reader.readAsText(file);
-					reader.onload = function(f) {
-						//					var result = document.getElementById("result");
-						//显示文件
-						// 相同意思f.target = this
-						var relArr = this.result.split("\r\n");
-						if (!$.isEmptyObject(relArr) && relArr.length > 1) {
-							var cols = relArr[0].split(","); // 表頭
-							var cols_en = relArr[1].split(",");
-
-							for (var key = 2, len = relArr.length; key < len; key++) {
-
-								var values = relArr[key];
-								if (regp.test(values)) {
-									alert("文件内容中有英文逗号，麻烦修改后再上传，含有英文逗号的内容是：" + values);
-									return;
-								}
-								if (!$.isEmptyObject(values)) {
-									var obj = {};
-									var objArr = values.split(",");
-									for (var i = 0; i < cols.length; i++) {
-										obj[cols_en[i]] = objArr[i];
-									}
-									data.push(obj);
-								}
-							}
-							// 創建layui表頭
-							var cols_array = []
-							for (var i=0; i < cols.length; i++){
-								cols_array.push({field: cols_en[i], title: cols[i], minWidth:100})
-							}
-							cols_array = [cols_array]
-							console.log(cols_array)
-						}
-						console.log(data);
-						// layui.use('table', function() {
-
-						// 执行渲染
-						console.log('data')
-						console.log(data)
-						table.render({
-							elem: '#demo', //指定原始表格元素选择器（推荐id选择器）
-							data: data,
-							width: '1000',
-							height: 600, //容器高度
-							page: true,
-							limit: 13,
-							cols: cols_array
-
-						});
-					}
+			function handleFile(e) {
+				var files = e.target.files,
+					f = files[0];
+				var reader = new FileReader();
+				if (typeof FileReader == 'undefined') {
+					layer.alert("你的浏览器暂不支持该功能", {
+						title: "提示",
+						skin: "layui-layer-molv"
+					});
+					file.setAttribute("disabled", "disabled");
+					return;
 				}
-			})
+				reader.onload = function(e) {
+					var data_read = new Uint8Array(e.target.result);
+					var workbook = XLSX.read(data_read, {
+						type: 'array'
+					});
+					console.log(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {defval: ''}))
+					var json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {defval: ''})
+					var sheet = workbook.Sheets[workbook.SheetNames[0]]
+					var range = XLSX.utils.decode_range(sheet['!ref'])
+					var cols_array = [[]]
+					for (var c=0; c<=range.e.c; c++){
+						var field = sheet[XLSX.utils.encode_cell({r: 0, c: c})].v
+						cols_array[0].push({field: field, title: json[0][field], minWidth:100})
+					}
+					data = json.slice(1)
+
+					table.render({
+						elem: '#demo', //指定原始表格元素选择器（推荐id选择器）
+						data: data,
+						width: '1000',
+						height: 600, //容器高度
+						page: true,
+						limit: 13,
+						cols: cols_array
+					});
+				};
+				reader.readAsArrayBuffer(f)
+			}
+			var dom = document.getElementById('file-value')
+			dom.addEventListener('change', handleFile, false)
 		</script>
 
 	</body>

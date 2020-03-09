@@ -10,12 +10,22 @@ admin_permission = Permission(RoleNeed('super'))
 user_permission = Permission(RoleNeed('user'))
 
 
+@bp.route('/intro')
+def intro():
+    return render_template('main/framework/intro.html')
+
+
 @bp.route('/index1')
-@login_required
+# @login_required
 def index1():
-    user = current_user.username
-    name = current_user.name
-    return render_template('main/framework/index.html', user=user, name=name)
+    try:
+        user = current_user.username
+        name = current_user.name
+    except:
+        return render_template('main/framework/index.html')
+    else:
+
+        return render_template('main/framework/index.html', user=user, name=name)
 
 
 @bp.route('/index2')

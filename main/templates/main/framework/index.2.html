@@ -9,25 +9,17 @@
 	</head>
 	<body>
 		<div class="ui top attached demo menu">
-			<a class="item" href="#">
+			<a class="item">
 				<img id="hide_btn" src="static/img/menu.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+			</a>
+			<a class="item" href="#">
 				成型MES管理系统
 			</a>
 			<a class="item" href="{{url_for('frame.index1')}}">現場管理</a>
-			<a class="item" href="{{url_for('frame.index2')}}">生產管理</a>
 			<a class="item" href="#">數據管理</a>
-			<div class="ui pointing dropdown link item">
-				<span class="text">其他功能</span>
-				<i class="dropdown icon"></i>
-				<div class="menu">
-					<a class="item" href="{{url_for('signing.sign_process_manager')}}" target="mainShowPage">簽核管理</a>
-					<a class="item" href="{{url_for('frame.protected')}}" target="mainShowPage">權限登入測試</a>
-					<a class="item" href="{{url_for('frame.screen_size')}}" target="mainShowPage">裝置螢幕大小測試</a>
-				</div>
-			</div>
 			<div class="right menu">
 				<div class="ui pointing dropdown link item">
-					{{user}} {{name}}
+					{{name}}
 					<span class="ui red label">0</span>
 					
 					<i class="dropdown icon"></i>
@@ -50,7 +42,6 @@
 				<a class="item" href="{{url_for('revise.product_revise')}}" target="mainShowPage">產品維護</a>
 				<a class="item" href="{{url_for('revise.bom_revise')}}" target="mainShowPage">BOM表維護</a>
 				<a class="item" href="{{url_for('revise.material_revise')}}" target="mainShowPage">材料維護</a>
-				<a class="item" href="javascript:;" target="mainShowPage">模具-料號簽樣維護(X)</a>
 				<a class="item" href="{{url_for('revise.bad_revise')}}" target="mainShowPage">不良項目維護</a>
 				<a class="item" href="{{url_for('revise.anomaly_revise')}}" target="mainShowPage">異常項目維護</a>
 			</div>
@@ -79,7 +70,6 @@
 			$('.ui.sidebar')
 				.sidebar({
 					context: $('.bottom.segment'),
-					dimPage: false,
 					onVisible: function() {
 						console.log('visible')
 					},

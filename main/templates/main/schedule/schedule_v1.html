@@ -15,7 +15,6 @@
 		<script src='static/js/fullcalendar/resource-common/main.js'></script>
 		<script src='static/js/fullcalendar/resource-timeline/main.js'></script>
 		<script src='static/js/moment.js'></script>
-		<script src='static/js/vue.js'></script>
 		<style type="text/css">
 			#popup {
 				display: none;
@@ -95,22 +94,7 @@
 			</legend>
 		</fieldset>
 		<div class="layui-row" style="padding: 0px 15px;">
-			<div class="layui-col-md2" style="padding: 0px 15px; display: none;">
-				<div id='external-events'>
-					<p>
-						<strong>Draggable Events</strong>
-					</p>
-					<div class='fc-event'>My Event 1</div>
-					<div class='fc-event'>My Event 2</div>
-					<div class='fc-event'>My Event 3</div>
-					<div class='fc-event'>My Event 4</div>
-					<div class='fc-event'>My Event 5</div>
-					<p>
-						<input type='checkbox' id='drop-remove' />
-						<label for='drop-remove'>remove after drop</label>
-					</p>
-				</div>
-			</div>
+			
 			<div style="padding: 0px 15px;">
 				<div id='calendar-container'>
 					<div id='calendar'></div>
@@ -144,12 +128,6 @@
 								</div>
 							</div>
 							<div class="layui-form-item">
-								<label class="layui-form-label">工令</label>
-								<div class="layui-input-inline">
-									<input type="text" name="produce_order" id="produce_order" placeholder="工令" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
 								<label class="layui-form-label">產能</label>
 								<div class="layui-input-inline">
 									<input type="text" name="amount" id="amount_input_1" required lay-verify="number" placeholder="數量"
@@ -176,10 +154,12 @@
 		</div>
 		<script src="static/js/layui/layui.all.js" charset="UTF-8"></script>
 		<script src="static/js/jquery-3.3.1.min.js"></script>
-		<!-- <script src="https://unpkg.com/popper.js@1"></script> -->
-		<script src="static/js/popper.min.js"></script>
-		<!-- <script src="https://unpkg.com/tippy.js@5"></script> -->
-		<script src="static/js/tippy-bundle.iife.min.js"></script>
+		<script src="https://unpkg.com/popper.js@1"></script>
+		<!-- <script src="static/js/popper.min.js"></script> -->
+		<script src="https://unpkg.com/tippy.js@5"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
+		<!-- <script src="static/js/tippy-bundle.iife.min.js"></script> -->
 
 		<script>
 			var table = layui.table;
@@ -273,21 +253,12 @@
 			document.oncontextmenu = new Function("return false"); //鎖右鍵
 			document.addEventListener('DOMContentLoaded', function() {
 				var calendarEl = document.getElementById('calendar');
-				var Draggable = FullCalendarInteraction.Draggable;
 
 				var containerEl = document.getElementById('external-events');
 				var calendarEl = document.getElementById('calendar');
 				var checkbox = document.getElementById('drop-remove');
 
-				new Draggable(containerEl, {
-					itemSelector: '.fc-event',
-					eventData: function(eventEl) {
-						return {
-							title: eventEl.innerText,
-							"id": eventEl.innerText,
-						};
-					}
-				});
+				
 				var calendar_editable = 0
 				var calendar_add = 0
 				var time
@@ -323,10 +294,15 @@
 								console.log(info)
 								calendar_editable = calendar_editable ? 0 : 1,
 								calendar.setOption('editable', calendar_editable)
-								if (calendar_editable || calendar_add) {
-									$('.fc-widget-header').css('background', 'coral')
-								} else {
-									$('.fc-widget-header').css('background', 'none')
+								if (calendar_editable) {
+									$('.fc-head .fc-resource-area').css('background', '#fbbd08')
+									$('.fc-head .fc-time-area').css('background', '#fbbd08')
+								} else if (calendar_add){
+									$('.fc-head .fc-resource-area').css('background', 'coral')
+									$('.fc-head .fc-time-area').css('background', 'coral')
+								}else {
+									$('.fc-head .fc-resource-area').css('background', 'none')
+									$('.fc-head .fc-time-area').css('background', 'none')
 								}
 							}
 						},
@@ -335,10 +311,15 @@
 							click: function(info) {
 								console.log(info)
 								calendar_add = calendar_add ? 0 : 1
-								if (calendar_add || calendar_editable) {
-									$('.fc-widget-header').css('background', 'coral')
-								} else {
-									$('.fc-widget-header').css('background', 'none')
+								if (calendar_add) {
+									$('.fc-head .fc-resource-area').css('background', 'coral')
+									$('.fc-head .fc-time-area').css('background', 'coral')
+								} else if (calendar_editable){
+									$('.fc-head .fc-resource-area').css('background', '#fbbd08')
+									$('.fc-head .fc-time-area').css('background', '#fbbd08')
+								}else {
+									$('.fc-head .fc-resource-area').css('background', 'none')
+									$('.fc-head .fc-time-area').css('background', 'none')
 								}
 
 							}
@@ -355,7 +336,16 @@
 								} else {
 									$('.fc-widget-header').css('background', 'none')
 								}
-
+								$(".fc-calendarAdd-button").popup(
+									{
+										html: '<h4>空白處</h4>點擊新增計畫</br>'
+									}
+								)
+								$(".fc-calendarEdit-button").popup(
+									{
+										html: '<h4>計畫</h4>點擊修改</br>拖拉複製</br>右鍵刪除'
+									}
+								)
 							}
 						}
 					},
@@ -699,6 +689,16 @@
 
 
 				calendar.render();
+				$(".fc-calendarAdd-button").popup(
+					{
+						html: '<h4>空白處</h4>點擊新增計畫</br>'
+					}
+				)
+				$(".fc-calendarEdit-button").popup(
+					{
+						html: '<h4>計畫</h4>點擊修改</br>拖拉複製</br>右鍵刪除'
+					}
+				)
 				// setTimeout(function() {
 				// 	var event = calendar.getEvents()
 				// console.log(calendar.getEventSources())

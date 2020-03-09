@@ -9,27 +9,19 @@
 	</head>
 	<body>
 		<div class="ui top attached demo menu">
-			<a class="item" href="#">
+			<a class="item">
 				<img id="hide_btn" src="static/img/menu.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+			</a>
+			<a class="item" href="#">
 				成型MES管理系统
 			</a>
 			<a class="item" href="#">現場管理</a>
-			<a class="item" href="{{url_for('frame.index2')}}">生產管理</a>
 			<a class="item" href="{{url_for('frame.index3')}}">數據管理</a>
-			<div class="ui pointing dropdown link item">
-				<span class="text">其他功能</span>
-				<i class="dropdown icon"></i>
-				<div class="menu">
-					<a class="item" href="{{url_for('signing.sign_process_manager')}}" target="mainShowPage">簽核管理</a>
-					<a class="item" href="{{url_for('frame.protected')}}" target="mainShowPage">權限登入測試</a>
-					<a class="item" href="{{url_for('frame.screen_size')}}" target="mainShowPage">裝置螢幕大小測試</a>
-				</div>
-			</div>
 			<div class="right menu">
 				<div class="ui pointing dropdown link item">
-					{{user}} {{name}}
+					{{name}}
 					<span class="ui red label">0</span>
-					
+
 					<i class="dropdown icon"></i>
 					<div class="menu">
 						<a class="item" href="{{url_for('signing.work_item')}}" target="mainShowPage">工作任務</a>
@@ -45,14 +37,31 @@
 			</div>
 		</div>
 		<div class="ui bottom attached segment">
-			<div class="ui thin left sidebar visible demo vertical menu inverted labeled " style="">
+			<div class="ui thin left sidebar demo vertical menu inverted labeled " style="">
 				<a class="item" href="{{url_for('production.production_overall')}}" target="mainShowPage">現場總覽</a>
+				<a class="item" href="{{url_for('schedule.schedule_overall')}}" target="mainShowPage">計畫排產</a>
 				<div class="ui right pointing dropdown item">
-					<span class="text">現場表單</span>
+					<span class="text">發料模塊</span>
 					<i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="{{url_for('production.daily_bad_report')}}" target="mainShowPage">不良紀錄表</a>
-						<a class="item" href="{{url_for('production.material_check')}}" target="mainShowPage">原料盤點</a>
+						<a class="item" href="{{url_for('schedule.material_dispatch')}}" target="mainShowPage">
+							塑料發料
+						</a>
+						<a class="item" href="{{url_for('schedule.material_dispatch_confirm')}}" target="mainShowPage">
+							塑料發料確認
+						</a>
+						<a class="item" href="{{url_for('schedule.material_check1')}}" target="mainShowPage">
+							現場收料
+						</a>
+					</div>
+				</div>
+				<a class="item" href="{{url_for('production.daily_bad_report')}}" target="mainShowPage">現場表單</a>
+				<div class="ui right pointing dropdown item">
+					<span class="text">初件案件</span>
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item" href="{{url_for('production.first_part_init')}}" target="mainShowPage">初件發起</a>
+						<a class="item" href="{{url_for('production.first_part_list')}}" target="mainShowPage">初件案件</a>
 					</div>
 				</div>
 				<div class="ui right pointing dropdown item">
@@ -62,44 +71,122 @@
 						<a class="item" href="{{url_for('production.bad_report_query')}}" target="mainShowPage">不良統計查詢</a>
 						<a class="item" href="{{url_for('production.bad_report_progress_query')}}" target="mainShowPage">不良推移查詢</a>
 						<a class="item" href="{{url_for('production.bad_cause_query')}}" target="mainShowPage">不良對策查詢</a>
-						<a class="item" href="{{url_for('production.daily_bad_report_query')}}" target="mainShowPage">機台日報查詢</a>
 					</div>
 				</div>
-				<div class="ui right pointing dropdown item">
-					<span class="text">初件案件</span>
-					<i class="dropdown icon"></i>
-					<div class="menu">
-						<a class="item" href="{{url_for('production.first_part_init')}}" target="mainShowPage">初件發起</a>						</li>
-						<a class="item" href="{{url_for('production.first_part_list')}}" target="mainShowPage">初件案件</a>
-						</div>
-				</div>
+				
+				
 			</div>
 			<div class="pusher">
-				<!-- <div class="ui basic segment"> -->
-				<iframe 
-					id="frame"
-					src="{{url_for('production.production_overall')}}" 
-					name="mainShowPage" 
-					style="width: 100%; min-height: 100%; border: 0; ">
-				</iframe>
-				<!-- </div> -->
-				
+				<iframe id="frame" src="/intro" name="mainShowPage" style="width: 100%; min-height: 100%; border: 0; ">
+				</iframe> 
+			</div>
+		</div>
+		<div class="ui modal coupled first">
+			<div class="header">
+				<h1>登入</h1>
+			</div>
+			<div class="content">
+				{% if error%}
+				<p>{{error}}</p>
+				{% endif %}
+				<form id="target" method="POST" class="ui form" action="/">
+					<label>帳號</label>
+					<div class="form-group row">
+						<div class="field">
+							<input id="ID" type="text" name="ID" value="admin">
+						</div>
+					</div>
+					<label>密碼</label>
+					<div class="form-group row">
+						<div class="field">
+							<input id="pwd" type="password" name="pwd" value="admin">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="actions">
+				<div class="ui black button register">
+					Register
+				</div>
+				<div class="ui positive button">
+					Login
+				</div>
+			</div>
+		</div>
+		<div class="ui modal coupled second">
+			<div class="header">
+				<h1>註冊</h1>
+			</div>
+			<div class="content">
+				<form id="register" method="POST" class="ui form" action="/register">
+					<label>帳號</label>
+					<div class="field">
+						<input type="text" name="ID">
+					</div>
+					<label>姓名</label>
+					<div class="field">
+						<input type="text" name="name">
+					</div>
+					<label>密碼</label>
+					<div class="field">
+						<input type="password" name="pwd">
+					</div>
+					<label>密碼確認</label>
+					<div class="field">
+						<input type="password" name="pwd_confirm">
+					</div>
+				</form>
+			</div>
+			<div class="actions">
+				<div class="ui black deny button">
+					Cancel
+				</div>
+				<div class="ui positive button">
+					Register
+				</div>
 			</div>
 		</div>
 		<script type="text/javascript">
-			
 			$(function() {
+				if (!'{{user}}') {
+					$('.coupled.modal')
+						.modal({
+							allowMultiple: true
+						});
+					$('.ui.modal.first')
+						.modal({
+							closable: false,
+							onApprove: function() {
+								console.log('hgj');
+								$('#target').submit()
+							},
+						})
+						.modal('show')
+					
+					// open second modal on first modal buttons
+					$('.second.modal')
+						.modal('attach events', '.first.modal .register')
+						.modal({
+							onApprove: function() {
+								$('#register').submit()
+							}
+						});
+
+				}
+
+
+
 				console.log($(".pusher").css('height'))
-				$("#frame").css('height', parseFloat($(".pusher").css('height'))-50)
+				$("#frame").css('height', parseFloat($(".pusher").css('height')) - 50)
 				// $(".pusher").resize(function(){
 				// 	$("#frame").css('height', $(".pusher").css('height'))
 				// })
 			})
-			
+
 			$('.ui.sidebar')
 				.sidebar({
 					context: $('.bottom.segment'),
-					dimPage: false,
+					dimPage: true,
 					onVisible: function() {
 						console.log('visible')
 					},

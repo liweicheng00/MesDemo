@@ -163,7 +163,7 @@ def ajax_add_daily_report():
     try:
         date = data['date']
         date = datetime.datetime.strptime(date, "%Y-%m-%d")
-        building = data['building']
+        building = "A18"
         machine = data['machine']
         part_number = data['part_number']
         mold = data['mold']

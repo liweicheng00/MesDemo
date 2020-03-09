@@ -163,8 +163,10 @@
 			});
 			// 監聽成型品名稱選單
 			form.on('select(select_inj_name)', function(data) {
-				console.log(data.value); //得到被选中的值
+				console.log(data); //得到被选中的值
 				query_post['inj_product_name'] = data.elem.innerText
+				console.log(data.elem)
+				console.log(data.elem.innerText)
 				query_post['inj_part_number'] = data.value
 				get_query(query_post)
 

@@ -219,7 +219,7 @@ def ajax_data_upload():
             if not (col in data[0].keys()):
                 return jsonify([{'state': '1', 'error': '模具-料號對照表 欄位不正確'}])
         for dta in data:
-            # print(dta)
+            print(dta)
             mold_number = dta['mold_number']
             mold_number_f = dta['mold_number_f']
             cave_number = dta['cave_number']
@@ -233,7 +233,8 @@ def ajax_data_upload():
                     db_session.add(new_mold)
                     db_session.commit()
                     print('create new mold seccess')
-                except:
+                except (RuntimeError, TypeError, NameError):
+                    print(RuntimeError)
                     print('Failed to create new mold in table [mold_list].')
                     db_session.remove()
                 else:

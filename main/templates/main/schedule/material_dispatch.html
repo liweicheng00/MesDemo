@@ -25,8 +25,6 @@
 					<div class="col-sm-2">
 						<select class="form-control" id="building">
 							<option value="A18">A18</option>
-							<option value="A17">A17</option>
-							<option value="A16">A16</option>
 						</select>
 					</div>
 					<label for="building" class="col-sm-1 col-form-label">日期</label>
@@ -146,21 +144,21 @@
 				console.log(row.state)
 				if (row.state==0){
 					return [
-						'<div class="row" style="text-align: center;">',
+						'<div class="row d-flex justify-content-around" style="text-align: center;">',
 						'<button type="buttom" class="confirm btn btn-primary btn-sm">發料</button> &nbsp&nbsp',
 						'<button type="buttom" class="cancel btn btn-secondary btn-sm" disabled>退回</button>',
 						'</div>',
 					].join("")
 				}else if (row.state==1){
 					return [
-						'<div class="row">',
+						'<div class="row d-flex justify-content-around">',
 						'<button type="buttom" class="confirm btn btn-secondary btn-sm" disabled>發料</button> &nbsp&nbsp',
 						'<button type="buttom" class="cancel btn btn-success btn-sm">退回</button>',
 						'</div>',
 					].join("")
 				}else{
 					return [
-						'<div class="row">',
+						'<div class="row d-flex justify-content-around">',
 						'<button type="buttom" class="confirm btn btn-secondary btn-sm" disabled>發料</button> &nbsp&nbsp',
 						'<button type="buttom" class="cancel btn btn-secondary btn-sm" disabled>退回</button>',
 						'</div>',
