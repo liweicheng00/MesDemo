@@ -2,72 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/framework/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/framework/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/framework/frame.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/framework/frame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/framework/upload_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/anomaly_revise.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/bad_revise.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/bad_statistic.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/bad_statistic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/first_part.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/first_part.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/get_bad_statistic.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/get_bad_statistic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/revise/upload_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/upload_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/bom_revise.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/overall.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/overall.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/pnlist_revise.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/product_revise.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/js/popper.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/js/popper.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/js/tippy-bundle.iife.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/js/tippy-bundle.iife.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/cookie_view.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.1.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index.2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index1.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index2.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index3.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/upload_data.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/Alm_monitor.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/anomaly_revise.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/bad_record_progress_query.1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/bad_record_progress_query.1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/bad_record_progress_query.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/bad_revise.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/ctMonitor_index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/ctMonitoring_revise.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/daily_bad_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/daily_bad_report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/daily_bad_report_query.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/inbound.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/inj_param_record.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/inj_param_record_query.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/inj_param_standard.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/issuance.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/material_check.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/material_check_query.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/production_overall.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/production_overall_horizontal_v2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/production_overall_horizontal_v2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/upload_data.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/upload_data.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/backend_demand.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/backend_demand_v0.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/bom_revise.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/material_dispatch.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/material_dispatch.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/product_revise.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule_auto_v1.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule_overall.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule_revise.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/bootstrap_table.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/static/css/bootstrap-table.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/static/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/static/css/layui.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/static/css/semantic.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/static/js/bootstrap-table.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/static/js/jquery-3.3.1.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/test/static/js/semantic.min.js" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -110,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main/mes/production/get_bad_statistic.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="398" column="75" selection-start-line="398" selection-start-column="75" selection-end-line="398" selection-end-column="75" />
+            <state relative-caret-position="50">
+              <caret line="462" column="20" lean-forward="true" selection-start-line="462" selection-start-column="20" selection-end-line="462" selection-end-column="20" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -131,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="511" column="22" lean-forward="true" selection-start-line="511" selection-start-column="22" selection-end-line="511" selection-end-column="22" />
+            <state relative-caret-position="420">
+              <caret line="29" column="58" lean-forward="true" selection-start-line="29" selection-start-column="58" selection-end-line="29" selection-end-column="58" />
               <folding>
                 <element signature="e#0#147#0" expanded="true" />
               </folding>
@@ -257,10 +192,10 @@
         <option value="$PROJECT_DIR$/main/mes/production/__init__.py" />
         <option value="$PROJECT_DIR$/main/mes/schedule/__init__.py" />
         <option value="$PROJECT_DIR$/main/mes/revise/upload_data.py" />
-        <option value="$PROJECT_DIR$/main/model.py" />
         <option value="$PROJECT_DIR$/main/mes/framework/frame.py" />
         <option value="$PROJECT_DIR$/main/mes/production/bad_statistic.py" />
         <option value="$PROJECT_DIR$/main/mes/production/get_bad_statistic.py" />
+        <option value="$PROJECT_DIR$/main/model.py" />
       </list>
     </option>
   </component>
@@ -373,7 +308,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.__init__">
+  <component name="RunManager" selected="Python.model">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python">
       <module name="MesDemo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -452,10 +387,10 @@
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" />
       <window_info anchor="bottom" id="Version Control" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49960285" weight="0.24109589" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49960285" visible="true" weight="0.24109589" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="9" weight="0.32876712" />
-      <window_info active="true" anchor="bottom" x="179" y="416" width="849" height="618" id="Run" order="10" sideWeight="0.50039715" side_tool="true" type="FLOATING" visible="true" weight="0.33576643" />
+      <window_info anchor="bottom" x="215" y="99" width="849" height="602" id="Run" order="10" sideWeight="0.50039715" side_tool="true" type="FLOATING" weight="0.33576643" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -808,16 +743,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="511" column="22" lean-forward="true" selection-start-line="511" selection-start-column="22" selection-end-line="511" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#147#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/mes/schedule/schedule.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
@@ -844,10 +769,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main/mes/production/get_bad_statistic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="398" column="75" selection-start-line="398" selection-start-column="75" selection-end-line="398" selection-end-column="75" />
+        <state relative-caret-position="50">
+          <caret line="462" column="20" lean-forward="true" selection-start-line="462" selection-start-column="20" selection-end-line="462" selection-end-column="20" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="29" column="58" lean-forward="true" selection-start-line="29" selection-start-column="58" selection-end-line="29" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#147#0" expanded="true" />
           </folding>
         </state>
       </provider>
