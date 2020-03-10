@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/main/static/node_modules/@fullcalendar/core/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/node_modules/@fullcalendar/core/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/static/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/static/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" afterDir="false" />
