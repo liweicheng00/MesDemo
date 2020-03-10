@@ -19,5 +19,4 @@ def no_permission(e):
         return render_template('no_authority.html')
 
 
-from . import schedule, daily_report\
-    , overall, auto_schedule, material_dispatch
+from . import schedule, overall, material_dispatch

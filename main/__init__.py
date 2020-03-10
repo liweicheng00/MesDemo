@@ -55,11 +55,9 @@ def load_tasks():
 
 '''關閉資料庫連接'''
 from main.model import db_session as db1
-# from main.model2 import db_session as db2
 @app.teardown_appcontext
 def shutdown_session(exception=None):  # exception=None 很重要
     db1.remove()
-    # db2.remove()
 
 
 '''設定藍圖，提供url_for引導到指定url'''
@@ -79,9 +77,6 @@ from main.mes.schedule import bp  # 生產管理功能
 app.register_blueprint(bp)
 app.add_url_rule("/schedule", endpoint='index')
 
-from main.mes.signing import bp  # 簽核管理功能
-app.register_blueprint(bp)
-app.add_url_rule("/signing", endpoint='index')
 
 from main.mes.revise import bp  # 數據管理功能
 app.register_blueprint(bp)

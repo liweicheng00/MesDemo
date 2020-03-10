@@ -23,6 +23,6 @@ def ajax_get_time():
 
 
 from . import production_overall, bad_statistic, \
-    material_check, issuance, inbound, get_bad_statistic, bad_cause_query, \
+    material_check, get_bad_statistic, bad_cause_query, \
     first_part
 

@@ -60,11 +60,6 @@ def protected():
            + 'Permission user: {}'.format(user_permission.can())
 
 
-@bp.route('/screen_size')
-def screen_size():
-    return render_template('main/framework/screen_size.html')
-
-
 @bp.route('/cookies_view')
 def cookies_view():
     return render_template('main/framework/cookie_view.html')
