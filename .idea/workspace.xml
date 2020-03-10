@@ -2,43 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/framework/frame.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/framework/frame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/inbound.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/inj_param.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/issuance.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/monitor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/auto_schedule.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/daily_report.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/schedule.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/schedule.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/signing/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/signing/sign_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/model1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/model2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/css/ctMonitoring.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/js/jquery.mCustomScrollbar.concat.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/js/jquery.mCustomScrollbar.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/json/InjParam.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/json/ManualParams.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/json/SpcRecord.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/json/injParam_all.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main/static/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/static/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/screen_size.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/production_overall_horizontal_v2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/production_overall_horizontal_v2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/production_overall_horizontal_v3.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/launch_item.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/sign.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/sign_launch.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/sign_process_manager.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/signing_process.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/table/daily_bad_report_query.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/table/inj_param_record.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/table/inj_param_standard.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/signing/work_item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
