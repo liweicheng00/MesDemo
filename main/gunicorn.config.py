@@ -14,5 +14,5 @@ daemon = True
 
 # 启动的进程数
 workers = multiprocessing.cpu_count()
-worker_class = 'gevent'
+worker_class = 'gunicorn.workers.ggevent.GeventWorker'
 x_forwarded_for_header = 'X-FORWARDED-FOR'
