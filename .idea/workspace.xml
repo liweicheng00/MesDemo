@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/gunicorn.config.py" beforeDir="false" afterPath="$PROJECT_DIR$/gunicorn.config.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +63,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/gunicorn.config.py">
+        <entry file="file://$PROJECT_DIR$/gunicorn.config.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
               <caret line="16" column="53" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
@@ -74,7 +75,7 @@
         <entry file="file://$PROJECT_DIR$/Procfile">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="48" selection-start-column="48" selection-end-column="48" />
+              <caret column="22" selection-start-column="22" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -230,19 +231,19 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/main/templates/main/framework" />
-      <recent name="$PROJECT_DIR$/main/mes/revise" />
-      <recent name="$PROJECT_DIR$/main/templates/main/production" />
-      <recent name="$PROJECT_DIR$/main/templates/main" />
-      <recent name="$PROJECT_DIR$/main/templates" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/main/templates/main/revise" />
       <recent name="$PROJECT_DIR$/main/mes/production" />
       <recent name="$PROJECT_DIR$/main/templates/main/production" />
       <recent name="$PROJECT_DIR$/main" />
       <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/main/templates/main/framework" />
+      <recent name="$PROJECT_DIR$/main/mes/revise" />
+      <recent name="$PROJECT_DIR$/main/templates/main/production" />
+      <recent name="$PROJECT_DIR$/main/templates/main" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -660,7 +661,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/gunicorn.config.py">
+    <entry file="file://$PROJECT_DIR$/gunicorn.config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="16" column="53" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
@@ -670,7 +671,7 @@
     <entry file="file://$PROJECT_DIR$/Procfile">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="48" selection-start-column="48" selection-end-column="48" />
+          <caret column="22" selection-start-column="22" selection-end-column="22" />
         </state>
       </provider>
     </entry>
