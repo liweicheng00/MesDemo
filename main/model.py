@@ -14,7 +14,8 @@ else:
     if url is not None:
         url = url.split('postgres://')[1]
         print(url)
-        engine = create_engine('postgresql+psycopg2://{}'.format(url), convert_unicode=True, encoding='utf8')
+        engine = create_engine('postgresql+psycopg2://{}'.format(url),
+                               convert_unicode=True, encoding='utf8')
     else:
         engine = create_engine('postgresql+psycopg2://liweicheng:@127.0.0.1:5432/liweicheng', convert_unicode=True,
                                encoding='utf8')

@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, RoleNeed
 from flask_socketio import SocketIO, emit
+from flask_restful import Api
 import logging
 
 app = Flask(__name__, instance_relative_config=True)
@@ -20,6 +21,11 @@ app.logger.addHandler(handler)
 # from main.socket_io import init_socket, init_socket_test
 # init_socket(socketio)
 # init_socket_test(socketio)
+'''restFul api'''
+from main.resources.user import User
+api = Api(app)
+api.add_resource(User, "/user/<string:name>")
+
 
 '''登入需求'''
 login_manager = LoginManager(app)
