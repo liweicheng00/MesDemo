@@ -22,9 +22,10 @@ app.logger.addHandler(handler)
 # init_socket(socketio)
 # init_socket_test(socketio)
 '''restFul api'''
-from main.resources.user import User
+from main.resources.user import User, Login
 api = Api(app)
-api.add_resource(User, "/user/<string:name>")
+api.add_resource(User, "/api/user")
+api.add_resource(Login, "/api/login")
 
 
 '''登入需求'''

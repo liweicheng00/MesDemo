@@ -19,7 +19,7 @@
 			<a class="item" href="{{url_for('frame.index3')}}">數據管理</a>
 			<div class="right menu">
 				<div class="ui pointing dropdown link item">
-					{{name}}
+					<span id="user_name"></span>
 					<span class="ui red label">0</span>
 
 					<i class="dropdown icon"></i>
@@ -31,7 +31,7 @@
 						<a class="item" href="{{url_for('auth.change_password')}}" target="mainShowPage">修改密碼</a>
 					</div>
 				</div>
-				<a class="ui item active" href="{{ url_for('auth.logout')}}">
+				<a class="ui item active" href="#" id="logout">
 					登出
 				</a>
 			</div>
@@ -86,10 +86,8 @@
 				<h1>登入</h1>
 			</div>
 			<div class="content">
-				{% if error%}
-				<p>{{error}}</p>
-				{% endif %}
-				<form id="target" method="POST" class="ui form" action="/">
+				<p id="login_msg"></p>
+				<form id="login" class="ui form" onsubmit="return false;">
 					<label>帳號</label>
 					<div class="form-group row">
 						<div class="field">
@@ -147,8 +145,16 @@
 			</div>
 		</div>
 		<script type="text/javascript">
-			$(function() {
-				if (!'{{user}}') {
+			var user 
+			$.ajax({
+				url: '/api/login',
+				method: 'GET',
+				dataType: 'json',
+				success: function(res){
+					console.log(res)
+					user = res.user
+					if (!user) {
+					console.log('no user')
 					$('.coupled.modal')
 						.modal({
 							allowMultiple: true
@@ -157,8 +163,23 @@
 						.modal({
 							closable: false,
 							onApprove: function() {
-								console.log('hgj');
-								$('#target').submit()
+								var data = $("#login").serializeArray().reduce(function(obj, item){
+									obj[item.name] = item.value
+									return obj
+								}, {})
+								console.log(data)
+								$.ajax({
+									url: '/api/login',
+									type: "POST",
+									data: JSON.stringify(data),
+									dataType: 'json',
+									contentType: 'application/json',
+									success: function(res) {
+										console.log(res)
+										location.reload()
+										
+									},
+								})
 							},
 						})
 						.modal('show')
@@ -168,15 +189,49 @@
 						.modal('attach events', '.first.modal .register')
 						.modal({
 							onApprove: function() {
-								$('#register').submit()
+								var data = $("#register").serializeArray().reduce(function(obj, item){
+									obj[item.name] = item.value
+									return obj
+								}, {})
+								console.log(data)
+								$.ajax({
+									url: '/api/user',
+									type: "POST",
+									data: JSON.stringify(data),
+									dataType: 'json',
+									contentType: 'application/json',
+									success: function(res) {
+										console.log(res)
+										location.reload()
+										
+									},
+								})
 							}
 						});
+				}else{
+					console.log('user')
 
+					$('#user_name').html(user.name)
+				}
 				}
 
+			})
+			$(function() {
+				$("#logout").click(function(){
+					$.ajax({
+						url: "/api/login",
+						type: "DELETE",
+						contentType: 'application/json',
+						success: function(res){
+							console.log('logout')
+							location.reload()
+						}
+					})
+				})
+				
 
 
-				console.log($(".pusher").css('height'))
+
 				$("#frame").css('height', parseFloat($(".pusher").css('height')) - 50)
 				// $(".pusher").resize(function(){
 				// 	$("#frame").css('height', $(".pusher").css('height'))
