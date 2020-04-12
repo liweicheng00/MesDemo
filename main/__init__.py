@@ -14,7 +14,7 @@ app.logger.addHandler(handler)
 
 
 # cors = CORS(app)
-socketio = SocketIO(app, async_mode=None)
+# socketio = SocketIO(app, async_mode=None)
 
 # '''建立socketIO通道'''
 # socketio = SocketIO(app, async_mode=None)
@@ -101,4 +101,4 @@ def hello():
 
 if __name__ == '__main__':
     app.run()
-    socketio.run(app, debug=True)
+    # socketio.run(app, debug=True)
