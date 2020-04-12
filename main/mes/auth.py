@@ -77,7 +77,7 @@ def login():
 
 @bp.route('/change_password', methods=('GET', 'POST'))
 @login_required
-@admin_permission.require(http_exception=403)
+# @admin_permission.require(http_exception=403)
 def change_password():
     error = None
     if request.method == 'POST':
