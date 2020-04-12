@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, RoleNeed
-from flask_socketio import SocketIO, emit
+# from flask_socketio import SocketIO, emit
 from flask_restful import Api
 import logging
 
