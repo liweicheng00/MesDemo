@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/change_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/change_password.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,6 +154,7 @@
         <option value="$PROJECT_DIR$/main/mes/auth.py" />
         <option value="$PROJECT_DIR$/venv/lib/python3.6/site-packages/flask_restful/reqparse.py" />
         <option value="$PROJECT_DIR$/main/resources/user.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
       </list>
     </option>
   </component>
@@ -343,7 +337,7 @@
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16759333" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16759333" />
       <window_info id="Favorites" order="1" side_tool="true" />
       <window_info id="Structure" order="2" weight="0.2239873" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -353,10 +347,10 @@
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.32876712" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49960285" weight="0.36849314" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49960285" visible="true" weight="0.36849314" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32876712" />
       <window_info anchor="bottom" id="Python Console" order="9" weight="0.32876712" />
-      <window_info active="true" anchor="bottom" x="819" y="139" width="611" height="586" id="Run" order="10" sideWeight="0.50039715" side_tool="true" type="FLOATING" visible="true" weight="0.33576643" />
+      <window_info anchor="bottom" x="819" y="139" width="611" height="586" id="Run" order="10" sideWeight="0.50039715" side_tool="true" type="FLOATING" visible="true" weight="0.33576643" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -377,13 +371,6 @@
     <entry file="file://$PROJECT_DIR$/main1/main/mes/framework/frame.py" />
     <entry file="file://$PROJECT_DIR$/main1/main/templates/main/framework/index1.html" />
     <entry file="file://$PROJECT_DIR$/main/templates/main/framework/index1.html" />
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/templates/main/framework/index2.html" />
     <entry file="file://$PROJECT_DIR$/main/templates/main/framework/index3.html" />
     <entry file="file://$PROJECT_DIR$/main/mes/production/first_part.py">
@@ -667,6 +654,13 @@
           <folding>
             <element signature="e#0#30#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="6" lean-forward="true" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
         </state>
       </provider>
     </entry>
