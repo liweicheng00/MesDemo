@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, RoleNeed
-# from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit
 from flask_restful import Api
 import logging
 
@@ -14,7 +14,7 @@ app.logger.addHandler(handler)
 
 
 # cors = CORS(app)
-# socketio = SocketIO(app, async_mode=None)
+socketio = SocketIO(app, async_mode=None)
 
 # '''建立socketIO通道'''
 # socketio = SocketIO(app, async_mode=None)
@@ -101,4 +101,4 @@ def hello():
 
 if __name__ == '__main__':
     app.run()
-    # socketio.run(app, debug=True)
+    socketio.run(app, debug=True)
