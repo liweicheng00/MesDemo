@@ -54,7 +54,7 @@
 			var building
 			var time
 			$.ajax({
-				url: '{{url_for('production.ajax_get_time')}}',
+				url: '/ajax_get_time',
 				type: "GET",
 				dataType: 'json',
 				async: false,
@@ -78,7 +78,7 @@
 
 				function get_material_dispatch(building) {
 					$.ajax({
-						url: '{{url_for('schedule.ajax_get_material_dispatch')}}',
+						url: '/ajax_get_material_dispatch',
 						type: "POST",
 						data: JSON.stringify({
 							building: building,
@@ -200,7 +200,7 @@
 					console.log('確認領料')
 					console.log(row)
 					$.ajax({
-						url: '{{url_for('schedule.ajax_get_material_confirm')}}',
+						url: '/ajax_get_material_confirm',
 						type: "POST",
 						data: JSON.stringify(row),
 						dataType: 'json',
@@ -217,7 +217,7 @@
 					console.log('取消發料')
 					console.log(row)
 					$.ajax({
-						url: '{{url_for('schedule.ajax_cancel_material_confirm')}}',
+						url: '/ajax_cancel_material_confirm',
 						type: "POST",
 						data: JSON.stringify(row),
 						dataType: 'json',
@@ -243,7 +243,7 @@
 			}
 			$table.on('expand-row.bs.table', function(e, index, row, $detail){
 				$.ajax({
-					url: '{{url_for('production.ajax_material_check')}}',
+					url: '/ajax_material_check',
 					type: "POST",
 					data: JSON.stringify(row),
 					dataType: 'json',
@@ -293,7 +293,7 @@
 					data = Object.assign(data, row)
 
 					$.ajax({
-						url: '{{url_for('production.ajax_material_check_upload')}}',
+						url: '/ajax_material_check_upload',
 						type: "POST",
 						data: JSON.stringify(data),
 						dataType: 'json',
@@ -305,7 +305,7 @@
 							$table.bootstrapTable('toggleDetailView', index)
 							$('#check_btn')[0].className = 'check btn btn-secondary btn-sm'
 							$.ajax({
-								url: '{{url_for('schedule.ajax_confirm_check_material')}}',
+								url: '/ajax_confirm_check_material',
 								type: "POST",
 								data: JSON.stringify(row),
 								dataType: 'json',

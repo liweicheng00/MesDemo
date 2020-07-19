@@ -50,43 +50,7 @@ def ajax_bad_amount():
 
 @bp.route("/ajax_time", methods=['POST'])
 def ajax_time():
-    work_class = ''
-    time = datetime.datetime.now().time()
-    A = datetime.time(7, 30, 0)
-    B = datetime.time(11, 30, 0)
-    C = datetime.time(15, 30, 0)
-    D = datetime.time(19, 30, 0)
-    E = datetime.time(23, 30, 0)
-    F = datetime.time(3, 30, 0)
-    if time.__ge__(A) and time.__lt__(B):
-        work_class = 'A'
-    elif time.__ge__(B) and time.__lt__(C):
-        work_class = 'B'
-    elif time.__ge__(C) and time.__lt__(D):
-        work_class = 'C'
-    elif time.__ge__(D) and time.__lt__(E):
-        work_class = 'D'
-    elif time.__ge__(E) or time.__lt__(F):
-        work_class = 'E'
-    elif time.__ge__(F):
-        work_class = 'F'
-    data = request.get_data()
-    data = json.loads(data)
-    form_no = data['form_no']
-    q_daily_class = DailyClassReport.query.filter(DailyClassReport.daily_report_id == form_no).all()
-    if not q_daily_class:
-        print('q_daily_class is None')
-        return jsonify({'error': 'q_daily_class is None'})
-
-    result = {}
-    for daily_class in q_daily_class:
-        temp = {}
-        temp['box_number'] = daily_class.box_number
-        temp['bad_amount'] = daily_class.bad_amount
-        temp['box_pics'] = daily_class.ps
-        result[daily_class.work_class] = temp
-    result['work_class'] = work_class
-    return jsonify(result)
+    return jsonify()
 
 
 @bp.route("/ajax_anomaly_type_list", methods=['GET'])
@@ -159,36 +123,45 @@ def ajax_get_machine_schedule():
 def ajax_add_daily_report():
     data = request.get_data()
     data = json.loads(data)
+    print('ajax_add_daily_report')
     print(data)
     try:
-        date = data['date']
-        date = datetime.datetime.strptime(date, "%Y-%m-%d")
-        building = "A18"
-        machine = data['machine']
+        system_day = data['date']
+        date = datetime.datetime.strptime(system_day, "%Y-%m-%d")
+        building = 'A18'
         part_number = data['part_number']
         mold = data['mold']
+
+        q_machine = MachineList.query.filter(MachineList.building == building,
+                                             MachineList.machine_name == data['machine']).first()
+        machine_id = q_machine.id
+
+        q_pn = PNList.query.filter(PNList.part_number == data['part_number']).first()
+        q_m = db_session.query(MoldList, MoldPnAssociation)\
+            .join(MoldPnAssociation, MoldPnAssociation.mold_id == MoldList.id)\
+            .filter(MoldList.mold_number_f == data['mold'], MoldPnAssociation.pnlist_id == q_pn.id).all()
+        assert len(q_m) == 1, "模具ＩＤ查詢錯誤"
+        mold_id = q_m[0][0].id
+
     except Exception as e:
         error = 'Can not find key: ' + str(e) + ' in data.'
         print(error)
-        return jsonify({'error': error})
+        return jsonify({'msg': error}), 400
 
-    q_daily = DailyReport.query.filter(DailyReport.date == date, DailyReport.building == building,
-                                       DailyReport.machine == machine, DailyReport.part_number == part_number,
-                                       DailyReport.mold == mold).first()
+    q_daily = DailyReport.query.filter(DailyReport.date == date,
+                                       DailyReport.building == building,
+                                       DailyReport.machine_id == machine_id,
+                                       DailyReport.part_number == part_number,
+                                       DailyReport.mold == mold,
+                                       DailyReport.mold_id == mold_id).first()
     if q_daily is None:
-        new_daily_report = DailyReport(date=date, building=building, machine=machine,
-                                       part_number=part_number, produce_amount=0,
-                                       bad_amount=0, bad_percent=0, record_state=0, mold=mold)
-        db_session.add(new_daily_report)
-        db_session.commit()
-        q_daily = DailyReport.query.filter(DailyReport.date == date, DailyReport.building == building,
-                                           DailyReport.machine == machine, DailyReport.part_number == part_number,
-                                           DailyReport.mold == mold).first()
-        daily_report_id = q_daily.id
-        for temp in ['A', 'B', 'C', 'D', 'E', 'F']:
-            new_daily_class_report = DailyClassReport(daily_report_id=daily_report_id, work_class=temp,
-                                                      bad_amount=0, box_number=0, box_name='')
-            db_session.add(new_daily_class_report)
+        q_machine = MachineList.query.filter(MachineList.id == machine_id).first()
+        q_daily = DailyReport(date=date, building=building,
+                              machine=q_machine.machine_name,
+                              machine_id=machine_id,
+                              part_number=part_number, produce_amount=0,
+                              bad_amount=0, bad_percent=0, record_state=0, mold=mold, mold_id=mold_id)
+        db_session.add(q_daily)
         db_session.commit()
     else:
         return jsonify({'state': 0, 'msg': '日報表存在', 'form_no': q_daily.id})
@@ -231,28 +204,19 @@ def ajax_amount_upload():
     data = request.get_data()
     data = json.loads(data)
     print(data)
-    box_pics = data['box_pics']
     daily_report_id = data['form_no']
     produce_amount = float(data['amount_1']) + float(data['amount_2'])
-    work_class = data['work_class'][0]
-    box_number = data['box_number']
     q_daily = DailyReport.query.filter(DailyReport.id == daily_report_id).first()
     q_daily.produce_amount = produce_amount
-    db_session.add(q_daily)
-    db_session.commit()
 
     if q_daily.produce_amount != 0:
         q_daily.bad_percent = 100 * q_daily.bad_amount / q_daily.produce_amount
         q_daily.bad_ppm = 1000000 * q_daily.bad_amount / q_daily.produce_amount
     else:
         q_daily.bad_percent = 0
-
-    q_daily_class = DailyClassReport.query.filter(DailyClassReport.daily_report_id == daily_report_id,
-                                                  DailyClassReport.work_class == work_class).first()
-    q_daily_class.box_number = box_number
-    q_daily_class.ps = box_pics
-    db_session.add(q_daily_class)
+    db_session.add(q_daily)
     db_session.commit()
+
     return jsonify()
 
 
@@ -288,41 +252,18 @@ def ajax_bad_upload():
     bad_name = data['bad_type']
     daily_report_id = data['form_no']
     move = data['move']
-    time = datetime.datetime.now().time()
-    A = datetime.time(7, 30, 0)
-    B = datetime.time(11, 30, 0)
-    C = datetime.time(15, 30, 0)
-    D = datetime.time(19, 30, 0)
-    E = datetime.time(23, 30, 0)
-    F = datetime.time(3, 30, 0)
-    if time.__ge__(A) and time.__lt__(B):
-        work_class = 'A'
-    elif time.__ge__(B) and time.__lt__(C):
-        work_class = 'B'
-    elif time.__ge__(C) and time.__lt__(D):
-        work_class = 'C'
-    elif time.__ge__(D) and time.__lt__(E):
-        work_class = 'D'
-    elif time.__ge__(E) or time.__lt__(F):
-        work_class = 'E'
-    elif time.__ge__(F):
-        work_class = 'F'
-    time = datetime.datetime.now()
-    print(time)
+
     if move == 'add':
-        q_daily_class = DailyClassReport.query.filter(DailyClassReport.daily_report_id == daily_report_id,
-                                                      DailyClassReport.work_class == work_class).first()
-        daily_class_id = q_daily_class.id
         q_bad = BadList.query.filter(BadList.bad_name == bad_name).first()
         bad_id = q_bad.id
 
-        new_bad_record = BadRecord(daily_report_id=daily_report_id, daily_class_report_id=daily_class_id,
-                                   bad_id=bad_id, record_time=time)
+        new_bad_record = BadRecord(daily_report_id=daily_report_id,
+                                   bad_id=bad_id,
+                                   record_time=datetime.datetime.now())
         db_session.add(new_bad_record)
         db_session.commit()
 
         q_daily = DailyReport.query.filter(DailyReport.id == daily_report_id).first()
-        # q_daily.bad_amount = q_daily.bad_amount+1
         q_daily.bad_amount = BadRecord.query.filter(BadRecord.daily_report_id == daily_report_id).count()
         if q_daily.produce_amount != 0:
             q_daily.bad_percent = 100 * q_daily.bad_amount / q_daily.produce_amount
@@ -331,11 +272,8 @@ def ajax_bad_upload():
             q_daily.bad_percent = 0
 
         # q_daily_class.bad_amount = q_daily_class.bad_amount+1
-        q_daily_class.bad_amount = BadRecord.query.filter(BadRecord.daily_report_id == daily_report_id,
-                                                          BadRecord.daily_class_report_id == daily_class_id).count()
 
         db_session.add(q_daily)
-        db_session.add(q_daily_class)
         db_session.commit()
     elif move == 'last_bad':
         q_bad = BadList.query.filter(BadList.bad_name == bad_name).first()
@@ -367,14 +305,7 @@ def ajax_bad_upload():
         else:
             q_daily.bad_percent = 0
 
-        q_daily_class = DailyClassReport.query.filter(DailyClassReport.daily_report_id == daily_report_id,
-                                                      DailyClassReport.work_class == work_class).first()
-        daily_class_id = q_daily_class.id
-        # q_daily_class.bad_amount = q_daily_class.bad_amount - 1
-        q_daily_class.bad_amount = BadRecord.query.filter(BadRecord.daily_report_id == daily_report_id,
-                                                          BadRecord.daily_class_report_id == daily_class_id).count()
         db_session.add(q_daily)
-        db_session.add(q_daily_class)
         db_session.commit()
     return jsonify()
 

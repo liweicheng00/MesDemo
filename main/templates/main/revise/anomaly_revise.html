@@ -51,7 +51,7 @@
 
 			get_data = function() {
 				$.ajax({
-					url: '{{url_for('revise.ajax_revise_get_anomaly')}}',
+					url: '/ajax_revise_get_anomaly',
 					type: "GET",
 					dataType: 'json',
 					success: function(res) {
@@ -113,7 +113,7 @@
 								upload_data['revised'][obj.event] = value
 								console.log(upload_data)
 								$.ajax({
-									url: '{{url_for('revise.ajax_revise_anomaly')}}',
+									url: '/ajax_revise_anomaly',
 									type: "POST",
 									data: JSON.stringify(upload_data),
 									dataType: 'json',
@@ -144,7 +144,7 @@
 						$("#add").show("fast")
 						// 取得異常種類列表
 						$.ajax({
-							url: '{{url_for('production.ajax_anomaly_type_list')}}',
+							url: '/ajax_anomaly_type_list',
 							type: "GET",
 							dataType: 'json',
 							success: function(res) {
@@ -170,7 +170,7 @@
 								btn: ['刪除', '取消'],
 								btn1: function(index, layero) {
 									$.ajax({
-										url: '{{url_for('revise.ajax_delete_anomaly')}}',
+										url: '/ajax_delete_anomaly',
 										type: "POST",
 										data: JSON.stringify(data),
 										dataType: 'json',
@@ -199,7 +199,7 @@
 				console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
 				console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
 				$.ajax({
-					url: '{{url_for('revise.ajax_add_anomaly')}}',
+					url: '/ajax_add_anomaly',
 					type: "POST",
 					data: JSON.stringify(data.field),
 					dataType: 'json',

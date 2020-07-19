@@ -65,6 +65,3 @@ def cookies_view():
     return render_template('main/framework/cookie_view.html')
 
 
-@bp.route('/hellosocket')
-def hellosocket():
-    return render_template('main/framework/hellosocket.html')

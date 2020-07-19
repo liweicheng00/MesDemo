@@ -15,7 +15,7 @@
 			<a class="item" href="#">
 				成型MES管理系统
 			</a>
-			<a class="item" href="{{url_for('frame.index1')}}">現場管理</a>
+			<a class="item" href="/index1">現場管理</a>
 			<a class="item" href="#">數據管理</a>
 			<div class="right menu">
 				<div class="ui pointing dropdown link item">
@@ -27,8 +27,8 @@
 						<a class="item" href="" target="mainShowPage">工作任務</a>
 						<a class="item" href="" target="mainShowPage">發起任務</a>
 						<div class="divider"></div>
-						<a class="item" href="{{url_for('auth.user_auth')}}" target="mainShowPage">權限設置</a>
-						<a class="item" href="{{url_for('auth.change_password')}}" target="mainShowPage">修改密碼</a>
+						<a class="item" href="/user_auth" target="mainShowPage">權限設置</a>
+						<a class="item" href="/change_password" target="mainShowPage">修改密碼</a>
 					</div>
 				</div>
 				<a class="ui item active" href="{{ url_for('auth.logout')}}">
@@ -38,18 +38,20 @@
 		</div>
 		<div class="ui bottom attached segment">
 			<div class="ui thin left sidebar visible demo vertical menu inverted labeled " style="">
-				<a class="item" href="{{url_for('revise.upload_data')}}" target="mainShowPage">數據庫資料導入</a>
-				<a class="item" href="{{url_for('revise.product_revise')}}" target="mainShowPage">產品維護</a>
-				<a class="item" href="{{url_for('revise.bom_revise')}}" target="mainShowPage">BOM表維護</a>
-				<a class="item" href="{{url_for('revise.material_revise')}}" target="mainShowPage">材料維護</a>
-				<a class="item" href="{{url_for('revise.bad_revise')}}" target="mainShowPage">不良項目維護</a>
-				<a class="item" href="{{url_for('revise.anomaly_revise')}}" target="mainShowPage">異常項目維護</a>
+				<a class="item" href="/upload_data" target="mainShowPage">數據庫資料導入</a>
+				<a class="item" href="/product_revise" target="mainShowPage">產品維護</a>
+				<a class="item" href="/bom_revise" target="mainShowPage">BOM表維護</a>
+				<a class="item" href="/material_revise" target="mainShowPage">材料維護</a>
+				<a class="item" href="/mold_revise" target="mainShowPage">模具維護</a>
+				<a class="item" href="/machine_revise" target="mainShowPage">機台維護</a>
+				<a class="item" href="/bad_revise" target="mainShowPage">不良項目維護</a>
+				<a class="item" href="/anomaly_revise" target="mainShowPage">異常項目維護</a>
 			</div>
 			<div class="pusher">
 				<!-- <div class="ui basic segment"> -->
 				<iframe 
 					id="frame"
-					src="{{url_for('revise.upload_data')}}" 
+					src="/upload_data" 
 					name="mainShowPage" 
 					style="width: 100%; min-height: 100%; border: 0; ">
 				</iframe>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>機台維護</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">機台維護</span>
+			</legend>
+		</fieldset>
+
+
+		<div class="" style="padding: 0px 30px;">
+			<table class="layui-hide" id="demo" lay-filter="test"></table>
+		</div>
+
+		<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+		<script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+
+		<script>
+			var form = layui.form;
+			var table = layui.table;
+			var laydate = layui.laydate;
+
+
+			var get_machine = function(data){
+				$.ajax({
+					url: '/ajax_revise_get_machine',
+					type: "POST",
+					data: JSON.stringify({
+						'building': data
+					}),
+					dataType: 'json',
+					success: function(res) {
+						console.log('獲取機台列表')
+						console.log(res)
+						var data = []
+						for (var key in res){
+							data.push(res[key])
+						}
+						table.render({
+							elem: '#demo',
+							// height: 420,
+							title: '用户表',
+							data: data,
+							limit: 200,
+							// page: true, //开启分页
+							// toolbar: 'default', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+							// defaultToolbar: [''],
+							cols: [
+								[
+									{
+										type: 'numbers',
+										title: 'No.',
+									},
+									{
+										field: 'id',
+										title: 'ID',
+										// event: 'inj_product_name'
+									},
+									{
+										field: 'machine_code',
+										title: '機台代號',
+									},
+									{
+										field: 'machine_type',
+										title: '機型',
+									},
+									{
+										field: 'machine_location',
+										title: '機台位置',
+									},
+									{
+										field: 'machine_brand',
+										title: '廠牌',
+									},
+									{
+										field: 'machine_no',
+										title: '出廠編號',
+									},
+									{
+										field: 'machine_tonnage',
+										title: '噸數',
+									}
+								]
+							]
+						});
+						table.on('tool(test)', function(obj) {
+							console.log(obj)
+							var data = obj.data
+							var original = data
+							var revised = $.extend(true, {}, data)
+										
+							layer.prompt({
+								formType: 2,
+								title: '修改資料',
+								value: data[obj.event]
+							}, function(value, index) {
+										
+								var upload_data = {
+									original,
+									revised
+								}
+								upload_data['revised'][obj.event] = value
+								upload_data['event'] = obj.event
+								console.log(upload_data)
+								$.ajax({
+									url: '/ajax_revise_machine',
+									type: "POST",
+									data: JSON.stringify(upload_data),
+									dataType: 'json',
+									error: function(XMLHttpRequest, textStatus, errorThrown){
+										alert(XMLHttpRequest.responseJSON.msg)
+									},
+									success: function(res) {
+										console.log(res)
+										layer.msg('更新成功')
+										var temp = {}
+										temp[obj.event] = value
+										obj.update(temp); //这里一般是发送修改的Ajax请求
+										get_machine(building)
+									},
+								})
+								layer.close(index);
+							});
+										
+										
+						})
+					}
+				})
+			}
+			get_machine('')
+		</script>
+	</body>
+
+
+</html>

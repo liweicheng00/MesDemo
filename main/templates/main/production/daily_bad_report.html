@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>文件上傳</title>
+		<title>不良統計表</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -66,7 +66,7 @@
 		<div>
 			<fieldset class="layui-elem-field layui-field-title">
 				<legend style="font-weight:bold">
-					<span style="font-size: 1.5rem;">成型制程不良統計日報表</span>
+					<span style="font-size: 1.5rem;">不良統計表</span>
 				</legend>
 			</fieldset>
 			<div class="layui-row">
@@ -223,9 +223,7 @@
 							<table id="anomaly_table" lay-filter="anomaly_table" style="margin-left: auto; margin-right: auto"></table>
 						</div>
 					</div>
-					<button type="button" id="final" class="layui-btn layui-btn-radius">
-						<i class="layui-icon">&#xe654;新增</i>
-					</button>
+					
 				</div>
 			</div>
 		</div>
@@ -256,7 +254,7 @@
 			
 			
 			$.ajax({
-				url: '{{url_for('schedule.ajax_machine_list')}}',
+				url: '/ajax_machine_list',
 				type: "POST",
 				data: JSON.stringify({
 					'building': 'A18'
@@ -295,7 +293,7 @@
 			var get_part_number = function() {
 				$(".hide").hide()
 				$.ajax({
-					url: '{{url_for('production.ajax_get_machine_schedule')}}',
+					url: '/ajax_get_machine_schedule',
 					type: "POST",
 					data: JSON.stringify(server_post),
 					dataType: 'json',
@@ -349,7 +347,7 @@
 			var form_no
 			var create_form = function(data) {
 				$.ajax({
-					url: '{{url_for('production.ajax_add_daily_report')}}',
+					url: '/ajax_add_daily_report',
 					type: "POST",
 					data: JSON.stringify(data),
 					dataType: 'json',
@@ -366,7 +364,7 @@
 			var record = function() {
 				// 取得不良種類
 				$.ajax({
-					url: '{{url_for('production.ajax_bad_list')}}',
+					url: '/ajax_bad_list',
 					type: "GET",
 					dataType: 'json',
 					success: function(res){
@@ -395,7 +393,7 @@
 							"</div>"
 						$("#bad").append(html)
 						$.ajax({
-							url: '{{url_for('production.ajax_bad_amount')}}',
+							url: '/ajax_bad_amount',
 							type: "POST",
 							data: JSON.stringify({
 								'form_no': form_no,
@@ -424,7 +422,7 @@
 				
 							// ajax 上傳不良
 							$.ajax({
-								url: '{{url_for('production.ajax_bad_upload')}}',
+								url: '/ajax_bad_upload',
 								type: "POST",
 								data: JSON.stringify(bad_upload),
 								dataType: 'json',
@@ -445,7 +443,7 @@
 									'move': 'last_bad'
 								}
 								$.ajax({
-									url: '{{url_for('production.ajax_bad_upload')}}',
+									url: '/ajax_bad_upload',
 									type: "POST",
 									data: JSON.stringify(bad_upload),
 									dataType: 'json',
@@ -463,7 +461,7 @@
 													'move': 'minus'
 												}
 												$.ajax({
-													url: '{{url_for('production.ajax_bad_upload')}}',
+													url: '/ajax_bad_upload',
 													type: "POST",
 													data: JSON.stringify(bad_upload),
 													dataType: 'json',
@@ -499,13 +497,13 @@
 				
 				// 取得異常種類列表
 				$.ajax({
-					url: '{{url_for('production.ajax_anomaly_type_list')}}',
+					url: '/ajax_anomaly_type_list',
 					type: "GET",
 					dataType: 'json',
 					success: function(res) {
 						console.log('獲取異常種類列表')
 						console.log(res)
-						$("#anomaly_type").html('')
+						$("#anomaly_type").html('<option value="">請選擇</option>')
 						$("#anomaly_msg").html('')
 						for (var key in res) {
 							html = '<option value="' + key + '">' + res[key] + '</option>'
@@ -520,7 +518,7 @@
 					console.log(data.value); //得到被选中的值
 					console.log(data.othis); //得到美化后的DOM对象
 					$.ajax({
-						url: '{{url_for('production.ajax_anomaly_list')}}',
+						url: '/ajax_anomaly_list',
 						type: "POST",
 						data: JSON.stringify({
 							'type_id': data.value
@@ -576,7 +574,7 @@
 					console.log(anomaly_upload)
 					// ajax 上傳異常
 					$.ajax({
-						url: '{{url_for('production.ajax_anomaly_upload')}}',
+						url: '/ajax_anomaly_upload',
 						type: "POST",
 						data: JSON.stringify(anomaly_upload),
 						dataType: 'json',
@@ -594,7 +592,7 @@
 
 			daily_report = function() {
 				$.ajax({
-					url: '{{url_for('production.ajax_daily_report')}}',
+					url: '/ajax_daily_report',
 					type: "POST",
 					data: JSON.stringify({
 						'form_no': form_no
@@ -699,7 +697,7 @@
 											btn: ['刪除', '取消'],
 											btn1: function(index, layero) {
 												$.ajax({
-													url: '{{url_for('production.ajax_delete_anomaly_record')}}',
+													url: '/ajax_delete_anomaly_record',
 													type: "POST",
 													data: JSON.stringify(data),
 													dataType: 'json',

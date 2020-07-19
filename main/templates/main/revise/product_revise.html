@@ -30,7 +30,7 @@
 
 			get_data = function() {
 				$.ajax({
-					url: '{{url_for('revise.ajax_revise_get_product')}}',
+					url: '/ajax_revise_get_product',
 					type: "GET",
 					dataType: 'json',
 					success: function(res) {
@@ -87,7 +87,7 @@
 								upload_data['revised'][obj.event] = value
 								console.log(upload_data)
 								$.ajax({
-									url: '{{url_for('revise.ajax_revise_product')}}',
+									url: '/ajax_revise_product',
 									type: "POST",
 									data: JSON.stringify(upload_data),
 									dataType: 'json',

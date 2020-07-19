@@ -43,7 +43,7 @@
 			var laydate = layui.laydate;
 			var product_name
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -74,7 +74,7 @@
 			
 			var get_bom = function(data){
 				$.ajax({
-					url: '{{url_for('revise.ajax_revise_get_bom')}}',
+					url: '/ajax_revise_get_bom',
 					type: "POST",
 					data: JSON.stringify({
 						'product_name': data
@@ -154,7 +154,7 @@
 								upload_data['revised'][obj.event] = value
 								console.log(upload_data)
 								$.ajax({
-									url: '{{url_for('revise.ajax_revise_bom')}}',
+									url: '/ajax_revise_bom',
 									type: "POST",
 									data: JSON.stringify(upload_data),
 									dataType: 'json',
@@ -179,7 +179,7 @@
 				var check = table.checkStatus('demo')
 				console.log(check)
 				$.ajax({
-					url: '{{url_for('revise.ajax_hide_bom')}}',
+					url: '/ajax_hide_bom',
 					type: "POST",
 					data: JSON.stringify(check),
 					dataType: 'json',
@@ -194,7 +194,7 @@
 				var check = table.checkStatus('demo')
 				console.log(check)
 				$.ajax({
-					url: '{{url_for('revise.ajax_show_bom')}}',
+					url: '/ajax_show_bom',
 					type: "POST",
 					data: JSON.stringify(check),
 					dataType: 'json',

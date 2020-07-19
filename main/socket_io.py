@@ -2,7 +2,6 @@ from flask_socketio import SocketIO, emit
 from main.mes.production.production_overall import fun_machine_list, fun_compare_schedule_actual_chart
 import datetime
 from main.model import *
-from main.tictoc import *
 from flask import jsonify, session
 
 

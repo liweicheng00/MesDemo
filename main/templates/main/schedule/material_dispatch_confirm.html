@@ -50,7 +50,7 @@
 			var building
 			var time
 			$.ajax({
-				url: '{{url_for('production.ajax_get_time')}}',
+				url: '/ajax_get_time',
 				type: "GET",
 				dataType: 'json',
 				async: false,
@@ -74,7 +74,7 @@
 
 				function get_material_dispatch(building) {
 					$.ajax({
-						url: '{{url_for('schedule.ajax_get_material_dispatch')}}',
+						url: '/ajax_get_material_dispatch',
 						type: "POST",
 						data: JSON.stringify({
 							building: building,
@@ -158,7 +158,7 @@
 					console.log('確認發料')
 					console.log(row)
 					$.ajax({
-						url: '{{url_for('schedule.ajax_check_material_dispatch')}}',
+						url: '/ajax_check_material_dispatch',
 						type: "POST",
 						data: JSON.stringify(row),
 						dataType: 'json',
@@ -176,7 +176,7 @@
 					console.log('取消發料')
 					console.log(row)
 					$.ajax({
-						url: '{{url_for('schedule.ajax_cancel_material_dispatch')}}',
+						url: '/ajax_cancel_material_dispatch',
 						type: "POST",
 						data: JSON.stringify(row),
 						dataType: 'json',

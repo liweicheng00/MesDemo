@@ -306,6 +306,14 @@
 									<li>模穴數: {[detail.cave]}</li>\
 								</ul>\
 							</div>\
+							<div class="modal-body">\
+								<h2>機台訊息</h2>\
+								<ul>\
+									<li>噸數: {[machine.tonnage]}</li>\
+									<li>廠商: {[machine.brand]}</li>\
+									<li>型號: {[machine.type]}</li>\
+								</ul>\
+							</div>\
 						</div>\
 					</div>\
 				</div>',
@@ -341,7 +349,7 @@
 					var vm = this
 					console.log('mounted')
 					$.ajax({
-						url: '{{url_for('production.ajax_get_machine_detail')}}',
+						url: '/ajax_get_machine_detail',
 						type: "POST",
 						data: JSON.stringify(vm.post_data),
 						dataType: 'json',
@@ -355,14 +363,14 @@
 					this.get_machine_detail()
 					var get_detail = setInterval(function(){
 						vm.get_machine_detail()
-					}, w000)
+					}, 60000)
 					this.interval = get_detail
 				},
 				methods: {
 					get_machine_detail: function(){
 						var vm = this
 						$.ajax({
-							url: '{{url_for('production.ajax_get_machine_detail_schedule')}}',
+							url: '/ajax_get_machine_detail_schedule',
 							type: "POST",
 							data: JSON.stringify(vm.post_data),
 							dataType: 'json',
@@ -384,44 +392,79 @@
 				el: '#A18',
 				data: {
 					time: moment().format('YYYY-MM-DD HH:mm:ss'),
-					infos: {}
+					infos: {},
+					res: null
 				},
 				computed: {
 					
 				},
 				mounted() {
-					var init_machine = function(element, index, array) {
-						return {
-							machine_name: element,
-							machine_state: Math.floor(Math.random()*3),
-							QcTolCnt: Math.floor(Math.random()*1000)+1, // 亂數
-							building: 'X02'
-						}
-					}
-					var A1 = A1_list.map(init_machine)
-					var A2 = A2_list.map(init_machine)
-					var B1 = B1_list.map(init_machine)
-					var B2 = B2_list.map(init_machine)
-					var C1 = C1_list.map(init_machine)
-					var C2 = C2_list.map(init_machine)
-					var D1 = D1_list.map(init_machine)
-					var D2 = D2_list.map(init_machine)
-					this.infos = {A1: A1, A2:A2, B1:B1, B2:B2, C1:C1, C2:C2, D1:D1, D2:D2}
+
+					// var init_machine = function(element, index, array) {
+					// 	return {
+					// 		machine_name: element,
+					// 		machine_state: Math.floor(Math.random()*3),
+					// 		QcTolCnt: Math.floor(Math.random()*1000)+1, // 亂數
+					// 		building: 'X02'
+					// 	}
+					// }
+					// var A1 = A1_list.map(init_machine)
+					// var A2 = A2_list.map(init_machine)
+					// var B1 = B1_list.map(init_machine)
+					// var B2 = B2_list.map(init_machine)
+					// var C1 = C1_list.map(init_machine)
+					// var C2 = C2_list.map(init_machine)
+					// var D1 = D1_list.map(init_machine)
+					// var D2 = D2_list.map(init_machine)
+					// this.infos = {A1: A1, A2:A2, B1:B1, B2:B2, C1:C1, C2:C2, D1:D1, D2:D2}
 					
-					var vm = this
+					// var vm = this
+					setInterval(this.get_machine_state, 60000)
 					setInterval(function() {
-						for (key in vm.infos) {
-							for (var i=0; i<vm.infos[key].length; i++){
-								if (vm.infos[key][i].machine_state == 2){
-									vm.infos[key][i].QcTolCnt++
-								}
-								
-							}
-						}
-						A18.infos = vm.infos
 						A18.time = moment().format('YYYY-MM-DD HH:mm:ss')
 					}, 1000)
-					// todo: 時間
+					this.get_machine_state()
+
+				},
+				methods: {
+					get_machine_state: function(){
+						var vm = this
+						$.ajax({
+							url: '/ajax_get_machine_state',
+							type: "GET",
+							
+							dataType: 'json',
+							success: function(res) {
+								console.log('產能')
+								console.log(res)
+								vm.res = res
+								vm.init_machine()
+							},
+						})
+					},
+					init_machine: function() {
+						console.log('data update')
+						var res = this.res
+						var init_machine = function(element, index, array) {
+							return res[element]
+							// return {
+							// 	machine_name: element,
+							// 	machine_state: Math.floor(Math.random()*3),
+							// 	QcTolCnt: Math.floor(Math.random()*1000)+1, // 亂數
+							// 	building: 'X02'
+							// }
+						}
+						var A1 = A1_list.map(init_machine)
+						var A2 = A2_list.map(init_machine)
+						var B1 = B1_list.map(init_machine)
+						var B2 = B2_list.map(init_machine)
+						var C1 = C1_list.map(init_machine)
+						var C2 = C2_list.map(init_machine)
+						var D1 = D1_list.map(init_machine)
+						var D2 = D2_list.map(init_machine)
+						this.infos = {A1: A1, A2:A2, B1:B1, B2:B2, C1:C1, C2:C2, D1:D1, D2:D2}
+						// return res[element]
+					}
 				}
 			})
 			

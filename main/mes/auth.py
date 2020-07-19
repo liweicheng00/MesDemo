@@ -123,7 +123,7 @@ def user_auth():
 
 @bp.route('/ajax_getuser')
 @login_required
-@admin_permission.require(http_exception=403)
+# @admin_permission.require(http_exception=403)
 def ajax_getuser():
     users = User.query.order_by(User.id).all()
     result = []
@@ -142,7 +142,7 @@ def ajax_getuser():
 
 @bp.route('/ajax_getrole')
 @login_required
-@admin_permission.require()
+# @admin_permission.require()
 def ajax_getrole():
     roles = Role.query.order_by(Role.id).all()
     result = []
@@ -156,7 +156,7 @@ def ajax_getrole():
 
 @bp.route('/ajax_updateuser', methods=['POST'])
 @login_required
-@admin_permission.require()
+@auth_manager
 def ajax_updateuser():
     data = request.form.to_dict()
     data_role = data['role'].split(",")

@@ -49,13 +49,13 @@
 			})
 			init_list.on('dbl-click-cell.bs.table', function(e,  field, value, row, element) {
 				console.log(row)
-				window.open('{{url_for('production.first_part_record')}}?id='+row.id)
+				window.open('/first_part_record?id='+row.id)
 			})
 			get_update()
 			setInterval(get_update, 30000)
 			function get_update(){
 				$.ajax({
-					url: '{{url_for('production.ajax_get_init_list')}}',
+					url: '/ajax_get_init_list',
 					type: "GET",
 					dataType: 'json',
 					success: function(res) {
@@ -134,13 +134,13 @@
 			})
 			init_list_finish.on('dbl-click-cell.bs.table', function(e,  field, value, row, element) {
 				console.log(row)
-				window.open('{{url_for('production.first_part_record')}}?id='+row.id)
+				window.open('/first_part_record?id='+row.id)
 			})
 			get_done()
 			setInterval(get_done, 30000)
 			function get_done(){
 				$.ajax({
-					url: '{{url_for('production.ajax_get_done_init_list')}}',
+					url: '/ajax_get_done_init_list',
 					type: "GET",
 					dataType: 'json',
 					success: function(res) {

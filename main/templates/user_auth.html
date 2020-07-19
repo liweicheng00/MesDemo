@@ -49,7 +49,7 @@
 				//执行渲染
 				table.render({
 					elem: '#user',
-					url: '{{url_for('auth.ajax_getuser')}}',
+					url: '/ajax_getuser',
 					parseData: function(res) {
 						console.log(res)
 						return {
@@ -94,7 +94,7 @@
 					console.log(obj)
 
 					$.ajax({
-						url: '{{url_for('auth.ajax_updateuser')}}',
+						url: '/ajax_updateuser',
 						type: "POST",
 						data: obj.data,
 						dataType: 'json',
@@ -111,7 +111,7 @@
 				
 				table.render({
 					elem: '#role',
-					url: '{{url_for('auth.ajax_getrole')}}',
+					url: '/ajax_getrole',
 					parseData: function(res) {
 						console.log(res)
 						return {

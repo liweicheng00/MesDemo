@@ -67,7 +67,7 @@
 								console.log(upload_data)
 								layer.close(index); //如果设定了yes回调，需进行手工关闭
 								$.ajax({
-									url: '{{url_for('revise.ajax_data_upload')}}',
+									url: '/ajax_data_upload',
 									type: "POST",
 									data: JSON.stringify(upload_data),
 									dataType: 'json',

@@ -54,7 +54,7 @@
 			})
 			var query_post = {}
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -72,7 +72,7 @@
 					$("#product").on('change', function(event) {
 						console.log(event.target.value)
 						$.ajax({
-							url: '{{url_for('schedule.ajax_bom_list')}}',
+							url: '/ajax_bom_list',
 							type: "POST",
 							data: JSON.stringify({
 								'product_name': event.target.value
@@ -93,7 +93,7 @@
 									console.log(event.target.value)
 									query_post['part_number'] = event.target.value
 									$.ajax({
-										url: '{{url_for('production.ajax_bad_cause_query')}}',
+										url: '/ajax_bad_cause_query',
 										type: "POST",
 										data: JSON.stringify(query_post),
 										dataType: 'json',
@@ -110,7 +110,7 @@
 				}
 			})
 			$.ajax({
-				url: '{{url_for('revise.ajax_bad')}}',
+				url: '/ajax_bad',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -126,7 +126,7 @@
 						console.log(event.target.value)
 						query_post['bad_name'] = event.target.value
 						$.ajax({
-							url: '{{url_for('production.ajax_bad_cause_query')}}',
+							url: '/ajax_bad_cause_query',
 							type: "POST",
 							data: JSON.stringify(query_post),
 							dataType: 'json',

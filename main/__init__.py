@@ -4,15 +4,22 @@ from flask_cors import CORS
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, RoleNeed
 # from flask_socketio import SocketIO, emit
+from flask_apscheduler import APScheduler
 from flask_restful import Api
 import logging
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(config['default'])
+
 handler = logging.FileHandler('flask.log')
 app.logger.addHandler(handler)
 
 
+'''定時任務'''
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+from main import task
 # cors = CORS(app)
 # socketio = SocketIO(app, async_mode=None)
 
@@ -99,6 +106,7 @@ def hello():
     return 'hello'
 
 
+
 if __name__ == '__main__':
-    app.run()
+    app.run(port='8080')
     # socketio.run(app, debug=True)

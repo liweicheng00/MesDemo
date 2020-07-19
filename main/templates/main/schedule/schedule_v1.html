@@ -173,7 +173,7 @@
 				$("#popup").css('display', 'none')
 			})
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -198,7 +198,7 @@
 				form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
 				// 發出ajax取得產品Bom
 				$.ajax({
-					url: '{{url_for('schedule.ajax_bom_list')}}',
+					url: '/ajax_bom_list',
 					type: "POST",
 					data: JSON.stringify({
 						'product_name': data.value
@@ -228,7 +228,7 @@
 				$("#part_number").html(bom[data.value])
 				// ajax獲取模號
 				$.ajax({
-					url: '{{url_for('schedule.ajax_mold_list')}}',
+					url: '/ajax_mold_list',
 					type: "POST",
 					data: JSON.stringify({
 						'part_number': bom[data.value]
@@ -263,7 +263,7 @@
 				var calendar_add = 0
 				var time
 				$.ajax({
-					url: '{{url_for('production.ajax_get_time')}}',
+					url: '/ajax_get_time',
 					type: "GET",
 					dataType: 'json',
 					success: function(res) {
@@ -424,7 +424,7 @@
 								var date = moment(info.start).add(day, 'days')
 
 								$.ajax({
-									url: '{{url_for('schedule.ajax_upload_schedule_test')}}',
+									url: '/ajax_upload_schedule_test',
 									type: "POST",
 									data: JSON.stringify({
 										inj_product_name: data.field.inj_product_name,
@@ -480,8 +480,8 @@
 						field: 'machine_name'
 					}],
 					resourceGroupField: 'machine_tonnage',
-					resources: '{{url_for('schedule.ajax_machine_resource')}}',
-					events: '{{url_for('schedule.ajax_schedule_resource')}}',
+					resources: '/ajax_machine_resource',
+					events: '/ajax_schedule_resource',
 
 					eventRender: function(info) {
 						// console.log('event render')
@@ -511,7 +511,7 @@
 									var del_event = calendar.getEventById(info.event.id)
 									console.log(del_event._def)
 									$.ajax({
-										url: '{{url_for('schedule.ajax_delete_schedule_test')}}',
+										url: '/ajax_delete_schedule_test',
 										type: "POST",
 										data: JSON.stringify(del_event._def.extendedProps),
 										dataType: 'json',
@@ -552,7 +552,7 @@
 							var date = moment(info.start).add(day, 'days')
 
 							$.ajax({
-								url: '{{url_for('schedule.ajax_upload_schedule_test')}}',
+								url: '/ajax_upload_schedule_test',
 								type: "POST",
 								data: JSON.stringify({
 									inj_product_name: info.extendedProps.inj_product_name,
@@ -638,7 +638,7 @@
 							console.log(mold)
 							console.log(amount)
 							$.ajax({
-								url: '{{url_for('schedule.ajax_revise_schedule_test')}}',
+								url: '/ajax_revise_schedule_test',
 								type: "POST",
 								data: JSON.stringify({
 									props: getEvent._def.extendedProps,

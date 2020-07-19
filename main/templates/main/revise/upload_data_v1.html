@@ -65,22 +65,33 @@
 								var upload_data = {upload_table:form_data['upload_table'], data}
 								console.log(upload_data)
 								layer.close(index); //如果设定了yes回调，需进行手工关闭
+								layer.open({
+									title: '請等待',
+									content: '請等待',
+									area: '500px'
+								})
 								$.ajax({
-									url: '{{url_for('revise.ajax_data_upload')}}',
+									url: '/ajax_data_upload',
 									type: "POST",
 									data: JSON.stringify(upload_data),
 									dataType: 'json',
 									success: function(res) {
-										layer.msg('上傳成功')
 										console.log('上傳成功')
 										console.log(res)
+										layer.open({
+											title: '上傳結束',
+											content: res.log.join('\n'), 
+											area: '500px'
+										})
+
 									},
 									error: function(XMLHttpRequest, textStatus, errorThrown) {
 										layer.open({
 											title: '上傳失敗',
-											content: XMLHttpRequest.responseText,
+											content: XMLHttpRequest.responseJSON.msg,
 											area: '500px'
 										})
+
 									}
 								})
 							}

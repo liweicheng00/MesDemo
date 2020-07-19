@@ -46,7 +46,7 @@
 			})
 			var $table = $('#table')
 			$.ajax({
-				url: '{{url_for('production.ajax_get_time')}}',
+				url: '/ajax_get_time',
 				type: "GET",
 				dataType: 'json',
 				async: false,
@@ -71,7 +71,7 @@
 				function get_schedule_demand(building){
 					console.log(time)
 					$.ajax({
-						url: '{{url_for('schedule.ajax_get_schedule_demand')}}',
+						url: '/ajax_get_schedule_demand',
 						type: "POST",
 						data: JSON.stringify({
 							building: building,
@@ -102,10 +102,6 @@
 									{
 										title: '需求(kg)',
 										field: 'demand_weight'
-									},
-									{
-										title: '現場剩餘(kg)',
-										field: 'remain_weight'
 									},
 									{
 										title: '發料(kg)',
@@ -170,7 +166,7 @@
 					console.log('確認發料')
 					console.log(row)
 					$.ajax({
-						url: '{{url_for('schedule.ajax_upload_material_dispatch')}}',
+						url: '/ajax_upload_material_dispatch',
 						type: "POST",
 						data: JSON.stringify(row),
 						dataType: 'json',
@@ -190,7 +186,7 @@
 					console.log('退回發料')
 					console.log(row)
 					$.ajax({
-						url: '{{url_for('schedule.ajax_retreat_material_dispatch')}}',
+						url: '/ajax_retreat_material_dispatch',
 						type: "POST",
 						data: JSON.stringify(row),
 						dataType: 'json',

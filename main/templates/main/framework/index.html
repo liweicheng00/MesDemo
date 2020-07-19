@@ -16,7 +16,7 @@
 				成型MES管理系统
 			</a>
 			<a class="item" href="#">現場管理</a>
-			<a class="item" href="{{url_for('frame.index3')}}">數據管理</a>
+			<a class="item" href="/index3">數據管理</a>
 			<div class="right menu">
 				<div class="ui pointing dropdown link item">
 					<span id="user_name"></span>
@@ -24,11 +24,12 @@
 
 					<i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="" target="mainShowPage">工作任務</a>
-						<a class="item" href="" target="mainShowPage">發起任務</a>
+						<a class="item" href="" target="mainShowPage">簽核任務</a>
+						<!-- <a class="item" href="" target="mainShowPage">發起任務</a> -->
 						<div class="divider"></div>
-						<a class="item" href="{{url_for('auth.user_auth')}}" target="mainShowPage">權限設置</a>
-						<a class="item" href="{{url_for('auth.change_password')}}" target="mainShowPage">修改密碼</a>
+						<a class="item" href="/user_auth" target="mainShowPage">功能權限設置</a>
+						<a class="item" href="/user_auth" target="mainShowPage">人員權限設置</a>
+						<a class="item" href="/change_password" target="mainShowPage">修改密碼</a>
 					</div>
 				</div>
 				<a class="ui item active" href="#" id="logout">
@@ -38,42 +39,42 @@
 		</div>
 		<div class="ui bottom attached segment">
 			<div class="ui thin left sidebar demo vertical menu inverted labeled " style="">
-				<a class="item" href="{{url_for('production.production_overall')}}" target="mainShowPage">現場總覽</a>
-				<a class="item" href="{{url_for('schedule.schedule_overall')}}" target="mainShowPage">計畫排產</a>
+				<a class="item" href="/production_overall" target="mainShowPage">現場總覽</a>
+				<a class="item" href="/schedule_overall" target="mainShowPage">計畫排產</a>
 				<div class="ui right pointing dropdown item">
 					<span class="text">發料模塊</span>
 					<i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="{{url_for('schedule.material_dispatch')}}" target="mainShowPage">
+						<a class="item" href="/material_dispatch" target="mainShowPage">
 							塑料發料
 						</a>
-						<a class="item" href="{{url_for('schedule.material_dispatch_confirm')}}" target="mainShowPage">
+						<a class="item" href="/material_dispatch_confirm" target="mainShowPage">
 							塑料發料確認
 						</a>
-						<a class="item" href="{{url_for('schedule.material_check1')}}" target="mainShowPage">
+						<a class="item" href="/material_check1" target="mainShowPage">
 							現場收料
 						</a>
 					</div>
 				</div>
-				<a class="item" href="{{url_for('production.daily_bad_report')}}" target="mainShowPage">現場表單</a>
+				<a class="item" href="/daily_bad_report" target="mainShowPage">現場表單</a>
+				<a class="item" href="/daily_report" target="mainShowPage">日報表</a>
 				<div class="ui right pointing dropdown item">
 					<span class="text">初件案件</span>
 					<i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="{{url_for('production.first_part_init')}}" target="mainShowPage">初件發起</a>
-						<a class="item" href="{{url_for('production.first_part_list')}}" target="mainShowPage">初件案件</a>
+						<a class="item" href="/first_part_init" target="mainShowPage">初件發起</a>
+						<a class="item" href="/first_part_list" target="mainShowPage">初件案件</a>
 					</div>
 				</div>
 				<div class="ui right pointing dropdown item">
 					<span class="text">紀錄查詢</span>
 					<i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="{{url_for('production.bad_report_query')}}" target="mainShowPage">不良統計查詢</a>
-						<a class="item" href="{{url_for('production.bad_report_progress_query')}}" target="mainShowPage">不良推移查詢</a>
-						<a class="item" href="{{url_for('production.bad_cause_query')}}" target="mainShowPage">不良對策查詢</a>
+						<a class="item" href="/bad_report_query" target="mainShowPage">不良統計查詢</a>
+						<a class="item" href="/bad_report_progress_query" target="mainShowPage">不良推移查詢</a>
+						<a class="item" href="/bad_cause_query" target="mainShowPage">不良對策查詢</a>
 					</div>
 				</div>
-				
 				
 			</div>
 			<div class="pusher">

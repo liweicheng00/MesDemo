@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>生產報表</title>
+	<script src="static/js/jquery-3.3.1.min.js"></script>
+	<script src="static/js/bootstrap-table.min.js"></script>
+	<script src="static/js/moment.js"></script>
+	<script src="static/js/popper.min.js"></script>
+
+	<script src="static/js/bootstrap.min.js"></script>
+	<link href="static/css/bootstrap-table.min.css" rel="stylesheet">
+	<link href="static/css/bootstrap.min.css" rel="stylesheet">
+	<link href="static/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+	<script src="static/js/bootstrap-datepicker.min.js"></script>
+	<link href="static/css/bootstrap-datepicker.css" rel="stylesheet">
+
+<body>
+	<fieldset class="layui-elem-field layui-field-title">
+		<legend style="font-weight:bold">
+			<span style="font-size: 1.5rem;">生產報表</span>
+		</legend>
+	</fieldset>
+	<div style="padding: 0px 30px;">
+		<form id="material_control_form" onsubmit="return false;">
+			<div class="form-group row">
+				<label for="system_day" class="col-md-1 col-form-label">系統日期</label>
+				<input id="system_day" name="system_day" class="form-control col-md-2" value="" />
+			</div>
+			<div class="form-group row">
+				<label for="building" class="col-md-1 col-form-label">棟別</label>
+				<select class="form-control col-md-1" name="building" id="building" required>
+					<option value="A18">A18</option>
+					<option value="A17">A17</option>
+					<option value="A16">A16</option>
+				</select>
+				<label for="product" class="col-md-1 col-form-label">機種顏色</label>
+				<select class="form-control col-md-2" name="product" id="product" required>
+				</select>
+				<label for="pnlist_id" class="col-md-1 col-form-label">品名</label>
+				<select class="form-control col-md-2" name="pnlist_id" id="pnlist_id" required>
+				</select>
+
+			</div>
+		</form>
+		<hr>
+		
+		<table id="daily_report" class="">
+
+		</table>
+	</div>
+	<script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+
+	<script>
+		var server_post = { 'building': 'A18' }
+		$.ajax({
+			url: '/ajax_time',
+			type: "GET",
+			dataType: 'json',
+			success: function (res) {
+				console.log(res)
+				$("#system_day").val(res.system_day)
+				server_post['date'] = res.system_day
+				daily_report(server_post)
+			},
+		})
+		$('#system_day').datepicker({
+			autoclose: true,
+			format: 'yyyy-mm-dd',
+			todayHighlight: true,
+		}).on("changeDate", function (e) {
+			console.log($("#system_day").val())
+			server_post['date'] = $("#system_day").val()
+			daily_report(server_post)
+		});
+		$("#building").on('change', function (e) {
+			server_post['building'] = e.target.value
+			daily_report(server_post)
+		})
+		// 產品列表 
+		$.ajax({
+			url: '/ajax_product',
+			type: "GET",
+			dataType: 'json',
+			success: function (res) {
+				console.log('獲取產品列表')
+				console.log(res)
+				var html = '<option value=""></option>';
+				for (var key in res) {
+					html = html + '<optgroup label="' + key + '">'
+					for (var i = 0; i < res[key].length; i++) {
+						html = html + '<option value="' + res[key][i]['product_name'] + '">' + res[key][i]['product_name'] + '</option>'
+					}
+					html = html + '</optgroup>'
+				}
+				$('#product').append(html)
+				$("#product").on('change', function (e) {
+					$.ajax({
+						url: "/ajax_bom",
+						type: "POST",
+						data: JSON.stringify({
+							product_name: e.target.value,
+						}),
+						dataType: 'json',
+						success: function (res) {
+							console.log(res)
+							var html = '<option value=""></option>';
+							for (var key in res) {
+								html = html + '<option value="' + res[key]['inj_product_name'] + '">' + res[key]['inj_product_name'] + '</option>'
+							}
+							$('#pnlist_id').html(html)
+
+							$("#pnlist_id").on('change', function (e) {
+								server_post['inj_product_name'] = e.target.value
+								daily_report(server_post)
+							})
+						}
+					})
+					server_post['product_name'] = e.target.value
+					daily_report(server_post)
+				})
+			}
+		})
+		var daily_report_table = $("#daily_report")
+
+		$(function () {
+			
+			daily_report_table.bootstrapTable({
+				height: window.screen.availHeight,
+				columns: daily_report_columns(),
+				showFooter: true,
+				showColumns: true,
+				toolbar: "#toolbar",
+			})
+			
+		});
+
+		var daily_report_request
+		// 取得上傳數據
+		// bo = 1
+		var daily_report = function (server_post) {
+			daily_report_table.bootstrapTable('showLoading')
+			daily_report_table.bootstrapTable('removeAll')
+			console.log(server_post)
+			if (daily_report_request) {
+				// 放棄未完成的request
+				daily_report_request.abort()
+			}
+			daily_report_request = $.ajax({
+				url: '/ajax_daily_report_query',
+				type: "POST",
+				data: JSON.stringify(server_post),
+				dataType: 'json',
+				success: function (res) {
+					console.log('獲取日報表')
+					console.log(res)
+
+					daily_report_table.bootstrapTable('load', res)
+					daily_report_table.bootstrapTable('hideLoading')
+				}
+			})
+		}
+		window.operateEvents = {
+			'click .remove': function (e, value, row, index) {
+				// control_record.bootstrapTable('remove', {
+				// 	field: 'id',
+				// 	values: [row.id]
+				// })
+				layer.open({
+					title: '確認刪除',
+					content: '此操作會刪除該機台當日所有紀錄(不良、損失工時、產能)',
+					btn: ['刪除', '取消'],
+					btn1: function (index, layero) {
+						$.ajax({
+							url: '/ajax_delete_daily_report',
+							type: "POST",
+							data: JSON.stringify({ "daily_report_id": row.daily_report_id }),
+							dataType: 'json',
+							success: function (res) {
+								console.log(res)
+								layer.msg(res.error)
+								daily_report(server_post)
+							},
+						})
+					},
+					btn2: function (index, layero) {
+
+					},
+					cancel: function () {
+						//右上角关闭回调
+					}
+				})
+			},
+		}
+		function running_formatter(value, row, index) {
+			return index + 1
+		}
+		var daily_report_columns = function () {
+			return [
+				{
+					align: 'center',
+					title: 'No.',
+					formatter: running_formatter,
+				},
+				{
+					align: 'center',
+					title: '日期',
+					field: 'date'
+				},
+				{
+					align: 'center',
+					title: '棟別',
+					field: 'building',
+					visible: false
+				},
+				{
+					align: 'center',
+					title: '機台',
+					field: 'machine'
+				},
+				{
+					align: 'center',
+					title: '產品',
+					field: 'product_name',
+					visible: false
+				},
+				{
+					align: 'center',
+					title: '品名',
+					field: 'inj_product_name'
+				},
+				{
+					align: 'center',
+					title: '料號',
+					field: 'part_number',
+					visible: false
+
+				},
+				{
+					align: 'center',
+					title: '工令',
+					field: 'produce_order',
+					visible: false
+				},
+				{
+					align: 'center',
+					title: '模具',
+					field: 'mold',
+					footerFormatter: function (data) {
+						return 'Total'
+					}
+				},
+				{
+					align: 'center',
+					title: '排產數量',
+					field: 'amount',
+					footerFormatter: function (data) {
+						return data.map(function (row) {
+							return row['amount']
+						}).reduce(function (sum, i) {
+							if (i) {
+								if (i) {
+									return parseFloat(sum) + parseFloat(i)
+								} else {
+									return parseFloat(sum)
+								}
+							} else {
+								return parseFloat(sum)
+							}
+						}, 0)
+					}
+				},
+				{
+					align: 'center',
+					title: '生產實際*',
+					field: 'total_amount',
+					footerFormatter: function (data) {
+						return data.map(function (row) {
+							return row['total_amount']
+						}).reduce(function (sum, i) {
+							if (i) {
+								return parseFloat(sum) + parseFloat(i)
+							} else {
+								return parseFloat(sum)
+							}
+						}, 0)
+					}
+				},
+				{
+					align: 'center',
+					title: '製成不良',
+					field: 'bad_amount',
+					footerFormatter: function (data) {
+						return data.map(function (row) {
+							return row['bad_amount']
+						}).reduce(function (sum, i) {
+							if (i) {
+								return parseFloat(sum) + parseFloat(i)
+							} else {
+								return parseFloat(sum)
+							}
+						}, 0)
+					}
+				},
+				{
+					align: 'center',
+					title: '良品數*',
+					field: 'produce_amount',
+					footerFormatter: function (data) {
+						return data.map(function (row) {
+							return row['produce_amount']
+						}).reduce(function (sum, i) {
+							if (i) {
+								return parseFloat(sum) + parseFloat(i)
+							} else {
+								return parseFloat(sum)
+							}
+						}, 0)
+					}
+				},
+				{
+					align: 'center',
+					title: '損失工時min',
+					field: 'lost_time',
+					footerFormatter: function (data) {
+						return data.map(function (row) {
+							return row['lost_time']
+						}).reduce(function (sum, i) {
+							if (i) {
+								return parseFloat(sum) + parseFloat(i)
+							} else {
+								return parseFloat(sum)
+							}
+						}, 0)
+					}
+				},
+				{
+					align: 'center',
+					title: '編輯',
+					field: 'delete',
+					events: window.operateEvents,
+					formatter: delete_formatter,
+				},
+			]
+		}
+		function detailFormatter(index, row) {
+			console.log('detail')
+			return [
+				'<div class="row">',
+				'<div class="col-4">',
+				'<table id="lost_time_' + index + '">',
+				'</table>',
+				'</div>',
+				'<div class="col-4">',
+				'<table id="bad_lost_' + index + '">',
+				'</table>',
+				'</div>',
+				'<div class="col-4">',
+				'<table id="bad_record_' + index + '">',
+				'</table>',
+				'</div>',
+				'</div>'
+			].join("")
+		}
+
+		function delete_formatter(value, row, index, field) {
+			return [
+				'<a style="padding: 0 3px;" class="remove" href="javascript:;">',
+				'<i class="fas fa-trash"></i>',
+				'</a>'
+			].join('')
+		}
+		
+	</script>
+</body>
+
+</html>

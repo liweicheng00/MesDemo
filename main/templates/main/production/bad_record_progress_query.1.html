@@ -111,7 +111,7 @@
 
 			// 獲取產品列表
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -136,7 +136,7 @@
 				// get_query(query_post)
 				// 發出ajax取得產品Bom
 				$.ajax({
-					url: '{{url_for('schedule.ajax_bom_list')}}',
+					url: '/ajax_bom_list',
 					type: "POST",
 					data: JSON.stringify({
 						'product_name': data.value
@@ -178,7 +178,7 @@
 					shade: [0.9, 'white']
 				})
 				$.ajax({
-					url: '{{url_for('production.ajax_get_bad_progress')}}',
+					url: '/ajax_get_bad_progress',
 					type: 'POST',
 					data: JSON.stringify(query_post),
 					dataType: 'json',
@@ -191,7 +191,7 @@
 					}
 				})
 				$.ajax({
-					url: '{{url_for('production.ajax_get_improvement')}}',
+					url: '/ajax_get_improvement',
 					type: 'POST',
 					data: JSON.stringify(query_post),
 					dataType: 'json',
@@ -578,7 +578,7 @@
 					this.button.click(function() {
 						console.log(vm.save_data)
 						$.ajax({
-							url: '{{url_for('production.ajax_save_improvement')}}',
+							url: '/ajax_save_improvement',
 							type: 'POST',
 							data: JSON.stringify({bad: vm.save_data, inj_part_number: vm.inj_part_number}),
 							dataType: 'json',

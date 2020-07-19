@@ -192,7 +192,7 @@
 			})
 			// 獲取產品列表
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -219,7 +219,7 @@
 				get_query(query_post)
 				// 發出ajax取得產品Bom
 				$.ajax({
-					url: '{{url_for('schedule.ajax_bom_list')}}',
+					url: '/ajax_bom_list',
 					type: "POST",
 					data: JSON.stringify({
 						'product_name': data.value
@@ -255,7 +255,7 @@
 				get_query(query_post)
 				
 				$.ajax({
-					url: '{{url_for('schedule.ajax_mold_list')}}',
+					url: '/ajax_mold_list',
 					type: "POST",
 					data: JSON.stringify({
 						'part_number': part_number[data.value]
@@ -283,7 +283,7 @@
 				})
 				// 取得機台 todo
 				$.ajax({
-					url: '{{url_for('schedule.ajax_machine_list')}}',
+					url: '/ajax_machine_list',
 					type: "POST",
 					data: JSON.stringify({
 						'part_number': part_number[data.value]
@@ -320,7 +320,7 @@
 					shade: [0.9, 'white']
 				})
 				$.ajax({
-					url: '{{url_for('production.ajax_bad_query')}}',
+					url: '/ajax_bad_query',
 					type: 'POST',
 					data: JSON.stringify(query_post),
 					dataType: 'json',

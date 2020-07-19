@@ -1,12 +1,8 @@
 from flask import Blueprint, render_template, jsonify, request
-from flask_principal import Permission, RoleNeed
+from main.permission import *
+
 
 bp = Blueprint('auth', __name__)
-
-"""權限管理"""
-admin_permission = Permission(RoleNeed('super'))
-user_permission = Permission(RoleNeed('user'))
-
 
 @bp.errorhandler(403)
 def no_permission(e):
@@ -16,6 +12,6 @@ def no_permission(e):
         else:
             return jsonify({'error': "What happened?"})
     else:
-        return render_template('no_authority.html')
+        return render_template('no_authority.html'), 403
 
-from . import auth
+from . import auth, query

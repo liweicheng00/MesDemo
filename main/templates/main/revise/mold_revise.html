@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>模具料號對照維護</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+
+</head>
+
+<body>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend style="font-weight:bold">
+            <span style="font-size: 1.5rem;">模具料號對照</span>
+        </legend>
+    </fieldset>
+    <div>
+        <form class="layui-form" action="" lay-filter='all'>
+            <div class="layui-form-item">
+                <label class="layui-form-label">產品名稱</label>
+                <div class="layui-input-inline">
+                    <select name="product" id="product" lay-verify="required" lay-filter='select_product'>
+                        <option value="">請選擇</option>
+                        // js 新增選項
+                    </select>
+                </div>
+                <label class="layui-form-label">成型品名稱</label>
+                <div class="layui-input-inline">
+                    <select name="inj_product_name" id="inj_product_name" lay-verify="required"
+                        lay-filter='select_inj_product_name'>
+                        <option value="">請選擇</option>
+                        // js 新增選項
+                    </select>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="" style="padding: 0px 30px;">
+
+        <table class="layui-hide" id="demo" lay-filter="test"></table>
+        <p>*號表示可修改</p>
+
+    </div>
+
+    <script src="static/js/layui/layui.all.js" charset="utf-8"></script>
+    <script src="static/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+
+    <script>
+        var form = layui.form;
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var product_name
+        $.ajax({
+            url: '/ajax_product',
+            type: "GET",
+            dataType: 'json',
+            success: function (res) {
+                console.log('獲取產品列表')
+                console.log(res)
+                var html = '<option value="">請選擇</option>';
+                for (var key in res) {
+                    html = html + '<optgroup label="' + key + '">'
+                    for (var i = 0; i < res[key].length; i++) {
+                        html = html + '<option value="' + res[key][i]['product_name'] + '">' + res[key][i]['product_name'] + '</option>'
+                    }
+                    html = html + '</optgroup>'
+                }
+                $('#product').html(html)
+                form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+            }
+        })
+
+        // 監聽產品名稱選單
+        form.on('select(select_product)', function (data) {
+            console.log(data.value); //得到被选中的值
+            product_name = data.value
+            $.ajax({
+                url: '/ajax_bom',
+                type: "POST",
+                data: JSON.stringify({product_name: product_name}),
+                dataType: 'json',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.responseJSON.msg)
+                },
+                success: function (res) {
+                    console.log('獲取BOM列表')
+                    console.log(res)
+                    var html = '<option value="">請選擇</option>'
+                    for (var key in res) {
+                        html = html + '<option value="' + key + '">' + res[key]['inj_product_name'] + '</option>'
+                    }
+                    $('#inj_product_name').html(html)
+                    form.render(null, 'all'); //更新 lay-filter="all" 所在容器内的全部表单状态
+                }
+            })
+        });
+        form.on('select(select_inj_product_name)', function (data) {
+            console.log(data.value); //得到被选中的值
+            get_mold_pn(data.value)
+        })
+
+
+        var get_mold_pn = function (data) {
+            $.ajax({
+                url: '/ajax_get_mold_pn',
+                type: "POST",
+                data: JSON.stringify({part_number: data}),
+                dataType: 'json',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.responseJSON.msg)
+                },
+                success: function (res) {
+                    console.log(res)
+
+                    table.render({
+                        elem: '#demo',
+                        // height: 420,
+                        title: '用户表',
+                        data: res,
+                        limit: 80,
+                        // page: true, //开启分页
+                        // toolbar: 'default', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                        // defaultToolbar: [''],
+                        cols: [
+                            [
+                            {
+                                field: 'inj_product_name',
+                                title: '品名',
+                            },
+                            {
+                                field: 'part_number',
+                                title: '料號',
+                            },
+                            {
+                                field: 'mold_number',
+                                title: '模號',
+                            },
+                            {
+                                field: 'cave_number',
+                                title: '模穴數',
+                            },
+                            {
+                                field: 'ejection_mode',
+                                title: '頂出方式',
+                            },
+                            ]
+                        ]
+                    });
+                    // table.on('tool(test)', function (obj) {
+                    //     console.log(obj)
+                    //     var data = obj.data
+                    //     var original = data
+                    //     var revised = $.extend(true, {}, data)
+
+                    //     layer.prompt({
+                    //         formType: 2,
+                    //         title: '修改資料',
+                    //         value: data[obj.event]
+                    //     }, function (value, index) {
+
+                    //         var upload_data = {
+                    //             original,
+                    //             revised
+                    //         }
+                    //         upload_data['revised'][obj.event] = value
+                    //         console.log(upload_data)
+                    //         $.ajax({
+                    //             url: '/ajax_revise_bom',
+                    //             type: "POST",
+                    //             data: JSON.stringify(upload_data),
+                    //             dataType: 'json',
+                    //             error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //                 alert(XMLHttpRequest.responseJSON.msg)
+                    //             },
+                    //             success: function (res) {
+                    //                 console.log(res)
+                    //                 layer.msg('更新成功')
+                    //                 var temp = {}
+                    //                 temp[obj.event] = value
+                    //                 obj.update(temp); //这里一般是发送修改的Ajax请求
+                    //                 get_bom({ 'product_name': product_name })
+                    //             },
+                    //         })
+                    //         layer.close(index);
+                    //     });
+
+
+                    // })
+
+                }
+            })
+        }
+      
+    </script>
+</body>
+
+
+</html>

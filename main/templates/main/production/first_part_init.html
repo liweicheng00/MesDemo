@@ -92,7 +92,7 @@
 			get_time()
 			setInterval(get_time, 6000)
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -110,7 +110,7 @@
 					$("#product").on('change', function(event) {
 						console.log(event.target.value)
 						$.ajax({
-							url: '{{url_for('schedule.ajax_bom_list')}}',
+							url: '/ajax_bom_list',
 							type: "POST",
 							data: JSON.stringify({
 								'product_name': event.target.value
@@ -131,7 +131,7 @@
 									console.log(event.target.value)
 									part_number = event.target.value
 									$.ajax({
-										url: '{{url_for('schedule.ajax_mold_list')}}',
+										url: '/ajax_mold_list',
 										type: "POST",
 										data: JSON.stringify({
 											'part_number': event.target.value
@@ -159,7 +159,7 @@
 				}
 			})
 			$.ajax({
-				url: '{{url_for('schedule.ajax_machine_list')}}',
+				url: '/ajax_machine_list',
 				type: "POST",
 				data: JSON.stringify({
 					'building': 'A18'
@@ -184,7 +184,7 @@
 			$("#building").on('change', function(event) {
 				console.log(event.target.value)
 				$.ajax({
-					url: '{{url_for('schedule.ajax_machine_list')}}',
+					url: '/ajax_machine_list',
 					type: "POST",
 					data: JSON.stringify({
 						'building': event.target.value
@@ -214,14 +214,14 @@
 				}, {})
 				console.log(data)
 				$.ajax({
-					url: '{{url_for('production.ajax_upload_init_list')}}',
+					url: '/ajax_upload_init_list',
 					type: "POST",
 					data: JSON.stringify(data),
 					dataType: 'json',
 					success: function(res) {
 						console.log(res)
 						$.ajax({
-							url: '{{url_for('production.ajax_get_init_list')}}',
+							url: '/ajax_get_init_list',
 							type: "GET",
 							dataType: 'json',
 							success: function(res) {
@@ -233,7 +233,7 @@
 				})
 			})
 			$.ajax({
-				url: '{{url_for('production.ajax_get_init_list')}}',
+				url: '/ajax_get_init_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -243,7 +243,7 @@
 			})
 			function get_time() {
 				$.ajax({
-					url: '{{url_for('production.ajax_get_time')}}',
+					url: '/ajax_get_time',
 					type: "GET",
 					dataType: 'json',
 					success: function(res) {

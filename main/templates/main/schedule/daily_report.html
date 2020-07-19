@@ -195,7 +195,7 @@
 			});
 			// 產品列表 
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -222,7 +222,7 @@
 				daily_report(server_post)
 				// 發出ajax取得產品Bom
 				$.ajax({
-					url: '{{url_for('schedule.ajax_bom_list')}}',
+					url: '/ajax_bom_list',
 					type: "POST",
 					data: JSON.stringify({
 						'product_name': data.value
@@ -268,7 +268,7 @@
 			var daily_report = function(server_post) {
 				console.log(server_post)
 				$.ajax({
-					url: '{{url_for('schedule.ajax_daily_report_query')}}',
+					url: '/ajax_daily_report_query',
 					type: "POST",
 					data: JSON.stringify(server_post),
 					dataType: 'json',
@@ -422,7 +422,7 @@
 									btn: ['刪除', '取消'],
 									btn1: function(index, layero) {
 										$.ajax({
-											url: '{{url_for('schedule.ajax_delete_daily_report')}}',
+											url: '/ajax_delete_daily_report',
 											type: "POST",
 											data: JSON.stringify({data: data}),
 											dataType: 'json',
@@ -447,7 +447,7 @@
 				});
 			}
 			$.ajax({
-				url: '{{url_for('production.ajax_get_time')}}',
+				url: '/ajax_get_time',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -467,7 +467,7 @@
 					success: function(layero, index) {
 						console.log(layero, index)
 						$.ajax({
-							url: '{{url_for('schedule.ajax_anomaly_detail')}}',
+							url: '/ajax_anomaly_detail',
 							type: "POST",
 							data: JSON.stringify({
 								'daily_report_id': obj.data.daily_report_id

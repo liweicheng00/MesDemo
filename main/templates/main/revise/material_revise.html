@@ -41,7 +41,7 @@
 			var laydate = layui.laydate;
 			var product_name
 			$.ajax({
-				url: '{{url_for('schedule.ajax_product_list')}}',
+				url: '/ajax_product_list',
 				type: "GET",
 				dataType: 'json',
 				success: function(res) {
@@ -72,7 +72,7 @@
 			
 			var get_bom = function(data){
 				$.ajax({
-					url: '{{url_for('revise.ajax_revise_get_material')}}',
+					url: '/ajax_revise_get_material',
 					type: "POST",
 					data: JSON.stringify({
 						'product_name': data

@@ -17,7 +17,7 @@ else:
         engine = create_engine('postgresql+psycopg2://{}'.format(url),
                                convert_unicode=True, encoding='utf8')
     else:
-        engine = create_engine('postgresql+psycopg2://liweicheng:@127.0.0.1:5432/liweicheng', convert_unicode=True,
+        engine = create_engine('postgresql+psycopg2://liweicheng:@127.0.0.1:5432/demo-mes', convert_unicode=True,
                                encoding='utf8')
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
@@ -28,7 +28,7 @@ Base.query = db_session.query_property()
 
 class User(Base, UserMixin):
     __tablename__ = 'user'
-    id = Column(Integer, Sequence('user_id'), primary_key=True)
+    id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     username = Column(String(80), unique=True, nullable=False)
     password = Column(String(120), unique=True, nullable=False)
     name = Column(String(20), unique=False, nullable=False)
@@ -47,7 +47,7 @@ class User(Base, UserMixin):
 
 class Role(Base):
     __tablename__ = 'role'
-    id = Column(Integer, Sequence('user_id'), primary_key=True)
+    id = Column(Integer, Sequence('role_id_seq'), primary_key=True)
     role = Column(String(80), unique=True, nullable=False)
 
     def to_dict(self):
@@ -68,13 +68,13 @@ class Role(Base):
 
 class BuildingList(Base):
     __tablename__ = 'building_list'
-    id = Column(Integer, Sequence('building_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('building_list_id_seq'), primary_key=True)
     building = Column(String(80), unique=False, nullable=False)
 
 
 class ProductList(Base):
     __tablename__ = 'product_list'
-    id = Column(Integer, Sequence('product_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('product_list_id_seq'), primary_key=True)
     honhai_pn = Column(String(80), unique=True, nullable=False)
     product_code = Column(String(80), unique=False, nullable=False)
     product_name = Column(String(80), unique=True, nullable=False)
@@ -83,7 +83,7 @@ class ProductList(Base):
 
 class MaterialList(Base):
     __tablename__ = 'material_list'
-    id = Column(Integer, Sequence('material_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('material_list_id_seq'), primary_key=True)
     material_part_number = Column(String(80), unique=True, nullable=False)
     material_type = Column(String(80), unique=False, nullable=True)
     material_spec = Column(String(80), unique=False, nullable=True)
@@ -96,7 +96,7 @@ class MaterialList(Base):
 
 class MachineList(Base):
     __tablename__ = 'machine_list'
-    id = Column(Integer, Sequence('machine_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('machine_list_id_seq'), primary_key=True)
     building = Column(String(80), unique=False, nullable=True)
     machine_name = Column(String(80), unique=True, nullable=False)
     machine_code = Column(String(80), unique=True, nullable=False)
@@ -112,7 +112,7 @@ class MachineList(Base):
 
 class MoldList(Base):
     __tablename__ = 'mold_list'
-    id = Column(Integer, Sequence('mold_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('mold_list_id_seq'), primary_key=True)
     mold_number = Column(String(80), unique=True, nullable=False)
     mold_number_f = Column(String(80), unique=False, nullable=False)
     cave_number = Column(Integer, unique=False, nullable=False)
@@ -123,7 +123,7 @@ class MoldList(Base):
 
 class PNList(Base):
     __tablename__ = 'pn_list'
-    id = Column(Integer, Sequence('pn_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('pn_list_id_seq'), primary_key=True)
     part_number = Column(String(80), unique=True, nullable=False)
     inj_product_name = Column(String(80), unique=False, nullable=False)
     product_name_en = Column(String(80), unique=False, nullable=False)
@@ -135,7 +135,7 @@ class PNList(Base):
 
 class Bom(Base):
     __tablename__ = 'bom'
-    id = Column(Integer, Sequence('bom_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('bom_id_seq'), primary_key=True)
     product_id = Column(Integer, ForeignKey('product_list.id'))
     product_list = relationship('ProductList', backref="bom")
     pnlist_id = Column(Integer, ForeignKey('pn_list.id'))
@@ -146,7 +146,7 @@ class Bom(Base):
 
 class PNMaterialList(Base):
     __tablename__ = 'pn_material_list'
-    id = Column(Integer, Sequence('pn_material_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('pn_material_list_id_seq'), primary_key=True)
     pnlist_id = Column(Integer, ForeignKey('pn_list.id'))
     pn_list = relationship('PNList', backref="pn_material_list")
     material_id = Column(Integer, ForeignKey('material_list.id'))
@@ -157,7 +157,7 @@ class PNMaterialList(Base):
 
 class ProduceSchedule(Base):
     __tablename__ = 'produce_schedule'
-    id = Column(Integer, Sequence('produce_schedule_id'), primary_key=True)
+    id = Column(Integer, Sequence('produce_schedule_id_seq'), primary_key=True)
     date = Column(Date, unique=False, nullable=False)
     machine_id = Column(Integer, ForeignKey('machine_list.id'))
     machine_list = relationship('MachineList', backref="produce_schedule")
@@ -174,7 +174,7 @@ class ProduceSchedule(Base):
 
 class MoldPnAssociation(Base):
     __tablename__ = 'mold_pn_association'
-    id = Column(Integer, Sequence('mold_pn_association_id'), primary_key=True)
+    id = Column(Integer, Sequence('mold_pn_association_id_seq'), primary_key=True)
     mold_id = Column(Integer, ForeignKey('mold_list.id'))
     pnlist_id = Column(Integer, ForeignKey('pn_list.id'))
     mold_list = relationship('MoldList', backref="mold_pn_association")
@@ -182,14 +182,24 @@ class MoldPnAssociation(Base):
     ps = Column(Text, unique=False, nullable=True)
 
 
+class Amount(Base):
+    __tablename__ = "amount"
+    machine_id = Column(Integer, primary_key=True, unique=False, nullable=True)
+    produce_amount = Column(Integer, unique=False, nullable=True)
+    state = Column(Integer, unique=False, nullable=True)
+    update_time = Column(DateTime, unique=False, nullable=True)
+
+
 class DailyReport(Base):
     __tablename__ = 'daily_report'
-    id = Column(Integer, Sequence('daily_report_id'), primary_key=True)
+    id = Column(Integer, Sequence('daily_report_id_seq'), primary_key=True)
     date = Column(Date, unique=False, nullable=False)
     building = Column(String(20), unique=False, nullable=False)
     machine = Column(String(20), unique=False, nullable=False)
+    machine_id = Column(Integer, unique=False, nullable=True)
     part_number = Column(String(20), unique=False, nullable=False)
     mold = Column(String(20), unique=False, nullable=True)
+    mold_id = Column(Integer, unique=False, nullable=True)
     produce_amount = Column(Integer, unique=False, nullable=True)
     bad_amount = Column(Integer, unique=False, nullable=True)
     bad_percent = Column(Float, unique=False, nullable=True)
@@ -200,21 +210,9 @@ class DailyReport(Base):
     additional_amount = Column(Integer, unique=False, nullable=True)
 
 
-class DailyClassReport(Base):
-    __tablename__ = 'daily_class_report'
-    id = Column(Integer, Sequence('daily_class_report_id'), primary_key=True)
-    daily_report_id = Column(Integer, ForeignKey('daily_report.id'))
-    daily_report = relationship('DailyReport', backref="daily_class_report")
-    work_class = Column(String(5), unique=False, nullable=False)
-    bad_amount = Column(Integer, unique=False, nullable=True)
-    box_number = Column(Integer, unique=False, nullable=True)
-    box_name = Column(String(20), unique=False, nullable=True)
-    ps = Column(Text, unique=False, nullable=True)
-
-
 class BadList(Base):
     __tablename__ = 'bad_list'
-    id = Column(Integer, Sequence('bad_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('bad_list_id_seq'), primary_key=True)
     bad_name = Column(String(20), unique=True, nullable=False)
     bad_code = Column(String(20), unique=True, nullable=False)
     ps = Column(Text, unique=False, nullable=True)
@@ -222,7 +220,7 @@ class BadList(Base):
 
 class AnomalyList(Base):
     __tablename__ = 'anomaly_list'
-    id = Column(Integer, Sequence('anomaly_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('anomaly_list_id_seq'), primary_key=True)
     anomaly_type_id = Column(Integer, ForeignKey('anomaly_type_list.id'))
     anomaly_type_list = relationship('AnomalyTypeList', backref="anomaly_list")
     anomaly_name = Column(String(20), unique=False, nullable=False)
@@ -232,7 +230,7 @@ class AnomalyList(Base):
 
 class AnomalyTypeList(Base):
     __tablename__ = 'anomaly_type_list'
-    id = Column(Integer, Sequence('anomaly_type_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('anomaly_type_list_id_seq'), primary_key=True)
     anomaly_type = Column(String(20), unique=False, nullable=False)
     anomaly_type_code = Column(String(20), unique=True, nullable=False)
     ps = Column(Text, unique=False, nullable=True)
@@ -240,11 +238,9 @@ class AnomalyTypeList(Base):
 
 class BadRecord(Base):
     __tablename__ = 'bad_record'
-    id = Column(Integer, Sequence('bad_record_id'), primary_key=True)
+    id = Column(Integer, Sequence('bad_record_id_seq'), primary_key=True)
     daily_report_id = Column(Integer, ForeignKey('daily_report.id'))
     daily_report = relationship('DailyReport', backref="bad_record")
-    daily_class_report_id = Column(Integer, ForeignKey('daily_class_report.id'))
-    daily_class_report = relationship('DailyClassReport', backref="bad_record")
     bad_id = Column(Integer, ForeignKey('bad_list.id'))
     bad_list = relationship('BadList', backref="bad_record")
     record_time = Column(DateTime, unique=False, nullable=False)
@@ -257,7 +253,7 @@ class BadRecord(Base):
 
 class AnomalyRecord(Base):
     __tablename__ = 'anomaly_record'
-    id = Column(Integer, Sequence('anomaly_record_id'), primary_key=True)
+    id = Column(Integer, Sequence('anomaly_record_id_seq'), primary_key=True)
     daily_report_id = Column(Integer, ForeignKey('daily_report.id'))
     daily_report = relationship('DailyReport', backref="anomaly_record")
     anomaly_id = Column(Integer, ForeignKey('anomaly_list.id'))
@@ -273,7 +269,7 @@ class AnomalyRecord(Base):
 
 class MaterialDispatch(Base):
     __tablename__ = 'material_dispatch'
-    id = Column(Integer, Sequence('material_dispatch_id'), primary_key=True)
+    id = Column(Integer, Sequence('material_dispatch_id_seq'), primary_key=True)
     date = Column(Date, unique=False, nullable=False)
     building = Column(String(20), unique=False, nullable=True)
     pnlist_id = Column(Integer, ForeignKey('pn_list.id'))
@@ -296,7 +292,7 @@ class MaterialDispatch(Base):
 
 class MaterialCheck(Base):
     __tablename__ = 'material_check'
-    id = Column(Integer, Sequence('material_check_id'), primary_key=True)
+    id = Column(Integer, Sequence('material_check_id_seq'), primary_key=True)
     date = Column(Date, unique=False, nullable=False)
     building = Column(String(20), unique=False, nullable=False)
     material_id = Column(Integer, ForeignKey('material_list.id'))
@@ -307,38 +303,10 @@ class MaterialCheck(Base):
     material_bucket = Column(Integer, unique=False, nullable=False)
     total = Column(Integer, unique=False, nullable=False)
 
-#
-# class IssuanceRecord(Base):
-#     __tablename__ = 'issuance_record'
-#     id_seq = Sequence('id_issuance_record', metadata=Base.metadata, cache=2)
-#     id = Column(Integer, id_seq, primary_key=True)
-#     date = Column(DateTime, unique=False, nullable=False)
-#     pnlist_id = Column(Integer, ForeignKey('pn_list.id'))
-#     pn_list = relationship('PNList', backref="issuance_record")
-#     remain = Column(Integer, unique=False, nullable=False)
-#     box_amount = Column(Integer, unique=False, nullable=True)
-#     pallet = Column(Integer, unique=False, nullable=True)
-#     total_amount = Column(Integer, unique=False, nullable=False)
-#     responsible = Column(String(20), unique=False, nullable=True)
-#
-#
-# class InboundRecord(Base):
-#     __tablename__ = 'inbound_record'
-#     id_seq = Sequence('id_inbound_record', metadata=Base.metadata, cache=2)
-#     id = Column(Integer, id_seq, primary_key=True)
-#     date = Column(DateTime, unique=False, nullable=False)
-#     pnlist_id = Column(Integer, ForeignKey('pn_list.id'))
-#     pn_list = relationship('PNList', backref="inbound_record")
-#     remain = Column(Integer, unique=False, nullable=False)
-#     box_amount = Column(Integer, unique=False, nullable=True)
-#     pallet = Column(Integer, unique=False, nullable=True)
-#     total_amount = Column(Integer, unique=False, nullable=False)
-#     responsible = Column(String(20), unique=False, nullable=True)
-
 
 class SignTableList(Base):
     __tablename__ = 'sign_table_list'
-    id = Column(Integer, Sequence('sign_table_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('sign_table_list_id_seq'), primary_key=True)
     table_name = Column(String(80), unique=True, nullable=False)
     db_table_name = Column(String(80), unique=True, nullable=False)
     name = Column(String(80), unique=True, nullable=True)
@@ -346,7 +314,7 @@ class SignTableList(Base):
 
 class SignProcessList(Base):
     __tablename__ = 'sign_process_list'
-    id = Column(Integer, Sequence('sign_process_list_id'), primary_key=True)
+    id = Column(Integer, Sequence('sign_process_list_id_seq'), primary_key=True)
     table_list_id = Column(Integer, ForeignKey('sign_table_list.id'))
     sign_table_list = relationship('SignTableList', backref="sign_process_list")
     process_name = Column(String(20), unique=False, nullable=True)
@@ -354,7 +322,7 @@ class SignProcessList(Base):
 
 class SignProcessListDetail(Base):
     __tablename__ = 'sign_process_list_detail'
-    id = Column(Integer, Sequence('sign_process_list_detail_id'), primary_key=True)
+    id = Column(Integer, Sequence('sign_process_list_detail_id_seq'), primary_key=True)
     process_list_id = Column(Integer, ForeignKey('sign_process_list.id'))
     sign_process_list = relationship('SignProcessList', backref="sign_process_list_detail")
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -365,7 +333,7 @@ class SignProcessListDetail(Base):
 
 class SignEvent(Base):
     __tablename__ = 'sign_event'
-    id = Column(Integer, Sequence('sign_event_id'), primary_key=True)
+    id = Column(Integer, Sequence('sign_event_id_seq'), primary_key=True)
     date = Column(DateTime, unique=False, nullable=False)
     table_list_id = Column(Integer, ForeignKey('sign_table_list.id'))
     sign_table_list = relationship('SignTableList', backref="sign_event")
@@ -379,7 +347,7 @@ class SignEvent(Base):
 
 class SignerState(Base):
     __tablename__ = 'signer_state'
-    id = Column(Integer, Sequence('signer_state_id'), primary_key=True)
+    id = Column(Integer, Sequence('signer_state_id_seq'), primary_key=True)
     event_id = Column(Integer, ForeignKey('sign_event.id'))
     sign_event = relationship('SignEvent', backref="signer_state")
     process_list_detail_id = Column(Integer, ForeignKey('sign_process_list_detail.id'))
@@ -409,7 +377,7 @@ class BadCause(Base):
 
 class BackendDemand(Base):
     __tablename__ = 'backend_demand'
-    id = Column(Integer, Sequence('backend_demand_id'), primary_key=True)
+    id = Column(Integer, Sequence('backend_demand_id_seq'), primary_key=True)
     date = Column(Date, unique=False, nullable=False)
     product_name = Column(String(80), unique=False, nullable=True)
     part_number = Column(String(80), unique=False, nullable=True)
@@ -424,7 +392,7 @@ class BackendDemand(Base):
 
 class FirstPartRecord(Base):
     __tablename__ = 'first_part_record'
-    id = Column(Integer, Sequence('first_part_record_id'), primary_key=True)
+    id = Column(Integer, Sequence('first_part_record_id_seq'), primary_key=True)
     send_time = Column(DateTime, unique=False, nullable=False)
     finish_time = Column(DateTime, unique=False, nullable=True)
     pnlist_id = Column(Integer, unique=False, nullable=False)
@@ -472,7 +440,7 @@ class FirstPartRecord(Base):
 
 class Dimension(Base):
     __tablename__ = 'dimension'
-    id = Column(Integer, Sequence('dimension_id'), primary_key=True)
+    id = Column(Integer, Sequence('dimension_id_seq'), primary_key=True)
     mold_id = Column(Integer, unique=False, nullable=True)
     pnlist_id = Column(Integer, unique=False, nullable=False)
     dim = Column(Integer, unique=False, nullable=False)
@@ -484,7 +452,7 @@ class Dimension(Base):
 
 class DimensionRecord(Base):
     __tablename__ = 'dimension_record'
-    id = Column(Integer, Sequence('dimension_record_id'), primary_key=True)
+    id = Column(Integer, Sequence('dimension_record_id_seq'), primary_key=True)
     cave_number = Column(Integer, unique=False, nullable=False)
     first_part_id = Column(Integer, unique=False, nullable=False)
     dimension_id = Column(Integer, unique=False, nullable=False)
@@ -495,7 +463,7 @@ class DimensionRecord(Base):
 
 class ExamineRecord(Base):
     __tablename__ = 'examine_record'
-    id = Column(Integer, Sequence('examine_record_id'), primary_key=True)
+    id = Column(Integer, Sequence('examine_record_id_seq'), primary_key=True)
     cave_number = Column(Integer, unique=False, nullable=False)
     first_part_id = Column(Integer, unique=False, nullable=False)
     examine_1 = Column(Integer, unique=False, nullable=True)
@@ -526,9 +494,48 @@ class ExamineRecord(Base):
             del dictionary["_sa_instance_state"]
         return dictionary
 
+
+class AuthManager(Base):
+    __tablename__ = 'auth_manager'
+    id_seq = Sequence('id_auth_manager', metadata=Base.metadata)
+    id = Column(Integer, id_seq, primary_key=True)
+    route_name = Column(String(80), unique=True, nullable=False)
+    permission = Column(String(80), unique=True, nullable=False)
+    page_url = Column(String(80), unique=True, nullable=False)
+    num = Column(Integer, unique=True, nullable=False)
+    func_name = Column(String(80), unique=True, nullable=False)
+
+    def to_dict(self):
+        """將數據轉為字典"""
+        dictionary = self.__dict__
+        if "_sa_instance_state" in dictionary:
+            del dictionary["_sa_instance_state"]
+        return dictionary
+
+
 # Base.metadata.create_all(bind=engine)
 
 
 if __name__ == '__main__':
-    Base.metadata.create_all(bind=engine)
-    print('Initialize database.')
+    # Base.metadata.create_all(bind=engine)
+    # print('Initialize database.')
+    # bad = [("縮水", "b1"), ("短射", "b2"), ("表面瑕疵", "b3")]
+    # for a in bad:
+    #     new_bad = BadList(bad_name=a[0], bad_code=a[1])
+    #     db_session.add(new_bad)
+    # db_session.commit()
+    #
+    # a = [("成型類", "t1"), ('設備類', 't2'), ('自動化類', 't3')]
+    # for aa in a:
+    #     new_t = AnomalyTypeList(anomaly_type=aa[0],
+    #                             anomaly_type_code=aa[1])
+    #     db_session.add(new_t)
+    # db_session.commit()
+
+    b = [(1, "參數調整", 'a1'), (1, "零件更換", 'a2'), (1, '模面清理', 'a3'),
+         (2, '料管維修', 'a4'), (2, '感測器維修', 'a5'), (2, '控制器異常', 'a6'),
+         (3, '自動機卡盤', 'a7'), (3, '機械手異常', 'a8'), (3, '自動機參數調整', 'a9')]
+    for bb in b:
+        new_a = AnomalyList(anomaly_type_id=bb[0], anomaly_name=bb[1], anomaly_code=bb[2])
+        db_session.add(new_a)
+    db_session.commit()
