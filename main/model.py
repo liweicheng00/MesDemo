@@ -527,8 +527,5 @@ class AuthManager(Base):
 
 
 if __name__ == '__main__':
-    # Base.metadata.create_all(bind=engine)
-    # print('Initialize database.')
-    import os
-    os.system("alembic current")
-    os.system("alembic stamp head")
+    Base.metadata.create_all(bind=engine)
+    print('Initialize database.')
