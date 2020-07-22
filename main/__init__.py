@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
-from config import config
+from main.config import config
 from flask import Flask, render_template, request, abort
 from flask_cors import CORS
 from flask_login import LoginManager, current_user
