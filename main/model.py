@@ -4,21 +4,25 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 from flask_login import UserMixin
 from sqlalchemy.schema import Sequence
-import os
+# import os
+from main import app_config
 
-try:
-    url = os.environ.get('DATABASE_URL')
-except:
-    print('Something wrong with database url')
-else:
-    if url is not None:
-        url = url.split('postgres://')[1]
-        print(url)
-        engine = create_engine('postgresql+psycopg2://{}'.format(url),
-                               convert_unicode=True, encoding='utf8')
-    else:
-        engine = create_engine('postgresql+psycopg2://liweicheng:@127.0.0.1:5432/demo-mes', convert_unicode=True,
-                               encoding='utf8')
+#
+# try:
+#     url = os.environ.get('DATABASE_URL')
+# except:
+#     print('Something wrong with database url')
+# else:
+#     if url is not None:
+#         url = url.split('postgres://')[1]
+#         print(url)
+#         engine = create_engine('postgresql+psycopg2://{}'.format(url),
+#                                convert_unicode=True, encoding='utf8')
+#     else:
+#         engine = create_engine('postgresql+psycopg2://liweicheng:@127.0.0.1:5432/demo-mes', convert_unicode=True,
+#                                encoding='utf8')
+
+engine = create_engine(app_config['SQLALCHEMY_URL'], convert_unicode=True, encoding='utf8')
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
@@ -525,7 +529,6 @@ class AuthManager(Base):
 if __name__ == '__main__':
     # Base.metadata.create_all(bind=engine)
     # print('Initialize database.')
-    q = AuthManager.query.filter(AuthManager.page_url == '/change_password').first()
-
-    db_session.delete(q)
-    db_session.commit()
+    import os
+    os.system("alembic current")
+    os.system("alembic stamp head")

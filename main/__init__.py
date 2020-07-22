@@ -1,16 +1,36 @@
-from main.config import config
+from dotenv import load_dotenv
+load_dotenv()
+from config import config
 from flask import Flask, render_template, request, abort
 from flask_cors import CORS
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, RoleNeed
-# from flask_socketio import SocketIO, emit
 from flask_apscheduler import APScheduler
 from flask_principal import Permission, RoleNeed
 from flask_restful import Api
 import logging
+import os
+
+env = os.environ.get('ENV')
+if env:
+    pass
+else:
+    env = 'development'
 
 app = Flask(__name__, instance_relative_config=True)
-app.config.from_object(config['default'])
+
+app.config.from_object(config[env])  # from ./config.py
+
+
+# ensure the instance folder exists
+try:
+    os.makedirs(app.instance_path)
+except OSError:
+    pass
+
+# app.config.from_pyfile('config.py')  # from ./instance/config.py
+app_config = app.config
+
 
 handler = logging.FileHandler('flask.log')
 app.logger.addHandler(handler)
