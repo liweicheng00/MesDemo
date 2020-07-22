@@ -280,7 +280,7 @@ def ajax_update_route():
     for url in all_routes:
         q = AuthManager.query.filter(AuthManager.route_name == url).first()
         if not q:
-            if url[:4] != '/ajax':
+            if url[:5] != '/ajax':
                 new = AuthManager(route_name=url, permission='', page_url=url)
             else:
                 new = AuthManager(route_name=url, permission='')
