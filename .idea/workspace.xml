@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main/alembic.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/templates/route_auth_v1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/bad_statistic.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/bad_statistic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/query.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/revise/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/revise/machine_revise.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/machine_revise.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/revise/mold_revise.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/mold_revise.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/schedule/daily_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/daily_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index.2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/intro.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/intro.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/daily_report_v2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/daily_report_v2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/user_auth.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/user_auth.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -55,12 +36,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/requirements.txt">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="52">
+              <caret line="16" column="11" lean-forward="true" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+            </state>
+          </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Procfile">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -373,7 +358,14 @@
       <option name="project" value="LOCAL" />
       <updated>1595137966556</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="0722">
+      <created>1595381867355</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1595381867355</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -389,7 +381,7 @@
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21604449" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21604449" />
       <window_info id="Favorites" order="1" side_tool="true" />
       <window_info id="Structure" order="2" weight="0.17553614" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -399,7 +391,7 @@
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" sideWeight="0.4988086" weight="0.32876712" />
       <window_info anchor="bottom" id="Version Control" order="6" sideWeight="0.4988086" weight="0.51369864" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49245432" visible="true" weight="0.55479455" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49245432" visible="true" weight="0.55479455" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50119144" side_tool="true" weight="0.32876712" />
       <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49960285" weight="0.32876712" />
       <window_info anchor="bottom" x="220" y="346" width="840" height="300" id="Run" order="10" sideWeight="0.50277996" side_tool="true" weight="0.32739726" />
@@ -455,7 +447,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="resource" />
     <MESSAGE value="0719" />
-    <option name="LAST_COMMIT_MESSAGE" value="0719" />
+    <MESSAGE value="0722" />
+    <option name="LAST_COMMIT_MESSAGE" value="0722" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -823,6 +816,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Procfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
@@ -834,12 +834,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Procfile">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
+        <state relative-caret-position="52">
+          <caret line="16" column="11" lean-forward="true" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
         </state>
       </provider>
     </entry>
