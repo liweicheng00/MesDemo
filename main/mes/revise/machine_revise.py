@@ -4,13 +4,11 @@ from main.model import *
 
 
 @bp.route('/machine_revise')
-# @auth_manager
 def machine_revise():
     return render_template('main/revise/machine_revise.html')
 
 
 @bp.route("/ajax_revise_get_machine", methods=['POST'])
-# @auth_manager
 def ajax_revise_get_machine():
     data = request.get_data()
     data = json.loads(data)
@@ -34,7 +32,6 @@ def ajax_revise_get_machine():
 
 
 @bp.route("/ajax_revise_machine", methods=['POST'])
-# @auth_manager
 def ajax_revise_machine():
     data = request.get_data()
     data = json.loads(data)

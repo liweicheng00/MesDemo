@@ -9,7 +9,6 @@ import datetime
 '''把所有基礎選項功能放在這邊'''
 @bp.route("/ajax_building", methods=['GET'])
 @login_required
-# @auth_manager
 def ajax_building():
     print(request.args.get('warehouse'))
     if request.args.get('warehouse'):
@@ -37,7 +36,6 @@ def ajax_building():
 
 
 @bp.route("/ajax_position", methods=["POST"])
-# @auth_manager
 def ajax_position():
     data = request.get_data()
     data = json.loads(data)
@@ -51,7 +49,6 @@ def ajax_position():
 
 @bp.route("/ajax_machine", methods=['POST'])
 @login_required
-# @auth_manager
 def ajax_machine():
     data = request.get_data()
     data = json.loads(data)
@@ -83,7 +80,6 @@ def ajax_machine():
 
 @bp.route("/ajax_machine_name", methods=['POST'])
 @login_required
-# @auth_manager
 def ajax_machine_name():
     data = request.get_data()
     data = json.loads(data)
@@ -102,7 +98,6 @@ def ajax_machine_name():
 
 @bp.route("/ajax_product", methods=['GET'])
 @login_required
-# @auth_manager
 def ajax_product():
     q_product = ProductList.query.all()
     result = {}
@@ -121,7 +116,6 @@ def ajax_product():
 
 @bp.route("/ajax_class", methods=['GET'])
 @login_required
-# @auth_manager
 def ajax_class():
     q_class = db_session.query(PNList.inj_product_class).distinct()
     result = {}
@@ -133,7 +127,6 @@ def ajax_class():
 
 @bp.route("/ajax_mold", methods=['POST'])
 @login_required
-# @auth_manager
 def ajax_mold():
     data = request.get_data()
     data = json.loads(data)

@@ -5,13 +5,11 @@ import datetime
 
 
 @bp.route('/daily_report')
-# @auth_manager
 def daily_report():
     return render_template('main/schedule/daily_report_v2.html')
 
 
 @bp.route("/ajax_anomaly_detail", methods=['POST'])
-# @auth_manager
 def ajax_anomaly_detail():
     data = request.get_data()
     data = json.loads(data)
@@ -34,7 +32,6 @@ def ajax_anomaly_detail():
 
 
 @bp.route("/ajax_daily_report_query", methods=['POST'])
-# @auth_manager
 def ajax_daily_report_query():
     data = request.get_data()
     data = json.loads(data)
@@ -90,9 +87,7 @@ def ajax_daily_report_query():
     return jsonify(report_list)
 
 
-
 @bp.route("/ajax_delete_daily_report", methods=['POST'])
-# @auth_manager
 def ajax_delete_daily_report():
     data = request.get_data()
     data = json.loads(data)
@@ -103,20 +98,16 @@ def ajax_delete_daily_report():
     id = tuple(id)
     q_bad = BadRecord.query.filter(BadRecord.daily_report_id.in_(id)).all()
     for bad in q_bad:
-        db_model1.delete(bad)
+        db_session.delete(bad)
 
     q_anomaly = AnomalyRecord.query.filter(AnomalyRecord.daily_report_id.in_(id)).all()
     for anomaly in q_anomaly:
-        db_model1.delete(anomaly)
-
-    q_class = DailyClassReport.query.filter(DailyClassReport.daily_report_id.in_(id)).all()
-    for d_class in q_class:
-        db_model1.delete(d_class)
+        db_session.delete(anomaly)
 
     q_daily = DailyReport.query.filter(DailyReport.id.in_(id)).all()
     for daily in q_daily:
-        db_model1.delete(daily)
-    db_model1.commit()
+        db_session.delete(daily)
+    db_session.commit()
     error = '刪除成功'
     return jsonify({'error': error})
 

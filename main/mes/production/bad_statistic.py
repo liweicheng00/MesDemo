@@ -48,33 +48,6 @@ def ajax_bad_amount():
     return jsonify(q_bad_record)
 
 
-@bp.route("/ajax_time", methods=['POST'])
-def ajax_time():
-    return jsonify()
-
-
-@bp.route("/ajax_anomaly_type_list", methods=['GET'])
-def ajax_anomaly_type_list():
-    q_anomaly_type = AnomalyTypeList.query.all()
-    result = {}
-    for types in q_anomaly_type:
-        result[str(types.id)] = types.anomaly_type
-
-    return jsonify(result)
-
-
-@bp.route("/ajax_anomaly_list", methods=['POST'])
-def ajax_anomaly_list():
-    data = request.get_data()
-    data = json.loads(data)
-    type_id = data['type_id']
-    q_anomaly_list = AnomalyList.query.filter(AnomalyList.anomaly_type_id == type_id)
-    result = []
-    for anomaly in q_anomaly_list:
-        result.append(anomaly.anomaly_name)
-    return jsonify(result)
-
-
 @bp.route("/ajax_get_machine_schedule", methods=['POST'])
 def ajax_get_machine_schedule():
     data = request.get_data()

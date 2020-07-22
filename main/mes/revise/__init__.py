@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, jsonify, request
-from main.permission import *
 
 bp = Blueprint('revise', __name__)
 

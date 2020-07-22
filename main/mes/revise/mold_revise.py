@@ -4,13 +4,11 @@ from main.model import *
 
 
 @bp.route('/mold_revise')
-# # @auth_manager
 def mold_revise():
     return render_template('main/revise/mold_revise.html')
 
 
 @bp.route("/ajax_get_mold_pn", methods=['POST'])
-# @auth_manager
 def ajax_get_mold_pn():
     data = request.get_data()
     data = json.loads(data)

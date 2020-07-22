@@ -2,60 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="045d792e-7071-4bd2-8dc2-9a119185078e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/mes/query.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/mes/revise/machine_revise.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/mes/revise/mold_revise.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/mes/schedule/daily_report.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/permission.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/static/css/all.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/static/css/bootstrap-datepicker.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/static/css/bootstrap-datepicker.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/static/js/bootstrap-datepicker.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/templates/main/revise/machine_revise.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/templates/main/revise/mold_revise.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/templates/main/schedule/daily_report_v2.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/alembic.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/templates/route_auth_v1.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/flask.log" beforeDir="false" afterPath="$PROJECT_DIR$/main/flask.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/mes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/mes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/framework/frame.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/framework/frame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/mes/production/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/mes/production/bad_statistic.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/bad_statistic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/production/production_overall.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/production/production_overall.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/mes/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/query.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/mes/revise/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/mes/revise/upload_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/upload_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/mes/revise/machine_revise.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/machine_revise.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/mes/revise/mold_revise.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/revise/mold_revise.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/mes/schedule/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/mes/schedule/daily_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/mes/schedule/daily_report.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/socket_io.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/socket_io.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/hellosocket.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index.2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/templates/main/framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/bad_cause_query.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/bad_cause_query.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/bad_record_progress_query.1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/bad_record_progress_query.1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/bad_record_query.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/bad_record_query.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/daily_bad_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/daily_bad_report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/first_part_init.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/first_part_init.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/first_part_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/first_part_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/first_part_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/first_part_record.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/production/production_overall_horizontal_v2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/production/production_overall_horizontal_v2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/anomaly_revise.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/anomaly_revise.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/bad_revise.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/bad_revise.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/bom_revise.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/bom_revise.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/material_revise.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/material_revise.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/product_revise.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/product_revise.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/upload_data.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/upload_data.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/revise/upload_data_v1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/revise/upload_data_v1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/daily_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/daily_report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/material_check.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/material_check.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/material_dispatch.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/material_dispatch.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/material_dispatch_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/material_dispatch_confirm.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/schedule_v1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/templates/main/framework/intro.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/framework/intro.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/templates/main/schedule/daily_report_v2.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/schedule/daily_report_v2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/templates/user_auth.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/user_auth.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/tictoc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/模具料號對照_v0.xls" beforeDir="false" afterPath="$PROJECT_DIR$/模具料號對照_v0.xls" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/機台列表格式_v0.xls" beforeDir="false" afterPath="$PROJECT_DIR$/機台列表格式_v0.xls" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-879">
-              <caret line="211" lean-forward="true" selection-start-line="211" selection-end-line="211" />
+            <state relative-caret-position="7815">
+              <caret line="527" column="6" selection-start-line="527" selection-start-column="6" selection-end-line="527" selection-end-column="6" />
               <folding>
                 <element signature="e#0#147#0" expanded="true" />
               </folding>
@@ -78,63 +44,39 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/task.py">
+        <entry file="file://$PROJECT_DIR$/main/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="129" column="49" lean-forward="true" selection-start-line="129" selection-start-column="49" selection-end-line="129" selection-end-column="49" />
+            <state relative-caret-position="331">
+              <caret line="100" column="9" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#30#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/mes/production/bad_statistic.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="143" column="27" selection-start-line="143" selection-start-column="27" selection-end-line="143" selection-end-column="27" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/mes/schedule/daily_report.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="75" selection-start-line="75" selection-end-line="75" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main/static/css/all.min.css">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/mes/schedule/__init__.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Procfile">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="64" selection-start-line="17" selection-start-column="64" selection-end-line="17" selection-end-column="64" />
-              <folding>
-                <element signature="e#0#62#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/mes/revise/__init__.py">
+        <entry file="file://$PROJECT_DIR$/main/mes/auth.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" selection-start-line="1" selection-end-line="2" />
+            <state relative-caret-position="45">
+              <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#79#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -150,16 +92,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>detail</find>
-      <find>inj_product_name</find>
-      <find>fun_bad_query</find>
-      <find>application/json</find>
-      <find>error</find>
-      <find>json</find>
-      <find>execute success!</find>
-      <find>change_pa</find>
-      <find>join</find>
-      <find>basedir</find>
       <find>ajax_delete_daily_report</find>
       <find>datetime</find>
       <find>dai</find>
@@ -170,23 +102,34 @@
       <find>Sequence\('(.*)'\)</find>
       <find>get_machine</find>
       <find>inj_product_class</find>
-      <find>db_model1</find>
       <find>ofset</find>
       <find>mold_fun</find>
       <find>ajax_bad_upload</find>
       <find>\{\{url_for</find>
       <find>\{\{url_for\('.*\.(.*)'\)\}\}</find>
       <find>ajax_get_machine_detail_schedule</find>
-      <find>@auth_manager</find>
       <find>Daily</find>
       <find>ajax_add_daily_report</find>
+      <find>/ajax_anomaly_type_list</find>
+      <find>/ajax_anomaly_list</find>
+      <find>/ajax_time</find>
+      <find>json</find>
+      <find>db_model1</find>
+      <find>ajax_get_roles</find>
+      <find>@auth_manager</find>
+      <find>auth_manager</find>
+      <find>ajax_updateuser</find>
+      <find>db_session</find>
+      <find>curr</find>
+      <find>current_user</find>
     </findStrings>
     <replaceStrings>
       <replace>bp</replace>
-      <replace>db_session</replace>
       <replace>machine_name</replace>
       <replace>\/$1</replace>
       <replace># @auth_manager</replace>
+      <replace>db_session</replace>
+      <replace>db1</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -200,13 +143,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/venv/lib/python3.6/site-packages/flask_restful/reqparse.py" />
         <option value="$PROJECT_DIR$/main/resources/user.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/main/resources/test.py" />
         <option value="$PROJECT_DIR$/main/mes/framework/frame.py" />
         <option value="$PROJECT_DIR$/main/socket_io.py" />
-        <option value="$PROJECT_DIR$/main/__init__.py" />
         <option value="$PROJECT_DIR$/alembic.ini" />
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/alembic/env.py" />
@@ -215,14 +156,8 @@
         <option value="$PROJECT_DIR$/main/alembic.ini" />
         <option value="$PROJECT_DIR$/main/mes_alembic/env.py" />
         <option value="$PROJECT_DIR$/main/permission.py" />
-        <option value="$PROJECT_DIR$/main/mes/revise/machine_revise.py" />
         <option value="$PROJECT_DIR$/main/templates/main/revise/machine_revise.html" />
         <option value="$PROJECT_DIR$/main/mes/revise/upload_data.py" />
-        <option value="$PROJECT_DIR$/main/mes/__init__.py" />
-        <option value="$PROJECT_DIR$/main/mes/auth.py" />
-        <option value="$PROJECT_DIR$/main/mes/revise/__init__.py" />
-        <option value="$PROJECT_DIR$/main/mes/revise/mold_revise.py" />
-        <option value="$PROJECT_DIR$/main/mes/query.py" />
         <option value="$PROJECT_DIR$/main/templates/user_auth.html" />
         <option value="$PROJECT_DIR$/main/templates/main/production/bad_cause_query.html" />
         <option value="$PROJECT_DIR$/main/templates/main/production/bad_record_progress_query.1.html" />
@@ -246,11 +181,19 @@
         <option value="$PROJECT_DIR$/main/templates/main/framework/index.2.html" />
         <option value="$PROJECT_DIR$/main/templates/main/framework/index.html" />
         <option value="$PROJECT_DIR$/main/mes/production/production_overall.py" />
-        <option value="$PROJECT_DIR$/main/mes/schedule/__init__.py" />
-        <option value="$PROJECT_DIR$/main/model.py" />
         <option value="$PROJECT_DIR$/main/task.py" />
         <option value="$PROJECT_DIR$/main/mes/production/bad_statistic.py" />
+        <option value="$PROJECT_DIR$/main/mes/production/__init__.py" />
+        <option value="$PROJECT_DIR$/main/mes/revise/__init__.py" />
+        <option value="$PROJECT_DIR$/main/mes/schedule/__init__.py" />
+        <option value="$PROJECT_DIR$/main/mes/revise/mold_revise.py" />
         <option value="$PROJECT_DIR$/main/mes/schedule/daily_report.py" />
+        <option value="$PROJECT_DIR$/main/mes/revise/machine_revise.py" />
+        <option value="$PROJECT_DIR$/main/mes/query.py" />
+        <option value="$PROJECT_DIR$/main/mes/__init__.py" />
+        <option value="$PROJECT_DIR$/main/mes/auth.py" />
+        <option value="$PROJECT_DIR$/main/__init__.py" />
+        <option value="$PROJECT_DIR$/main/model.py" />
       </list>
     </option>
   </component>
@@ -272,65 +215,6 @@
               <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
               <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="mes_alembic" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="mes_alembic" type="462c0819:PsiDirectoryNode" />
-              <item name="versions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MesDemo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MesDemo" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -340,16 +224,16 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/main/static" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/main/templates" />
+      <recent name="$PROJECT_DIR$/main/static" />
       <recent name="$PROJECT_DIR$/main/static/css" />
       <recent name="$PROJECT_DIR$/main/static/js" />
-      <recent name="$PROJECT_DIR$/main/mes/schedule" />
-      <recent name="$PROJECT_DIR$/main/templates/main/schedule" />
-      <recent name="$PROJECT_DIR$/main/mes" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -371,7 +255,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.__init__">
+  <component name="RunManager" selected="Python.model">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python">
       <module name="MesDemo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -482,7 +366,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586581131684</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="0719">
+      <created>1595137966555</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1595137966556</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -496,26 +387,30 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27799842" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21604449" />
       <window_info id="Favorites" order="1" side_tool="true" />
       <window_info id="Structure" order="2" weight="0.17553614" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4980143" weight="0.32739726" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49722" weight="0.32739726" />
       <window_info anchor="bottom" id="Debug" order="2" sideWeight="0.49960285" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" sideWeight="0.4988086" weight="0.32876712" />
       <window_info anchor="bottom" id="Version Control" order="6" sideWeight="0.4988086" weight="0.51369864" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49642575" weight="0.55479455" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49245432" visible="true" weight="0.55479455" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50119144" side_tool="true" weight="0.32876712" />
       <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49960285" weight="0.32876712" />
-      <window_info anchor="bottom" x="220" y="346" width="840" height="300" id="Run" order="10" sideWeight="0.50357425" side_tool="true" visible="true" weight="0.46164384" />
+      <window_info anchor="bottom" x="220" y="346" width="840" height="300" id="Run" order="10" sideWeight="0.50277996" side_tool="true" weight="0.32739726" />
       <window_info anchor="bottom" id="Docker" order="11" weight="0.32876712" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -559,7 +454,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="resource" />
-    <option name="LAST_COMMIT_MESSAGE" value="resource" />
+    <MESSAGE value="0719" />
+    <option name="LAST_COMMIT_MESSAGE" value="0719" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -573,30 +469,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/main/mes_alembic/versions/8ee157ca1731_.py" />
-    <entry file="file://$PROJECT_DIR$/main/mes_alembic/versions/aea4b66a4dbf_.py" />
-    <entry file="file://$PROJECT_DIR$/main/mes_alembic/versions/8a8569be3579_.py" />
-    <entry file="file://$PROJECT_DIR$/main/mes_alembic/versions/daaa32f7f1cf_.py" />
-    <entry file="file://$PROJECT_DIR$/main/mes/revise/machine_revise.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/templates/main/revise/machine_revise.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="64" column="52" lean-forward="true" selection-start-line="64" selection-start-column="52" selection-end-line="64" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/templates/main/revise/upload_data_v1.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/mes/revise/upload_data.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -607,26 +479,6 @@
     <entry file="file://$PROJECT_DIR$/main/templates/main/revise/mold_revise.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/mes/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="50" lean-forward="true" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/mes/auth.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="159" selection-start-line="159" selection-end-line="159" />
-          <folding>
-            <element signature="e#0#79#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/mes/revise/data_query.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -634,23 +486,6 @@
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/mes/query.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="758">
-          <caret line="216" column="70" selection-start-line="216" selection-start-column="70" selection-end-line="216" selection-end-column="70" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/templates/user_auth.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="96" column="46" selection-start-line="96" selection-start-column="46" selection-end-line="96" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -804,16 +639,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/permission.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/mes/production/first_part.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -837,23 +662,6 @@
     <entry file="file://$PROJECT_DIR$/main/templates/main/schedule/daily_report_v2.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/mes/revise/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" selection-start-line="1" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/mes/schedule/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="64" selection-start-line="17" selection-start-column="64" selection-end-line="17" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/static/js/bootstrap-datepicker.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -871,7 +679,7 @@
     <entry file="file://$PROJECT_DIR$/main/task.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="334">
-          <caret line="129" column="49" lean-forward="true" selection-start-line="129" selection-start-column="49" selection-end-line="129" selection-end-column="49" />
+          <caret line="129" column="49" selection-start-line="129" selection-start-column="49" selection-end-line="129" selection-end-column="49" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -895,38 +703,145 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/model.py">
+    <entry file="file://$PROJECT_DIR$/main/static/css/all.min.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-879">
-          <caret line="211" lean-forward="true" selection-start-line="211" selection-end-line="211" />
-          <folding>
-            <element signature="e#0#147#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/mes/production/bad_statistic.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="143" column="27" selection-start-line="143" selection-start-column="27" selection-end-line="143" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="60">
+          <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main/mes/schedule/daily_report.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="75" selection-start-line="75" selection-end-line="75" />
+        <state relative-caret-position="1320">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/static/css/all.min.css">
+    <entry file="file://$PROJECT_DIR$/main/mes/production/bad_statistic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/query.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4050">
+          <caret line="275" column="11" selection-start-line="275" selection-start-column="11" selection-end-line="275" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/templates/user_auth.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="96" selection-start-line="96" selection-end-line="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/templates/route_auth_v1.html">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/production/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="43" lean-forward="true" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/framework/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/revise/anomaly_revise.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/revise/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/schedule/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="25" lean-forward="true" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/permission.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7815">
+          <caret line="527" column="6" selection-start-line="527" selection-start-column="6" selection-end-line="527" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#147#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mes/auth.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#79#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="100" column="9" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Procfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

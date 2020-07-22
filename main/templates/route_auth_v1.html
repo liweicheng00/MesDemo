@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>功能權限設置</title>
+	<script src="static/js/jquery-3.3.1.min.js"></script>
+	<script src="static/js/popper.min.js"></script>
+
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/bootstrap-table.min.js"></script>
+	<script src="static/js/moment.js"></script>
+	<script src="static/js/layui/layui.js"></script>
+	<link href="static/css/bootstrap-table.min.css" rel="stylesheet">
+	<link href="static/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+	<script src="static/js/bootstrap-datepicker.min.js"></script>
+	<link href="static/css/bootstrap-datepicker.css" rel="stylesheet">
+	<link href="static/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+	<fieldset class="layui-elem-field layui-field-title">
+		<legend style="font-weight:bold">
+			<span style="font-size: 1.5rem;">功能權限設置</span>
+		</legend>
+	</fieldset>
+	<div style="padding: 0px 30px;">
+		<div id="toolbar">
+			<!-- <button id="button" class="btn btn-secondary">刷新</button> -->
+			<button id="add_role_button" class="btn btn-secondary">新增角色</button>
+			<!-- <button id="edit_role_button" class="btn btn-secondary">編輯角色</button> -->
+		</div>
+		<table id="table">
+		</table>
+	</div>
+	<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="staticBackdropLabel">新增角色</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="upload_role" onsubmit="return false;" onkeydown="if(event.keyCode==13) return false;"
+						style="padding: 0px 30px;">
+						<div class="form-group row">
+							<label for="role">角色代號(英文)</label>
+							<input class="form-control" name="role" id="role" required></select>
+						</div>
+						<div class="form-group row">
+							<label for="chi_name">角色名稱(中文)</label>
+							<input class="form-control" name="chi_name" id="chi_name" required></select>
+						</div>
+						<div class="form-group row">
+							<button id="submit_button" type="submit" class="btn btn-primary">確認</button>
+							<span>&nbsp;</span>
+							<button id="modal_close" type="button" class="btn btn-primary">取消</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="modal fade" id="editRole" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="editRoleLabel" aria-hidden="true">
+		<div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="editRoleLabel">編輯角色</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="upload_role" onsubmit="return false;" onkeydown="if(event.keyCode==13) return false;"
+						style="padding: 0px 30px;">
+						<div class="form-group row">
+							<label for="role">角色代號(英文)</label>
+							<input class="form-control" name="role" id="role" required></select>
+						</div>
+						<div class="form-group row">
+							<label for="chi_name">角色名稱(中文)</label>
+							<input class="form-control" name="chi_name" id="chi_name" required></select>
+						</div>
+						<div class="form-group row">
+							<button id="submit_button" type="submit" class="btn btn-primary">確認</button>
+							<span>&nbsp;</span>
+							<button id="modal_close" type="button" class="btn btn-primary">取消</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<script>
+		var $table = $('#table')
+		var roles
+		$.ajax({
+			url: '/ajax_get_roles',
+			type: "GET",
+			async: false,
+			dataType: 'json',
+			success: function (res) {
+				console.log(res)
+				roles = res
+
+			},
+		})
+
+		var columns_func = function (roles) {
+			col = [
+				{
+					title: "頁面",
+					field: 'func_name'
+				},
+				{
+					title: '頁面URL',
+					field: 'page_url'
+				}]
+			for (var i = 0; i < roles.length; i++) {
+				col.push({
+					title: roles[i]['chi_name'],
+					field: roles[i]['role'],
+					formatter: auth_formatter,
+					events: window.operateEvents
+				})
+			}
+			return col
+		}
+		var columns_func1 = function (roles) {
+			col = [
+				{
+					title: "功能",
+					field: 'func_name'
+				},
+				{
+					title: '功能URL',
+					field: 'route_name'
+				}]
+			for (var i = 0; i < roles.length; i++) {
+				col.push({
+					title: roles[i]['chi_name'],
+					field: roles[i]['role'],
+					formatter: auth_formatter,
+					events: window.operateEvents
+				})
+			}
+			return col
+		}
+		$(function () {
+			$table.bootstrapTable({
+				toolbar: "#toolbar",
+				search: true,
+				showSearchClearButton: true,
+				showColumns: true,
+				// detailView: true,
+				// detailViewIcon: true,
+				// detailViewByClick: false,
+				// detailFormatter: detailFormatter,
+				columns: columns_func(roles)
+			})
+			$table.bootstrapTable('showLoading')
+
+			get_route()
+			$("#add_role_button").click(function () {
+				$("#staticBackdrop").modal('show')
+			})
+			$("#upload_role").submit(function (e) {
+				var data = $("#upload_role").serializeArray().reduce(function (obj, item) {
+					obj[item.name] = item.value
+					return obj
+				}, {})
+				console.log(data)
+				$.ajax({
+					url: '/ajax_add_role',
+					type: "POST",
+					data: JSON.stringify(data),
+					dataType: 'json',
+					success: function (res) {
+						console.log(res)
+
+						get_route()
+						$("#staticBackdrop").modal('hide')
+
+					},
+				})
+			})
+		})
+		function get_route() {
+			$table.bootstrapTable('showLoading')
+			$.ajax({
+				url: '/ajax_get_route',
+				type: "GET",
+				dataType: 'json',
+				success: function (res) {
+					console.log(res)
+
+					$table.bootstrapTable('load', res)
+					$table.bootstrapTable('hideLoading')
+				},
+			})
+		}
+		function auth_formatter(value, row, index, field) {
+
+			if (value) {
+				return [
+					'<div class="">',
+					'<div class="form-check">',
+					'<input class="form-check-input position-static box" style="width: 20px;height: 20px;" type="checkbox" name="' + field + '" checked \>',
+					'<div>'
+				].join('')
+			} else {
+				return [
+					'<div class="">',
+					'<div class="form-check">',
+					'<input class="form-check-input position-static box" style="width: 20px;height: 20px;" type="checkbox" name="' + field + '"  \>',
+					'<div>'
+				].join('')
+			}
+
+		}
+		function detailFormatter(index, row) {
+			return [
+				'<table id="table_' + index + '"></table>'
+			].join("")
+		}
+		$table.on('expand-row.bs.table', function (e, index, row, $detail) {
+			console.log(row)
+			var $detail = $('#table_' + index)
+			$detail.bootstrapTable({
+				columns: columns_func1(roles)
+			})
+			$.ajax({
+				url: '/ajax_get_page_route',
+				type: "POST",
+				data: JSON.stringify({
+					page_url: row.page_url
+				}),
+				dataType: 'json',
+				success: function (res) {
+					$detail.bootstrapTable('load', res)
+				},
+			})
+
+		})
+		window.operateEvents = {
+			'input .box': function (e, value, row, index) {
+				console.log(row)
+				console.log(e.target.name)
+				console.log(e.target.checked)
+				$.ajax({
+					url: '/ajax_update_permission',
+					type: "POST",
+					data: JSON.stringify({
+						id: row.id,
+						field: e.target.name,
+						checked: e.target.checked
+					}),
+					dataType: 'json',
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						if (XMLHttpRequest.status == '403') {
+							alert('無權限')
+						} else {
+							alert(XMLHttpRequest.responseJSON.msg)
+						}
+					},
+					success: function (res) {
+						console.log(res)
+
+					},
+				})
+
+			}
+		}
+	</script>
+</body>
+
+</html>

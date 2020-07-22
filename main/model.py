@@ -26,12 +26,21 @@ Base.query = db_session.query_property()
 # postgresql+psycopg2://user:password@host:port/dbname[?key=value&key=value...]
 
 
+association_table = Table(
+    'user_role_association',
+    Base.metadata,
+    Column('user_id', Integer, ForeignKey('user.id')),
+    Column('role_id', Integer, ForeignKey('role.id'))
+)
+
+
 class User(Base, UserMixin):
     __tablename__ = 'user'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     username = Column(String(80), unique=True, nullable=False)
     password = Column(String(120), unique=True, nullable=False)
     name = Column(String(20), unique=False, nullable=False)
+    role = relationship('Role', secondary=association_table)  # N>>N
 
     def to_dict(self):
         """將數據轉為字典"""
@@ -49,6 +58,7 @@ class Role(Base):
     __tablename__ = 'role'
     id = Column(Integer, Sequence('role_id_seq'), primary_key=True)
     role = Column(String(80), unique=True, nullable=False)
+    chi_name = Column(String(80), unique=False, nullable=True)
 
     def to_dict(self):
         """將數據轉為字典"""
@@ -56,10 +66,6 @@ class Role(Base):
         if "_sa_instance_state" in dictionary:
             del dictionary["_sa_instance_state"]
         return dictionary
-
-    def __init__(self, id=None, role=None):
-        self.id = id
-        self.role = role
 
     def __repr__(self):
         """讓print這個物件的時候，看起來好看"""
@@ -497,13 +503,13 @@ class ExamineRecord(Base):
 
 class AuthManager(Base):
     __tablename__ = 'auth_manager'
-    id_seq = Sequence('id_auth_manager', metadata=Base.metadata)
+    id_seq = Sequence('auth_manager_id_seq', metadata=Base.metadata)
     id = Column(Integer, id_seq, primary_key=True)
-    route_name = Column(String(80), unique=True, nullable=False)
-    permission = Column(String(80), unique=True, nullable=False)
-    page_url = Column(String(80), unique=True, nullable=False)
-    num = Column(Integer, unique=True, nullable=False)
-    func_name = Column(String(80), unique=True, nullable=False)
+    route_name = Column(String(80), unique=True, nullable=True)
+    permission = Column(String(80), unique=False, nullable=True)
+    page_url = Column(String(80), unique=True, nullable=True)
+    num = Column(Integer, unique=True, nullable=True)
+    func_name = Column(String(80), unique=True, nullable=True)
 
     def to_dict(self):
         """將數據轉為字典"""
@@ -519,23 +525,7 @@ class AuthManager(Base):
 if __name__ == '__main__':
     # Base.metadata.create_all(bind=engine)
     # print('Initialize database.')
-    # bad = [("縮水", "b1"), ("短射", "b2"), ("表面瑕疵", "b3")]
-    # for a in bad:
-    #     new_bad = BadList(bad_name=a[0], bad_code=a[1])
-    #     db_session.add(new_bad)
-    # db_session.commit()
-    #
-    # a = [("成型類", "t1"), ('設備類', 't2'), ('自動化類', 't3')]
-    # for aa in a:
-    #     new_t = AnomalyTypeList(anomaly_type=aa[0],
-    #                             anomaly_type_code=aa[1])
-    #     db_session.add(new_t)
-    # db_session.commit()
+    q = AuthManager.query.filter(AuthManager.page_url == '/change_password').first()
 
-    b = [(1, "參數調整", 'a1'), (1, "零件更換", 'a2'), (1, '模面清理', 'a3'),
-         (2, '料管維修', 'a4'), (2, '感測器維修', 'a5'), (2, '控制器異常', 'a6'),
-         (3, '自動機卡盤', 'a7'), (3, '機械手異常', 'a8'), (3, '自動機參數調整', 'a9')]
-    for bb in b:
-        new_a = AnomalyList(anomaly_type_id=bb[0], anomaly_name=bb[1], anomaly_code=bb[2])
-        db_session.add(new_a)
+    db_session.delete(q)
     db_session.commit()

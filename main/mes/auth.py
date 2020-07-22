@@ -4,9 +4,9 @@ from flask import (
 from flask_login import login_user, logout_user, login_required
 from flask_principal import identity_changed, AnonymousIdentity, Identity
 from werkzeug.security import check_password_hash, generate_password_hash
-
+import json
 from main.mes import *
-from main.model import User, Role, db_session as db1
+from main.model import User, Role, AuthManager, db_session as db1
 
 
 def next_is_valid(url):
@@ -116,8 +116,7 @@ def logout():
 @bp.route('/user_auth')
 @login_required
 def user_auth():
-    if not admin_permission.can():
-        abort(403)
+
     return render_template('user_auth.html')
 
 
@@ -140,28 +139,28 @@ def ajax_getuser():
     return jsonify(result)
 
 
-@bp.route('/ajax_getrole')
+@bp.route('/ajax_get_roles')
 @login_required
-# @admin_permission.require()
-def ajax_getrole():
+def ajax_get_roles():
     roles = Role.query.order_by(Role.id).all()
     result = []
     for role in roles:
         temp = {}
         temp['id'] = role.id
         temp['role'] = role.role
+        temp['chi_name'] = role.chi_name
         result.append(temp)
     return jsonify(result)
 
 
 @bp.route('/ajax_updateuser', methods=['POST'])
 @login_required
-@auth_manager
 def ajax_updateuser():
     data = request.form.to_dict()
     data_role = data['role'].split(",")
     roles = []
     for role in data_role:
+
         temp = Role.query.filter_by(role=role).first()
         if temp is not None:
             roles.append(temp)
@@ -173,3 +172,119 @@ def ajax_updateuser():
     db1.commit()
     db1.remove()
     return jsonify()  # Return json object to make ajax success.
+
+
+@bp.route('/route_auth')
+@login_required
+def route_auth():
+    return render_template('route_auth_v1.html')
+
+
+@bp.route("/ajax_add_role", methods=['POST'])
+def ajax_add_role():
+    data = request.get_data()
+    data = json.loads(data)
+    print('ajax_add_role')
+    print(data)
+    role = data['role']
+    chi_name = data['chi_name']
+    # for i in role:
+    #     if i > u'\u4e00' or i < u'\u9fff':
+    #         return jsonify({'msg': 'Role不能有中文'})
+    new = Role(role=role, chi_name=chi_name)
+    db1.add(new)
+    db1.commit()
+    return jsonify({'msg': '成功'})
+
+
+@bp.route('/ajax_get_route')
+@login_required
+def ajax_get_route():
+    print('ajax_get_route')
+    q = AuthManager.query.order_by(AuthManager.page_url)\
+        .filter(AuthManager.page_url == AuthManager.route_name).all()
+    result = []
+    for route in q:
+        temp = route.to_dict()
+        if temp['permission']:
+            for role in temp['permission'].split(','):
+                if role:
+                    temp[role] = 1
+        result.append(temp)
+    return jsonify(result)
+
+
+@bp.route('/ajax_get_page_route', methods=['POST'])
+@login_required
+def ajax_get_page_route():
+    data = request.get_data()
+    data = json.loads(data)
+    print('ajax_get_page_route')
+    print(data)
+    q = AuthManager.query.order_by(AuthManager.page_url)\
+        .filter(AuthManager.page_url == data['page_url'], AuthManager.page_url != AuthManager.route_name).all()
+    result = []
+    for route in q:
+        temp = route.to_dict()
+        if temp['permission']:
+            for role in temp['permission'].split(','):
+                if role:
+                    temp[role] = 1
+        result.append(temp)
+    return jsonify(result)
+
+
+@bp.route("/ajax_update_permission", methods=['POST'])
+def ajax_update_permission():
+    data = request.get_data()
+    data = json.loads(data)
+    print('ajax_update_permission')
+    print(data)
+    # if data['permission']:
+    #     for per in data['permission'].split(','):
+    #         q_role = Role.query.filter(Role.role == per).first()
+    #         if not q_role:
+    #             return jsonify({'msg': f"{per}角色不存在"}), 400
+    q = AuthManager.query.filter(AuthManager.id == data['id']).first()
+    if data['checked']:
+        if q.permission:
+            if data['field'] not in q.permission:
+                q.permission = q.permission + ',' + data['field']
+        else:
+            q.permission = data['field']
+    else:
+        q.permission = q.permission.replace(data['field'], '')
+        q.permission = q.permission.strip(',')
+
+    db1.add(q)
+    db1.commit()
+    return jsonify({'mag': '成功'})
+
+
+@bp.route('/ajax_update_route')
+def ajax_update_route():
+    print('ajax_update_route')
+    all_routes = []
+    for a in current_app.url_map.iter_rules():
+        if str(a) not in \
+                ['/static/<path:filename>', '/', '/frame', '/production', '/schedule', 'signing', 'revise', 'hello']:
+            all_routes.append(str(a))
+    # print("------")
+    # print(len(all_routes))
+    # print(len(set(all_routes)))
+    #
+    # all_routes.sort()
+    # for r in all_routes:
+    #     print(r)
+    result = []
+    for url in all_routes:
+        q = AuthManager.query.filter(AuthManager.route_name == url).first()
+        if not q:
+            if url[:4] != '/ajax':
+                new = AuthManager(route_name=url, permission='', page_url=url)
+            else:
+                new = AuthManager(route_name=url, permission='')
+            result.append(url)
+            db1.add(new)
+    db1.commit()
+    return jsonify({'msg': f'成功，新增URL: {",".join(result)}'})

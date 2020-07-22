@@ -1,10 +1,11 @@
 from main.config import config
-from flask import Flask, render_template
+from flask import Flask, render_template, request, abort
 from flask_cors import CORS
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, RoleNeed
 # from flask_socketio import SocketIO, emit
 from flask_apscheduler import APScheduler
+from flask_principal import Permission, RoleNeed
 from flask_restful import Api
 import logging
 
@@ -61,17 +62,45 @@ def on_identity_loaded(sender, identity):
             identity.provides.add(RoleNeed(r.role))
 
 
-"""request執行前"""
-@app.before_first_request
-def load_tasks():
-    from main import task
-
-
 '''關閉資料庫連接'''
-from main.model import db_session as db1
+from main.model import AuthManager, db_session as db1
 @app.teardown_appcontext
 def shutdown_session(exception=None):  # exception=None 很重要
     db1.remove()
+
+
+"""request執行前"""
+@app.before_first_request
+def before_first_request():
+    pass
+
+
+@app.before_request
+def before_request():
+    q_per = AuthManager.query.filter(AuthManager.route_name == request.path).all()
+    if q_per:
+        role = set()
+        for p in q_per:
+            permission = p.permission
+            if permission:
+                roles = permission.split(',')
+                role.update(roles)
+
+        if role:
+            per = Permission()
+            for r in role:
+                if r:
+                    per = per.union(Permission(RoleNeed(r)))
+
+            # print(per.can())
+            if current_user.username == 'god':
+                return
+            if not per.can():
+                abort(403)
+
+    else:
+        # print(request.path, "is not set auth.")
+        pass
 
 
 '''設定藍圖，提供url_for引導到指定url'''
