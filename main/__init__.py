@@ -1,5 +1,9 @@
+import os
 from dotenv import load_dotenv
+print('url', os.environ.get('DATABASE_URL'))
 load_dotenv()
+print('url', os.environ.get('DATABASE_URL'))
+
 from main.config import config
 from flask import Flask, render_template, request, abort
 from flask_cors import CORS
@@ -9,7 +13,6 @@ from flask_apscheduler import APScheduler
 from flask_principal import Permission, RoleNeed
 from flask_restful import Api
 import logging
-import os
 
 env = os.environ.get('ENV')
 if env:
