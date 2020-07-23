@@ -280,7 +280,7 @@ def ajax_update_route():
     for url in all_routes:
         q = AuthManager.query.filter(AuthManager.route_name == url).first()
         if not q:
-            if url[:5] != '/ajax':
+            if url[:5] != '/ajax' or url[:4] == '/api':
                 new = AuthManager(route_name=url, permission='', page_url=url)
             else:
                 new = AuthManager(route_name=url, permission='')
@@ -288,3 +288,16 @@ def ajax_update_route():
             db1.add(new)
     db1.commit()
     return jsonify({'msg': f'成功，新增URL: {",".join(result)}'})
+
+
+@bp.route('/ajax_special_delete')
+def ajax_special_delete():
+    data = request.args.get('data')
+    q = AuthManager.query.filter(AuthManager.route_name == data).first()
+    if q:
+        db1.delete(q)
+        db1.commit()
+        return jsonify({"info": f'delete {data}'})
+
+    else:
+        return jsonify({"info": 'nothing'})

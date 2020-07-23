@@ -36,8 +36,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main/mes/auth.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="286" column="30" lean-forward="true" selection-start-line="286" selection-start-column="30" selection-end-line="286" selection-end-column="30" />
+            <state relative-caret-position="295">
+              <caret line="296" column="9" lean-forward="true" selection-start-line="296" selection-start-column="9" selection-end-line="296" selection-end-column="9" />
               <folding>
                 <element signature="e#0#79#0" expanded="true" />
               </folding>
@@ -83,7 +83,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ajax_delete_daily_report</find>
       <find>datetime</find>
       <find>dai</find>
       <find>daily_class_report</find>
@@ -113,6 +112,7 @@
       <find>db_session</find>
       <find>curr</find>
       <find>current_user</find>
+      <find>methods=['GET']</find>
     </findStrings>
     <replaceStrings>
       <replace>bp</replace>
@@ -395,6 +395,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21604449" />
       <window_info id="Favorites" order="1" side_tool="true" />
@@ -409,7 +410,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.4932486" weight="0.4082192" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50119144" side_tool="true" weight="0.32876712" />
       <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.4988086" weight="0.32876712" />
-      <window_info anchor="bottom" x="220" y="346" width="840" height="300" id="Run" order="10" sideWeight="0.50119144" side_tool="true" visible="true" weight="0.32876712" />
+      <window_info active="true" anchor="bottom" x="220" y="346" width="840" height="300" id="Run" order="10" sideWeight="0.50119144" side_tool="true" visible="true" weight="0.32876712" />
       <window_info anchor="bottom" id="Docker" order="11" weight="0.32876712" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -842,8 +843,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main/mes/auth.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="286" column="30" lean-forward="true" selection-start-line="286" selection-start-column="30" selection-end-line="286" selection-end-column="30" />
+        <state relative-caret-position="295">
+          <caret line="296" column="9" lean-forward="true" selection-start-line="296" selection-start-column="9" selection-end-line="296" selection-end-column="9" />
           <folding>
             <element signature="e#0#79#0" expanded="true" />
           </folding>
