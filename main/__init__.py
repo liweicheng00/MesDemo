@@ -16,7 +16,8 @@ if env:
     pass
 else:
     env = 'development'
-print(env)
+print('now', env)
+print('url', os.environ.get('DATABASE_URL'))
 
 app = Flask(__name__, instance_relative_config=True)
 
