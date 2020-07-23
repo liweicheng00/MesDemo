@@ -1,8 +1,6 @@
 import os
 from dotenv import load_dotenv
-print('url', os.environ.get('DATABASE_URL'))
 load_dotenv()
-print('url', os.environ.get('DATABASE_URL'))
 
 from main.config import config
 from flask import Flask, render_template, request, abort
@@ -19,8 +17,6 @@ if env:
     pass
 else:
     env = 'development'
-print('now', env)
-print('url', os.environ.get('DATABASE_URL'))
 
 app = Flask(__name__, instance_relative_config=True)
 
