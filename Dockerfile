@@ -4,4 +4,4 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 EXPOSE 5000
 
-CMD gunicorn  -k gunicorn.workers.ggevent.GeventWorker -w 4 -b 0.0.0.0:8000 app:app
+CMD gunicorn  -k gunicorn.workers.ggevent.GeventWorker -w 4 -b 0.0.0.0:8000 main:app
