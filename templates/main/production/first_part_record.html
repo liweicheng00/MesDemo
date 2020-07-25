@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+		<script src="static/js/bootstrap-table.min.js"></script>
+		<script src="static/js/moment.js"></script>
+		<script src="static/js/layui/layui.js"></script>
+		<script src="static/js/bootstrap.min.js"></script>
+		<link href="static/css/bootstrap-table.min.css" rel="stylesheet">
+		<link href="static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="static/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
+		<link rel="stylesheet" href="static/js/layui/css/layui.css" media="all">
+		<style>
+			label {
+				text-align: center;
+			}
+			input[type=checkbox] {
+				zoom: 150%;
+			}
+		</style>
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight:bold">
+				<span style="font-size: 1.5rem;">初件紀錄</span>
+			</legend>
+		</fieldset>
+		<form id="init_record_form" onsubmit="return false;" onkeydown="if(event.keyCode==13) return false;" style="padding: 0px 30px;" >
+			<div class="row">
+				<div class="form-group col-sm-2">
+					<label for="product">品名</label>
+					<input class="form-control" name="product" id="product" readonly>
+				</div>
+				<div class="form-group col-sm-2">
+					<label for="part_number">料號</label>
+					<input class="form-control" name="part_number" id="part_number" readonly>
+				</div>
+				<div class="form-group col-sm-2">
+					<label for="mold">模具</label>
+					<input class="form-control" name="mold" id="mold" readonly>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="form-group col-sm-1">
+					<label for="building">棟別</label>
+					<input class="form-control" name="building" id="building" readonly>
+				</div>
+				<div class="form-group col-sm-2">
+					<label for="machine_name">機台號</label>
+					<input class="form-control" name="machine_name" id="machine_name" readonly>
+					
+				</div>	
+				<div class="form-group col-sm-2">
+					<label for="material_part_number">原料料號</label>
+					<input id="material_part_number" name="material_part_number" class="form-control" value="" disabled />
+				</div>
+				<div class="form-group col-sm-1">
+					<label for="cave_number">模穴數</label>
+					<input id="cave_number" name="cave_number" class="form-control" value="" disabled />
+				</div>
+			</div>
+			<!-- <div class="form-group row">
+				<label for="product" class="col-sm-1 col-form-label">產品</label>
+				<input id="product" class="form-control col-sm-1" value="" readonly />
+				<label for="part_number" class="col-sm-1 col-form-label">料號</label>
+				<input id="part_number" class="form-control col-sm-1" value="" readonly />
+				<label for="mold" class="col-sm-1 col-form-label">模具</label>
+				<input id="mold" class="form-control col-sm-1" value="" readonly />
+			</div>
+			<div class="form-group row">
+				<label for="building" class="col-sm-1 col-form-label">棟別</label>
+				<input id="building" class="form-control col-sm-1" value="" readonly />
+				<label for="machine_name" class="col-sm-1 col-form-label">機台號</label>
+				<input id="machine_name" class="form-control col-sm-1" value="" readonly />
+				<label for="material_part_number" class="col-sm-1 col-form-label">原料料號</label>
+				<input id="material_part_number" class="form-control col-sm-1" value="" readonly />
+				<label for="cave_number" class="col-sm-1 col-form-label">模穴數</label>
+				<input id="cave_number" class="form-control col-sm-1" value="" readonly />
+			</div> -->
+			<div class="form-group row">
+				<label for="grn_no" class="col-sm-1 col-form-label">GRN-NO</label>
+				<input id="grn_no" name="grn_no" class="form-control col-sm-2" value="" />
+				<label for="batch_number" class="col-sm-1 col-form-label">來料批號</label>
+				<input id="batch_number" name="batch_number" class="form-control col-sm-2" value="" />
+				<label for="examine_dependence" class="col-sm-1 col-form-label">檢驗依據</label>
+				<input id="examine_dependence" name="examine_dependence" class="form-control col-sm-2" value="" />
+			</div>
+			<div class="form-group row">
+				<label for="send_time" class="col-sm-1 col-form-label">送驗時間</label>
+				<input id="send_time" name="send_time" class="form-control col-sm-2" value="" readonly />
+				<label for="finish_time" class="col-sm-1 col-form-label">完成時間</label>
+				<input id="finish_time" name="finish_time" class="form-control col-sm-2" value="" readonly/>
+				<label for="init_type" class="col-sm-1 col-form-label">初件類型</label>
+				<input id="init_type" name="init_type" class="form-control col-sm-1" value="" readonly />
+				<label for="init_type" class="col-sm-1 col-form-label"></label>
+				<button class="btn btn-success" type="submit">上傳</button>
+			</div>
+
+		</form>
+		<hr>
+		<div class="row" style="padding: 0px 30px;">
+			<div class="col-md-6">
+				<table id="examine"></table>
+				<hr>
+				<button id="examine_upload" type="button" class="btn btn-primary">
+					外觀上傳
+				</button>
+			</div>
+			
+			<div class="col-md-6">
+				<table id="dimension"></table>
+				<hr>
+				<form id="dimension_form" onsubmit="return false;"></form>
+				<button id="dimension_upload" form="dimension_form" type="submit" class="btn btn-primary">
+					尺寸上傳
+				</button>
+				<button id="add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+					新增量測尺寸
+				</button>
+				<button id="edit" type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+					編輯量測尺寸
+				</button>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">新增量測尺寸</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<button id="toolbar_add" class="btn">+</button>
+						<button id="toolbar_minus" class="btn">-</button>
+						<!-- <span>(請一次添加所有數量，以免數據丟失)</span> -->
+						<form id="add_form" onsubmit="return false;"></form>
+						<table id="add_dimension"></table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button id="add_btn" form="add_form" class="btn btn-primary">upload</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var layer
+			layui.use(['layer'], function(){
+				layer = layui.layer
+			})
+			var getUrlString = location.href
+			var url = new URL(getUrlString)
+			var id  = url.searchParams.get('id')
+			$.ajax({
+				url: '/ajax_get_init_form',
+				type: "POST",
+				data: JSON.stringify({id: id}),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res)
+					$("#mold").val(res.mold_number+" "+res.mold_number_f)
+					$("#part_number").val(res.part_number)
+					$("#material_part_number").val(res.material_part_number)
+					$("#send_time").val(res.send_time)
+					$("#init_type").val(res.type)
+					$("#machine_name").val(res.machine_name)
+					$("#building").val(res.building)
+					add_dimension_data.mold_id = res.mold_id
+					add_dimension_data.pnlist_id = res.pnlist_id
+					get_data(res.part_number, res.mold_number)
+				},
+			})
+			// var pnlist_id
+			// var mold_id
+			window.operateEvents = {
+				'click .examine': function(e, value, row, index) {
+					if (e.target.name in examine_data){
+						console.log('already in')
+					}else{
+						examine_data[e.target.name] = {}
+					}
+					if (e.target.classList.contains('btn-secondary')) {
+						e.target.className = 'btn btn-success examine'
+						e.target.innerHTML = 'Check'
+						examine_data[e.target.name]['EXAMINE_'+(index+1)] = 1
+					} else if (e.target.classList.contains('btn-success')) {
+						e.target.className = 'btn btn-danger examine'
+						e.target.innerHTML = 'NG'
+						examine_data[e.target.name]['EXAMINE_'+(index+1)] = 0
+					} else if (e.target.classList.contains('btn-danger')) {
+						e.target.className = 'btn btn-success examine'
+						e.target.innerHTML = 'Check'
+						examine_data[e.target.name]['EXAMINE_'+(index+1)] = 1
+					}
+					// todo: 判定NG
+				},
+				'change .dimension': function(e, value, row, index) {
+					console.log(e.target.value)
+					// todo: 判定NG
+				},
+				'input .add_dimension': function(e, value, row, index) {
+					add_dimension_data['DIM'][row.DIM][e.target.name] = e.target.value
+					console.log(add_dimension_data)
+				}
+			}
+			$("#init_record_form").submit(function(e) {
+				var data = $("#init_record_form").serializeArray().reduce(function(obj, item){
+					obj[item.name] = item.value
+					return obj
+				}, {})
+				console.log(data)
+				$.ajax({
+					url: '/ajax_upload_record_data',
+					type: "POST",
+					data: JSON.stringify({data: data, first_part_id: id}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+					},
+				})
+			})
+			$("#dimension_form").submit(function(e) {
+				var data = $("#dimension_form").serializeArray().reduce(function(obj, item){
+					obj[item.name] = item.value
+					return obj
+				}, {})
+				console.log(data) 
+				$.ajax({
+					url: '/ajax_upload_dimension_data',
+					type: "POST",
+					data: JSON.stringify({data: data, first_part_id: id}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+					},
+				})
+			})
+			$("#examine_upload").click(function(e) {
+				console.log(examine_data)
+				$.ajax({
+					url: '/ajax_upload_examine_data',
+					type: "POST",
+					data: JSON.stringify({data: examine_data, first_part_id: id}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						if (res.error){
+							layer.msg(res.error)
+						}
+					},
+				})
+				
+			})
+		</script>
+		<script>
+			$("#add, #edit").hide()
+			var examine = $("#examine")
+			var dimension = $("#dimension")
+			examine.bootstrapTable({
+				data: data_array(),
+				columns: examine_columns()
+			})
+			dimension.bootstrapTable({
+				columns: dimension_columns()
+			})
+			var examine_data = {}
+
+			function get_data(part_number, mold_number) {
+				$.ajax({
+					url: '/ajax_get_dimension_detail',
+					type: "POST",
+					data: JSON.stringify({
+						part_number: part_number,
+						mold_number: mold_number,
+						first_part_id: id
+					}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						$("#add, #edit").hide()
+						$("#cave_number").val(res.cave_number)
+						$("#product").val(res.inj_product_name)
+						for (var i = 1; i <= res.cave_number; i++) {
+							examine.bootstrapTable('showColumn', 'cave-' + i)
+							examine.bootstrapTable('updateColumnTitle', {
+								field: 'cave-' + i,
+								title: res.mold_number_f + '-' + i
+							})
+							dimension.bootstrapTable('showColumn', 'cave-' + i)
+							dimension.bootstrapTable('updateColumnTitle', {
+								field: 'cave-' + i,
+								title: res.mold_number_f + '-' + i
+							})
+						}
+						if (res.dimension) {
+							dimension.bootstrapTable('load', res.dimension)
+							$("#edit").show({
+								start: function(){
+									add_dimension.bootstrapTable('load', res.dimension)
+								}
+							})
+						} else {
+							$("#add").show()
+						}
+						if (res.examine) {
+							var data = data_array()
+							for (var j=0; j<res.examine.length; j++) {
+								for (var i=0; i<data.length; i++){
+									data[i]['cave-'+(j+1)] = res.examine[j]['examine_'+(i+1)]
+								}
+							}
+							console.log(data)
+							examine.bootstrapTable('load', data)
+							$("#examine_upload").hide()
+						} else {
+							
+						}
+					},
+				})
+			}
+			
+			function data_array() {
+				var data_examine = [{
+						'id': 1,
+						'item': '是否依標准成型條件生產',
+					},
+					{
+						'id': 2,
+						'item': '原料是否與BOM表一致',
+					},
+					{
+						'id': 3,
+						'item': '各生產輔助設備是否正確設定',
+					},
+					{
+						'id': 4,
+						'item': '產品咬花均勻,無脫落',
+					},
+					{
+						'id': 5,
+						'item': '產品表面無黑(白)點,雜質,白斑',
+					},
+					{
+						'id': 6,
+						'item': '產品無斷模仁(各螺孔無有堵塞)',
+					},
+					{
+						'id': 7,
+						'item': '產品表面無頂針印,DATA CODE印',
+					},
+					{
+						'id': 8,
+						'item': '產品無頂白,拉白,拉傷,拉絲',
+					},
+					{
+						'id': 9,
+						'item': '產品表面及邊緣無銳角,銳邊',
+					},
+					{
+						'id': 10,
+						'item': '產品表面無包風,汽泡,亮斑,油光,陰陽面',
+					},
+					{
+						'id': 11,
+						'item': '產品雕刻字體清晰,正確',
+					},
+					{
+						'id': 12,
+						'item': '產品安規標識清晰,正確',
+					},
+					{
+						'id': 13,
+						'item': '產品無縮水,不飽模,白斑',
+					},
+					{
+						'id': 14,
+						'item': '產品無變形,翹曲',
+					},
+					{
+						'id': 15,
+						'item': '澆口周圍無暗影,亮圈,進澆點無凸出',
+					},
+					{
+						'id': 16,
+						'item': '產品無削傷,碰傷,髒污,油污,打磨不良',
+					},
+					{
+						'id': 17,
+						'item': '光澤度,色差是否符合標準',
+					},
+					{
+						'id': 18,
+						'item': '產品涂裝外觀',
+					},
+					{
+						'id': 19,
+						'item': '實配',
+					},
+				]
+				return data_examine
+			}
+
+			function examine_columns() {
+				
+				var column = [{
+						align: 'center',
+						title: '',
+						field: 'id'
+					},
+					{
+						halign: 'center',
+						align: 'right',
+						width: '300',
+						title: '項目',
+						field: 'item'
+					}
+				]
+				for (var i = 1; i <= 20; i++) {
+					column.push({
+						align: 'center',
+						title: 'cave-' + i,
+						field: 'cave-' + i,
+						visible: false,
+						formatter: examine_formatter,
+						events: window.operateEvents
+					})
+				}
+				return column
+			}
+
+			function dimension_columns() {
+				var column = [
+					{
+						align: 'center',
+						title: 'DIM',
+						field: 'DIM'
+					},
+					{
+						align: 'center',
+						title: '名稱',
+						field: 'dim_name'
+					},
+					{
+						align: 'center',
+						title: '下限',
+						field: 'lower_limit'
+					},
+					{
+						align: 'center',
+						title: '上限',
+						field: 'upper_limit'
+					},
+					{
+						align: 'center',
+						title: '工具',
+						field: 'measure_tool'
+					}
+				]
+				for (var i = 1; i <= 20; i++) {
+					column.push({
+						align: 'center',
+						title: 'cave-' + i,
+						field: 'cave-' + i,
+						width: 100,
+						visible: false,
+						formatter: dimension_formatter,
+						events: window.operateEvents
+					})
+				}
+				return column
+			}
+
+			function examine_formatter(value, row, index, field) {
+				if (String(value)=='undefined'){
+					return [
+						'<button class="btn btn-secondary examine" name="' + field + '" type="button">檢查</button>'
+					].join("")
+				}else if(value){
+					return [
+						'<button class="btn btn-success examine" name="' + field + '" type="button">Check</button>'
+					].join("")
+				}else{
+					return [
+						'<button class="btn btn-danger examine" name="' + field + '" type="button">NG</button>'
+					].join("")
+				}
+				
+			}
+			function dimension_formatter(value, row, index, field) {
+				// todo: 可修改
+				var temp = value?value:value==0?0:''
+				if (temp){
+					return [
+						'<input type="text" value="'+temp+'" name="'+field+'-'+row.dimension_id+'" form="dimension_form" autocomplete="off" class="form-control dimension" readonly>'
+					].join("")
+				}if (temp === 0){
+					return [
+						'<input type="text" value="'+temp+'" name="'+field+'-'+row.dimension_id+'" form="dimension_form" autocomplete="off" class="form-control dimension" readonly>'
+					].join("")
+				}else{
+					return [
+						'<input type="text" value="'+temp+'" name="'+field+'-'+row.dimension_id+'" form="dimension_form" autocomplete="off" class="form-control dimension" required>'
+					].join("")
+				}
+				
+			}
+		</script>
+		<script>
+			var add_dimension = $("#add_dimension")
+			var add_dimension_data = {pnlist_id: '', mold_id: '', DIM: {}}
+			$("#add_form").submit(function() {
+				console.log(add_dimension_data)
+				$.ajax({
+					url: '/ajax_add_dimension',
+					type: "POST",
+					data: JSON.stringify(add_dimension_data),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res)
+						$("#staticBackdrop").modal('hide')
+						get_data()
+					},
+				})
+				
+			})
+			$("#toolbar_add").click(function() {
+				var row_number = add_dimension.bootstrapTable('getData').length
+				add_dimension_data.DIM['DIM' + (row_number+1)] = {}
+				add_dimension.bootstrapTable('append', {
+					DIM: 'DIM' + (row_number+1)
+				})
+			})
+			$("#toolbar_minus").click(function() {
+				var row_number = add_dimension.bootstrapTable('getData').length
+				add_dimension.bootstrapTable('remove', {
+					field: 'DIM',
+					values: ['DIM' + row_number]
+				})
+			})
+			add_dimension.bootstrapTable({
+				toolbar: '#boolbar_add',
+				columns: add_dimension_columns()
+			})
+			function add_dimension_columns() {
+				var column = [
+					{
+						align: 'center',
+						title: 'DIM',
+						field: "DIM"
+					},
+					{
+						align: 'center',
+						title: '名稱',
+						field: 'dim_name',
+						formatter: add_dimension_formatter,
+						events: window.operateEvents
+					},
+					{
+						align: 'center',
+						title: '下限',
+						field: 'lower_limit',
+						formatter: add_dimension_formatter,
+						events: window.operateEvents
+					},
+					{
+						align: 'center',
+						title: '上限',
+						field: 'upper_limit',
+						formatter: add_dimension_formatter,
+						events: window.operateEvents
+					},
+					{
+						align: 'center',
+						title: '工具',
+						field: 'measure_tool',
+						formatter: add_dimension_formatter,
+						events: window.operateEvents
+					}
+				]
+				return column
+			}
+			function add_dimension_formatter(value, row, index, field){
+				var temp = value?value:value==0?0:''
+				return [
+					'<input type="text" value="'+temp+'" name="'+field+'" form="add_form" class="form-control add_dimension" required>'
+				].join("")
+			}
+
+		</script>
+	</body>
+</html>

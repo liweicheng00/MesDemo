@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>成型MES管理系统</title>
+		<link rel="stylesheet" type="text/css" href="static/css/semantic.min.css">
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+		<script src="static/js/semantic.min.js"></script>
+	</head>
+	<body>
+		<div class="ui top attached demo menu">
+			<a class="item">
+				<img id="hide_btn" src="static/img/menu.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+			</a>
+			<a class="item" href="#">
+				成型MES管理系统
+			</a>
+			<a class="item" href="#">現場管理</a>
+			<a class="item" href="/index3">數據管理</a>
+			<div class="right menu">
+				<div class="ui pointing dropdown link item">
+					<span id="user_name"></span>
+					<span class="ui red label">0</span>
+
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item" href="" target="mainShowPage">簽核任務</a>
+						<!-- <a class="item" href="" target="mainShowPage">發起任務</a> -->
+						<div class="divider"></div>
+						<a class="item" href="/route_auth" target="mainShowPage">功能權限設置</a>
+						<a class="item" href="/user_auth" target="mainShowPage">人員權限設置</a>
+					</div>
+				</div>
+				<a class="ui item active" href="#" id="logout">
+					登出
+				</a>
+			</div>
+		</div>
+		<div class="ui bottom attached segment">
+			<div class="ui thin left sidebar demo vertical menu inverted labeled " style="">
+				<a class="item" href="/production_overall" target="mainShowPage">現場總覽</a>
+				<a class="item" href="/schedule_overall" target="mainShowPage">計畫排產</a>
+				<div class="ui right pointing dropdown item">
+					<span class="text">發料模塊</span>
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item" href="/material_dispatch" target="mainShowPage">
+							塑料發料
+						</a>
+						<a class="item" href="/material_dispatch_confirm" target="mainShowPage">
+							塑料發料確認
+						</a>
+						<a class="item" href="/material_check1" target="mainShowPage">
+							現場收料
+						</a>
+					</div>
+				</div>
+				<a class="item" href="/daily_bad_report" target="mainShowPage">現場表單</a>
+				<a class="item" href="/daily_report" target="mainShowPage">日報表</a>
+				<div class="ui right pointing dropdown item">
+					<span class="text">初件案件</span>
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item" href="/first_part_init" target="mainShowPage">初件發起</a>
+						<a class="item" href="/first_part_list" target="mainShowPage">初件案件</a>
+					</div>
+				</div>
+				<div class="ui right pointing dropdown item">
+					<span class="text">紀錄查詢</span>
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item" href="/bad_report_query" target="mainShowPage">不良統計查詢</a>
+						<a class="item" href="/bad_report_progress_query" target="mainShowPage">不良推移查詢</a>
+					</div>
+				</div>
+				
+			</div>
+			<div class="pusher">
+				<iframe id="frame" src="/intro" name="mainShowPage" style="width: 100%; min-height: 100%; border: 0; ">
+				</iframe> 
+			</div>
+		</div>
+		<div class="ui modal coupled first">
+			<div class="header">
+				<h1>登入</h1>
+			</div>
+			<div class="content">
+				<p id="login_msg"></p>
+				<form id="login" class="ui form" onsubmit="return false;">
+					<label>帳號</label>
+					<div class="form-group row">
+						<div class="field">
+							<input id="ID" type="text" name="ID" value="admin">
+						</div>
+					</div>
+					<label>密碼</label>
+					<div class="form-group row">
+						<div class="field">
+							<input id="pwd" type="password" name="pwd" value="admin">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="actions">
+				<div class="ui black button register">
+					Register
+				</div>
+				<div class="ui positive button">
+					Login
+				</div>
+			</div>
+		</div>
+		<div class="ui modal coupled second">
+			<div class="header">
+				<h1>註冊</h1>
+			</div>
+			<div class="content">
+				<form id="register" method="POST" class="ui form" action="/register">
+					<label>帳號</label>
+					<div class="field">
+						<input type="text" name="ID">
+					</div>
+					<label>姓名</label>
+					<div class="field">
+						<input type="text" name="name">
+					</div>
+					<label>密碼</label>
+					<div class="field">
+						<input type="password" name="pwd">
+					</div>
+					<label>密碼確認</label>
+					<div class="field">
+						<input type="password" name="pwd_confirm">
+					</div>
+				</form>
+			</div>
+			<div class="actions">
+				<div class="ui black deny button">
+					Cancel
+				</div>
+				<div class="ui positive button">
+					Register
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var user 
+			$.ajax({
+				url: '/api/login',
+				method: 'GET',
+				dataType: 'json',
+				success: function(res){
+					console.log(res)
+					user = res.user
+					if (!user) {
+					console.log('no user')
+					$('.coupled.modal')
+						.modal({
+							allowMultiple: true
+						});
+					$('.ui.modal.first')
+						.modal({
+							closable: false,
+							onApprove: function() {
+								var data = $("#login").serializeArray().reduce(function(obj, item){
+									obj[item.name] = item.value
+									return obj
+								}, {})
+								console.log(data)
+								$.ajax({
+									url: '/api/login',
+									type: "POST",
+									data: JSON.stringify(data),
+									dataType: 'json',
+									contentType: 'application/json',
+									success: function(res) {
+										console.log(res)
+										location.reload()
+										
+									},
+								})
+							},
+						})
+						.modal('show')
+					
+					// open second modal on first modal buttons
+					$('.second.modal')
+						.modal('attach events', '.first.modal .register')
+						.modal({
+							onApprove: function() {
+								var data = $("#register").serializeArray().reduce(function(obj, item){
+									obj[item.name] = item.value
+									return obj
+								}, {})
+								console.log(data)
+								$.ajax({
+									url: '/api/user',
+									type: "POST",
+									data: JSON.stringify(data),
+									dataType: 'json',
+									contentType: 'application/json',
+									success: function(res) {
+										console.log(res)
+										location.reload()
+										
+									},
+								})
+							}
+						});
+				}else{
+					console.log('user')
+
+					$('#user_name').html(user.name)
+				}
+				}
+
+			})
+			$(function() {
+				$("#logout").click(function(){
+					$.ajax({
+						url: "/api/login",
+						type: "DELETE",
+						contentType: 'application/json',
+						success: function(res){
+							console.log('logout')
+							location.reload()
+						}
+					})
+				})
+				
+
+
+
+				$("#frame").css('height', parseFloat($(".pusher").css('height')) - 50)
+				// $(".pusher").resize(function(){
+				// 	$("#frame").css('height', $(".pusher").css('height'))
+				// })
+			})
+
+			$('.ui.sidebar')
+				.sidebar({
+					context: $('.bottom.segment'),
+					dimPage: true,
+					onVisible: function() {
+						console.log('visible')
+					},
+					onHide: function() {
+						console.log('hide')
+					}
+				})
+				.sidebar('attach events', '#hide_btn');
+			$('.ui.dropdown')
+				.dropdown({
+					on: 'hover'
+				})
+		</script>
+	</body>
+</html>
