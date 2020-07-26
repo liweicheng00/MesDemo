@@ -33,8 +33,8 @@ except OSError:
 app_config = app.config
 
 
-handler = logging.FileHandler('flask.log')
-app.logger.addHandler(handler)
+# handler = logging.FileHandler('flask.log')
+# app.logger.addHandler(handler)
 
 
 '''定時任務'''
