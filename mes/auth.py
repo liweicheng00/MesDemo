@@ -47,7 +47,6 @@ def register():
 @bp.route('/', methods=('GET', 'POST'))
 def login():
     pre_error = request.args.get('error')
-    print('pre_error:', pre_error)
     flash(pre_error)
     error = None
     if request.method == 'POST':
@@ -61,7 +60,6 @@ def login():
         elif not check_password_hash(user.password, password):
             error = 'Incorrect password.'
 
-        print('error:', error)
         if error is None:
             identity_changed.send(current_app._get_current_object(), identity=Identity(user.id))
             # print(identity.provides)

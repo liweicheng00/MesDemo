@@ -1,0 +1,664 @@
+[
+  {
+    "machine_id": 1,
+    "mold_id": 1,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A01",
+    "part_number": "001-0020-9282",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 2,
+    "mold_id": 2,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A02",
+    "part_number": "001-0020-9282",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 3,
+    "mold_id": 3,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A03",
+    "part_number": "001-0020-9282",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 4,
+    "mold_id": 4,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A04",
+    "part_number": "001-0020-9282",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 5,
+    "mold_id": 5,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A05",
+    "part_number": "001-0020-9282",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 6,
+    "mold_id": 43,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A06",
+    "part_number": "001-0020-9282",
+    "mold": "F6"
+  },
+  {
+    "machine_id": 7,
+    "mold_id": 44,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A07",
+    "part_number": "001-0020-9282",
+    "mold": "F7"
+  },
+  {
+    "machine_id": 8,
+    "mold_id": 45,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A08",
+    "part_number": "001-0020-9282",
+    "mold": "F8"
+  },
+  {
+    "machine_id": 9,
+    "mold_id": 46,
+    "pnlist_id": 1,
+    "amount": 3.0,
+    "product_name": "核融合反應爐",
+    "machine_name": "A09",
+    "part_number": "001-0020-9282",
+    "mold": "F9"
+  },
+  {
+    "machine_id": 10,
+    "mold_id": 6,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A10",
+    "part_number": "001-0020-9283",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 11,
+    "mold_id": 7,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A11",
+    "part_number": "001-0020-9283",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 12,
+    "mold_id": 8,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A12",
+    "part_number": "001-0020-9283",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 13,
+    "mold_id": 9,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A13",
+    "part_number": "001-0020-9283",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 14,
+    "mold_id": 10,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A14",
+    "part_number": "001-0020-9283",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 15,
+    "mold_id": 48,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A15",
+    "part_number": "001-0020-9283",
+    "mold": "F6"
+  },
+  {
+    "machine_id": 16,
+    "mold_id": 49,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A16",
+    "part_number": "001-0020-9283",
+    "mold": "F7"
+  },
+  {
+    "machine_id": 17,
+    "mold_id": 50,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A17",
+    "part_number": "001-0020-9283",
+    "mold": "F8"
+  },
+  {
+    "machine_id": 18,
+    "mold_id": 51,
+    "pnlist_id": 2,
+    "amount": 6.0,
+    "product_name": "原子加速器",
+    "machine_name": "A18",
+    "part_number": "001-0020-9283",
+    "mold": "F9"
+  },
+  {
+    "machine_id": 19,
+    "mold_id": 11,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B01",
+    "part_number": "001-0020-9284",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 20,
+    "mold_id": 12,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B02",
+    "part_number": "001-0020-9284",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 21,
+    "mold_id": 13,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B03",
+    "part_number": "001-0020-9284",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 22,
+    "mold_id": 53,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B04",
+    "part_number": "001-0020-9284",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 23,
+    "mold_id": 54,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B05",
+    "part_number": "001-0020-9284",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 24,
+    "mold_id": 55,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B06",
+    "part_number": "001-0020-9284",
+    "mold": "F6"
+  },
+  {
+    "machine_id": 25,
+    "mold_id": 56,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B07",
+    "part_number": "001-0020-9284",
+    "mold": "F7"
+  },
+  {
+    "machine_id": 26,
+    "mold_id": 57,
+    "pnlist_id": 3,
+    "amount": 100.0,
+    "product_name": "時間方向盤",
+    "machine_name": "B08",
+    "part_number": "001-0020-9284",
+    "mold": "F8"
+  },
+  {
+    "machine_id": 27,
+    "mold_id": 14,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B09",
+    "part_number": "001-0020-9285",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 28,
+    "mold_id": 15,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B10",
+    "part_number": "001-0020-9285",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 29,
+    "mold_id": 16,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B11",
+    "part_number": "001-0020-9285",
+    "mold": "F6"
+  },
+  {
+    "machine_id": 30,
+    "mold_id": 17,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B12",
+    "part_number": "001-0020-9285",
+    "mold": "F7"
+  },
+  {
+    "machine_id": 31,
+    "mold_id": 18,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B13",
+    "part_number": "001-0020-9285",
+    "mold": "F8"
+  },
+  {
+    "machine_id": 32,
+    "mold_id": 19,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B14",
+    "part_number": "001-0020-9285",
+    "mold": "F9"
+  },
+  {
+    "machine_id": 33,
+    "mold_id": 20,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B15",
+    "part_number": "001-0020-9285",
+    "mold": "F10"
+  },
+  {
+    "machine_id": 34,
+    "mold_id": 60,
+    "pnlist_id": 4,
+    "amount": 20.0,
+    "product_name": "機殼",
+    "machine_name": "B16",
+    "part_number": "001-0020-9285",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 35,
+    "mold_id": 21,
+    "pnlist_id": 5,
+    "amount": 1000.0,
+    "product_name": "洗頭蓮蓬頭",
+    "machine_name": "C01",
+    "part_number": "002-0030-3982",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 36,
+    "mold_id": 22,
+    "pnlist_id": 5,
+    "amount": 1000.0,
+    "product_name": "洗頭蓮蓬頭",
+    "machine_name": "C02",
+    "part_number": "002-0030-3982",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 37,
+    "mold_id": 23,
+    "pnlist_id": 5,
+    "amount": 1000.0,
+    "product_name": "洗頭蓮蓬頭",
+    "machine_name": "C03",
+    "part_number": "002-0030-3982",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 38,
+    "mold_id": 24,
+    "pnlist_id": 5,
+    "amount": 1000.0,
+    "product_name": "洗頭蓮蓬頭",
+    "machine_name": "C04",
+    "part_number": "002-0030-3982",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 39,
+    "mold_id": 63,
+    "pnlist_id": 5,
+    "amount": 1000.0,
+    "product_name": "洗頭蓮蓬頭",
+    "machine_name": "C05",
+    "part_number": "002-0030-3982",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 40,
+    "mold_id": 64,
+    "pnlist_id": 5,
+    "amount": 1000.0,
+    "product_name": "洗頭蓮蓬頭",
+    "machine_name": "C06",
+    "part_number": "002-0030-3982",
+    "mold": "F6"
+  },
+  {
+    "machine_id": 41,
+    "mold_id": 65,
+    "pnlist_id": 5,
+    "amount": 1000.0,
+    "product_name": "洗頭蓮蓬頭",
+    "machine_name": "C07",
+    "part_number": "002-0030-3982",
+    "mold": "F7"
+  },
+  {
+    "machine_id": 42,
+    "mold_id": 25,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C08",
+    "part_number": "002-0030-3983",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 43,
+    "mold_id": 26,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C09",
+    "part_number": "002-0030-3983",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 44,
+    "mold_id": 27,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C10",
+    "part_number": "002-0030-3983",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 45,
+    "mold_id": 28,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C11",
+    "part_number": "002-0030-3983",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 46,
+    "mold_id": 69,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C12",
+    "part_number": "002-0030-3983",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 47,
+    "mold_id": 70,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C13",
+    "part_number": "002-0030-3983",
+    "mold": "F6"
+  },
+  {
+    "machine_id": 48,
+    "mold_id": 71,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C14",
+    "part_number": "002-0030-3983",
+    "mold": "F7"
+  },
+  {
+    "machine_id": 49,
+    "mold_id": 72,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C15",
+    "part_number": "002-0030-3983",
+    "mold": "F8"
+  },
+  {
+    "machine_id": 50,
+    "mold_id": 73,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C16",
+    "part_number": "002-0030-3983",
+    "mold": "F9"
+  },
+  {
+    "machine_id": 51,
+    "mold_id": 74,
+    "pnlist_id": 6,
+    "amount": 1000.0,
+    "product_name": "洗身蓮蓬頭",
+    "machine_name": "C17",
+    "part_number": "002-0030-3983",
+    "mold": "F10"
+  },
+  {
+    "machine_id": 52,
+    "mold_id": 29,
+    "pnlist_id": 7,
+    "amount": 1000.0,
+    "product_name": "洗腳蓮蓬頭",
+    "machine_name": "C18",
+    "part_number": "002-0030-3984",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 53,
+    "mold_id": 30,
+    "pnlist_id": 7,
+    "amount": 1000.0,
+    "product_name": "洗腳蓮蓬頭",
+    "machine_name": "C19",
+    "part_number": "002-0030-3984",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 54,
+    "mold_id": 31,
+    "pnlist_id": 7,
+    "amount": 1000.0,
+    "product_name": "洗腳蓮蓬頭",
+    "machine_name": "C20",
+    "part_number": "002-0030-3984",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 55,
+    "mold_id": 32,
+    "pnlist_id": 7,
+    "amount": 1000.0,
+    "product_name": "洗腳蓮蓬頭",
+    "machine_name": "C21",
+    "part_number": "002-0030-3984",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 56,
+    "mold_id": 33,
+    "pnlist_id": 7,
+    "amount": 1000.0,
+    "product_name": "洗腳蓮蓬頭",
+    "machine_name": "C22",
+    "part_number": "002-0030-3984",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 57,
+    "mold_id": 35,
+    "pnlist_id": 8,
+    "amount": 8000.0,
+    "product_name": "沐浴乳",
+    "machine_name": "D01",
+    "part_number": "002-0030-3985",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 58,
+    "mold_id": 36,
+    "pnlist_id": 8,
+    "amount": 8000.0,
+    "product_name": "沐浴乳",
+    "machine_name": "D02",
+    "part_number": "002-0030-3985",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 59,
+    "mold_id": 37,
+    "pnlist_id": 8,
+    "amount": 8000.0,
+    "product_name": "沐浴乳",
+    "machine_name": "D03",
+    "part_number": "002-0030-3985",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 60,
+    "mold_id": 38,
+    "pnlist_id": 8,
+    "amount": 8000.0,
+    "product_name": "沐浴乳",
+    "machine_name": "D04",
+    "part_number": "002-0030-3985",
+    "mold": "F4"
+  },
+  {
+    "machine_id": 61,
+    "mold_id": 79,
+    "pnlist_id": 8,
+    "amount": 8000.0,
+    "product_name": "沐浴乳",
+    "machine_name": "D05",
+    "part_number": "002-0030-3985",
+    "mold": "F5"
+  },
+  {
+    "machine_id": 62,
+    "mold_id": 80,
+    "pnlist_id": 8,
+    "amount": 8000.0,
+    "product_name": "沐浴乳",
+    "machine_name": "D06",
+    "part_number": "002-0030-3985",
+    "mold": "F6"
+  },
+
+
+  {
+    "machine_id": 67,
+    "mold_id": 39,
+    "pnlist_id": 9,
+    "amount": 8000.0,
+    "product_name": "洗髮乳",
+    "machine_name": "D11",
+    "part_number": "002-0030-3986",
+    "mold": "F1"
+  },
+  {
+    "machine_id": 68,
+    "mold_id": 40,
+    "pnlist_id": 9,
+    "amount": 8000.0,
+    "product_name": "洗髮乳",
+    "machine_name": "D12",
+    "part_number": "002-0030-3986",
+    "mold": "F2"
+  },
+  {
+    "machine_id": 69,
+    "mold_id": 41,
+    "pnlist_id": 9,
+    "amount": 8000.0,
+    "product_name": "洗髮乳",
+    "machine_name": "D13",
+    "part_number": "002-0030-3986",
+    "mold": "F3"
+  },
+  {
+    "machine_id": 70,
+    "mold_id": 42,
+    "pnlist_id": 9,
+    "amount": 8000.0,
+    "product_name": "洗髮乳",
+    "machine_name": "D14",
+    "part_number": "002-0030-3986",
+    "mold": "F4"
+  }
+]

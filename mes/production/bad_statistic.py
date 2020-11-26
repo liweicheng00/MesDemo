@@ -238,6 +238,7 @@ def ajax_bad_upload():
 
         q_daily = DailyReport.query.filter(DailyReport.id == daily_report_id).first()
         q_daily.bad_amount = BadRecord.query.filter(BadRecord.daily_report_id == daily_report_id).count()
+        print(q_daily.bad_amount, q_daily.produce_amount)
         if q_daily.produce_amount != 0:
             q_daily.bad_percent = 100 * q_daily.bad_amount / q_daily.produce_amount
             q_daily.bad_ppm = 1000000 * q_daily.bad_amount / q_daily.produce_amount

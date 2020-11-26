@@ -33,6 +33,6 @@ def no_permission(e):
         return render_template('no_authority.html'), 403
 
 from . import production_overall, bad_statistic, \
-    material_check, get_bad_statistic, bad_cause_query, \
-    first_part
+    material_check, bad_cause_query, \
+    first_part, produce_statistics
 

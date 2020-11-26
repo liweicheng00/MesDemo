@@ -3,14 +3,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from config import config
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, jsonify
 from flask_cors import CORS
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, RoleNeed
 from flask_apscheduler import APScheduler
 from flask_principal import Permission, RoleNeed
 from flask_restful import Api
-import logging
+import json
 
 env = os.environ.get('ENV')
 if env:
@@ -154,6 +154,14 @@ def hello():
     app.logger.info('info log test')
     app.logger.warning('warn log test')
     return 'hello'
+
+
+@app.route('/task')
+def task():
+    with open('schedule.json') as f:
+        data = json.load(f)
+        print(data)
+        return jsonify(data)
 
 
 if __name__ == '__main__':

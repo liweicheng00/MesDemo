@@ -7,7 +7,7 @@
 	<script src="static/js/jquery-3.3.1.min.js"></script>
 	<script src="static/js/bootstrap-table.min.js"></script>
 	<script src="static/js/moment.js"></script>
-	<script src="static/js/popper.min.js"></script>
+	<!-- <script src="static/js/popper.min.js"></script> -->
 
 	<script src="static/js/bootstrap.min.js"></script>
 
@@ -47,7 +47,7 @@
 			</div>
 		</form>
 		<hr>
-		
+
 		<table id="daily_report" class="">
 
 		</table>
@@ -127,7 +127,7 @@
 		var daily_report_table = $("#daily_report")
 
 		$(function () {
-			
+
 			daily_report_table.bootstrapTable({
 				height: window.screen.availHeight,
 				columns: daily_report_columns(),
@@ -135,7 +135,7 @@
 				showColumns: true,
 				toolbar: "#toolbar",
 			})
-			
+
 		});
 
 		var daily_report_request
@@ -276,7 +276,7 @@
 				{
 					align: 'center',
 					title: '生產實際',
-					field: 'total_amount',
+					field: 'produce_amount',
 					footerFormatter: function (data) {
 						return data.map(function (row) {
 							return row['total_amount']
@@ -296,22 +296,6 @@
 					footerFormatter: function (data) {
 						return data.map(function (row) {
 							return row['bad_amount']
-						}).reduce(function (sum, i) {
-							if (i) {
-								return parseFloat(sum) + parseFloat(i)
-							} else {
-								return parseFloat(sum)
-							}
-						}, 0)
-					}
-				},
-				{
-					align: 'center',
-					title: '良品數',
-					field: 'produce_amount',
-					footerFormatter: function (data) {
-						return data.map(function (row) {
-							return row['produce_amount']
 						}).reduce(function (sum, i) {
 							if (i) {
 								return parseFloat(sum) + parseFloat(i)
@@ -373,7 +357,7 @@
 				'</a>'
 			].join('')
 		}
-		
+
 	</script>
 </body>
 
